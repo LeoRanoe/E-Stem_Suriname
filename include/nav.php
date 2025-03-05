@@ -1,6 +1,4 @@
 <?php
-require '../db.php'; // Include your database connection file
-
 // Fetch user details if logged in
 $userName = '';
 if (isset($_SESSION['User ID'])) {
