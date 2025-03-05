@@ -44,11 +44,11 @@ if (isset($_SESSION['User ID'])) {
                         <button class="btn btn-success me-2 pulse-on-hover" style="background-color: #7ABD7E; border: none;">
                             <i class="fas fa-user me-1"></i><?= $userName ?>
                         </button>
-                        <a href="../logout.php" class="btn btn-outline-danger mt-2 mt-sm-0 pulse-on-hover" style="border-color: #4C864F; color: #4C864F;">
+                        <a href="./pages/login.php" class="btn btn-outline-danger mt-2 mt-sm-0 pulse-on-hover" style="border-color: #4C864F; color: #4C864F;">
                             <i class="fas fa-sign-out-alt me-1"></i>Logout
                         </a>
                     <?php else: ?>
-                        <a href="../login.php" class="btn btn-success pulse-on-hover" style="background-color: #7ABD7E; border: none;">
+                        <a href="./pages/login.php" class="btn btn-success pulse-on-hover" style="background-color: #7ABD7E; border: none;">
                             <i class="fas fa-sign-in-alt me-1"></i>Login
                         </a>
                     <?php endif; ?>
