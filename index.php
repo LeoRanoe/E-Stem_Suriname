@@ -1,182 +1,183 @@
 <?php
 session_start();
-require 'db.php'; // Adjusted path to db.php
-include './include/nav.php'; 
+require 'db.php';
+
+// Fetch latest news
+try {
+    $news_stmt = $conn->query("SELECT * FROM news WHERE Status = 'published' ORDER BY DatePosted DESC LIMIT 3");
+    $latest_news = $news_stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $latest_news = [];
+}
+
+// Fetch active elections
+try {
+    $election_stmt = $conn->query("SELECT * FROM elections WHERE Status = 'active' ORDER BY ElectionDate DESC");
+    $active_elections = $election_stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    $active_elections = [];
+}
 ?>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Verkiezing</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>E-Stem Suriname - Online Stemmen Simulatie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f9f9f9;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'suriname': {
+                            'green': '#007749',
+                            'dark-green': '#006241',
+                            'red': '#C8102E',
+                            'dark-red': '#a50d26',
+                        },
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.5s ease-out',
+                        'slide-in': 'slideIn 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                    },
+                },
+            },
         }
-        .bg-custom-green {
-            background: linear-gradient(135deg, #A8D8AA, #C7E3C5);
-        }
-        .btn-custom-green {
-            background-color: #4A774C;
-            border: none;
-            color: white;
-            transition: background-color 0.3s ease;
-        }
-        .btn-custom-green:hover {
-            background-color: #3F6640;
-        }
-        .card-custom {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .card-custom:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
-        .text-dark-green {
-            color: #4A774C;
-        }
-        .section-title {
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-        .rounded-lg {
-            border-radius: 15px !important;
-        }
-        .custom-select {
-            border-radius: 15px !important;
-            padding: 0.5rem 1rem;
-            border: 1px solid #ddd;
-            transition: border-color 0.3s ease;
-        }
-        .custom-select:focus {
-            border-color: #4A774C;
-            box-shadow: 0 0 5px rgba(74, 119, 76, 0.5);
-        }
-        .lead {
-            font-size: 1.2rem;
-            line-height: 1.6;
-        }
-        .display-4 {
-            font-size: 2.5rem;
-            font-weight: 600;
-        }
-        @media (max-width: 768px) {
-            .display-4 {
-                font-size: 2rem;
-            }
-            .lead {
-                font-size: 1rem;
-            }
-        }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="container-fluid px-4 py-4">
-        <section class="bg-custom-green rounded-lg p-5 mb-4">
-            <div class="row align-items-center">
-                <div class="col-md-8 pr-md-5">
-                    <h1 class="display-4 section-title mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>
-                    <p class="lead mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</p>
-                    <button class="btn btn-light rounded-lg">Lees meer ></button>
+<body class="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-100">
+    <?php include 'include/nav.php'; ?>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-suriname-green to-suriname-dark-green text-white py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 animate-fade-in-up">
+                    Welkom bij de Online Stemmen Simulatie voor de Surinaamse Staatsverkiezingen 2025!
+                </h1>
+                <p class="text-xl mb-8 text-emerald-50 animate-fade-in-up">
+                    Neem deel aan de digitale democratie van Suriname. Uw stem telt mee voor de toekomst van ons land.
+                </p>
+                <?php if (!isset($_SESSION['user_id'])): ?>
+                    <a href="pages/register_step1.php" 
+                       class="inline-flex items-center space-x-2 bg-white text-suriname-green px-8 py-3 rounded-lg hover:bg-emerald-50 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl group animate-fade-in-up">
+                        <i class="fas fa-user-plus transform group-hover:scale-110 transition-transform duration-300"></i>
+                        <span>Registreer nu om te stemmen</span>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Hoe werkt het?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-8 max-w-5xl mx-auto">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-suriname-green text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-plus text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">1. Registreren</h3>
+                    <p class="text-gray-600">Maak een account aan met uw gegevens</p>
                 </div>
-                <div class="col-md-4 text-center">
-                    <img src="https://storage.googleapis.com/a1aa/image/vVsMMt_gmicg9Lg3_jpO9j6unKbdNnfFqCrSbb48Rjc.jpg" alt="Voting illustration" class="img-fluid rounded-lg">
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-suriname-green text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-sign-in-alt text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">2. Inloggen</h3>
+                    <p class="text-gray-600">Log in met uw account</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-suriname-green text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-qrcode text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">3. QR-code scannen</h3>
+                    <p class="text-gray-600">Scan uw unieke QR-code</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-suriname-green text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-vote-yea text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">4. Stemmen</h3>
+                    <p class="text-gray-600">Geef uw stem uit</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-suriname-green text-white rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-chart-bar text-2xl"></i>
+                    </div>
+                    <h3 class="font-semibold mb-2">5. Resultaten</h3>
+                    <p class="text-gray-600">Bekijk de verkiezingsresultaten</p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section class="text-center mb-4">
-            <h2 class="display-4 section-title mb-3">Hoe moet je stemmen?</h2>
-            <p class="lead mb-5">Doe mee aan de online stemsimulatie en ontdek hoe eenvoudig het is om je stem uit te brengen. Volg onze simpele stappen om ervoor te zorgen dat je stem gehoord wordt bij de komende verkiezingen.</p>
-            
-            <div class="row justify-content-center">
-                <div class="col-md-4 mb-3">
-                    <div class="card card-custom p-4 h-100">
-                        <i class="fas fa-ticket-alt fa-3x text-dark-green mb-3"></i>
-                        <h3 class="mb-3">Step 1: Voucher ophalen</h3>
-                        <p>Haal uw voucher op bij CBB met uw identiteitskaart.</p>
+    <!-- Active Elections Section -->
+    <?php if (!empty($active_elections)): ?>
+    <section class="py-16 bg-emerald-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Actieve Verkiezingen</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <?php foreach ($active_elections as $election): ?>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2"><?= htmlspecialchars($election['ElectionName']) ?></h3>
+                        <p class="text-gray-600 mb-4"><?= htmlspecialchars($election['Description']) ?></p>
+                        <div class="flex items-center text-sm text-gray-500 mb-4">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            <span><?= date('d F Y', strtotime($election['ElectionDate'])) ?></span>
+                        </div>
+                        <a href="pages/vote.php?election=<?= $election['ElectionID'] ?>" 
+                           class="block w-full text-center bg-suriname-green text-white py-2 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
+                            Stem nu
+                        </a>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card card-custom p-4 h-100">
-                        <i class="fas fa-qrcode fa-3x text-dark-green mb-3"></i>
-                        <h3 class="mb-3">Step 2: Scan de QR-code</h3>
-                        <p>Scan de QR-code op de voucher staat.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card card-custom p-4 h-100">
-                        <i class="fas fa-vote-yea fa-3x text-dark-green mb-3"></i>
-                        <h3 class="mb-3">Step 3: Ga stemmen!</h3>
-                        <p>Selecteer je gekozen kandidaten en dien je stem in.</p>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
-            <p class="text-danger font-weight-bold mt-3">Let op: u kunt maar één keer stemmen.</p>
-        </section>
+        </div>
+    </section>
+    <?php endif; ?>
 
-        <section class="bg-custom-green text-white text-center rounded-lg p-5 mb-4">
-            <h2 class="display-4 section-title mb-3">Doe mee aan de online verkiezing</h2>
-            <p class="lead mb-4">Ervaar de toekomst van online stemmen vandaag!</p>
-            <div>
-                <button class="btn btn-light rounded-lg mr-2">Registreer</button>
-                <button class="btn btn-light rounded-lg">Log in</button>
-            </div>
-        </section>
-
-        <section>
-            <h2 class="display-4 text-center section-title mb-3">Nieuws</h2>
-            <p class="lead text-center mb-4">Kom meer te weten over de politieke partijen, kandidaten, ressortsraden enz.</p>
-            
-            <div class="text-center mb-3">
-                <select class="custom-select w-auto rounded-lg">
-                    <option>Filter</option>
-                </select>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <div class="card card-custom p-4">
-                        <h3>Politieke Partij</h3>
-                        <h4 class="text-dark-green">Nooit Pessimistisch Standpunt (NPS)</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                        <button class="btn btn-custom-green rounded-lg">Lees meer ></button>
+    <!-- Latest News Section -->
+    <?php if (!empty($latest_news)): ?>
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Laatste Nieuws</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <?php foreach ($latest_news as $news): ?>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <?php if ($news['FeaturedImage']): ?>
+                    <img src="<?= htmlspecialchars($news['FeaturedImage']) ?>" alt="<?= htmlspecialchars($news['Title']) ?>" class="w-full h-48 object-cover">
+                    <?php endif; ?>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2"><?= htmlspecialchars($news['Title']) ?></h3>
+                        <p class="text-gray-600 mb-4"><?= substr(htmlspecialchars($news['Content']), 0, 150) ?>...</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span><?= date('d F Y', strtotime($news['DatePosted'])) ?></span>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card card-custom p-4">
-                        <h3>Politieke Partij</h3>
-                        <h4 class="text-dark-green">Nooit Pessimistisch Standpunt (NPS)</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                        <button class="btn btn-custom-green rounded-lg">Lees meer ></button>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="card card-custom p-4">
-                        <h3>Politieke Partij</h3>
-                        <h4 class="text-dark-green">Nooit Pessimistisch Standpunt (NPS)</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                        <button class="btn btn-custom-green rounded-lg">Lees meer ></button>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
+        </div>
+    </section>
+    <?php endif; ?>
 
-            <div class="text-center mt-3">
-                <button class="btn btn-light rounded-lg mr-2">Bekijk meer</button>
-                <button class="btn btn-custom-green rounded-lg">Bekijk meer</button>
-            </div>
-        </section>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <?php include 'include/footer.php'; ?>
 </body>
 </html>
-<?php
-include './include/footer.php'; 
-?>

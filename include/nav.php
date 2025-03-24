@@ -1,154 +1,146 @@
 <?php
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/db_connect.php';
+
 // Fetch user details if logged in
 $userName = '';
+$isAdmin = false;
 if (isset($_SESSION['User ID'])) {
-    $stmt = $conn->prepare("SELECT Voornaam FROM users WHERE UserID = :userID");
-    $stmt->execute(['userID' => $_SESSION['User ID']]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    $userName = $user ? htmlspecialchars($user['Voornaam']) : 'User ';
+    try {
+        $stmt = $pdo->prepare("
+            SELECT * FROM users 
+            WHERE UserID = :userID
+        ");
+        $stmt->execute(['userID' => $_SESSION['User ID']]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userName = $user ? htmlspecialchars($user['Voornaam']) : 'User';
+        $isAdmin = $user && $user['Role'] === 'admin';
+    } catch (PDOException $e) {
+        error_log("Database error: " . $e->getMessage());
+    }
 }
+
+// Get current page name
+$current_page = basename($_SERVER['PHP_SELF']);
 ?>
-<div class="navbar-container">
-    <nav class="navbar navbar-expand-lg navbar-light rounded-pill shadow-sm" style="background-color: #D9D9D9; margin-top: 20px; max-width: 90%; margin-left: auto; margin-right: auto;">
-        <div class="container-fluid px-3">
-            <button class="navbar-toggler border-0 hamburger-button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <a class="navbar-brand d-lg-none mobile-logo" href="#" style="font-family: 'Montserrat', sans-serif; font-weight: bold; color: #4C864F;">
-                <i class="fas fa-crow me-2" style="color: #7ABD7E;"></i>
-                <span class="logo">Logo</span>
-            </a>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link menu-item" href="../index.php" aria-current="page">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link menu-item" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link menu-item" href="#">Contact</a>
-                    </li>
-                    <!-- Add more links or dropdowns here -->
-                </ul>
-                
-                <a class="navbar-brand d-none d-lg-flex align-items-center desktop-logo" href="#" style="font-family: 'Montserrat', sans-serif; font-weight: bold; color: #4C864F; position: absolute; left: 50%; transform: translateX(-50%);">
-                    <i class="fas fa-crow me-2" style="color: #7ABD7E;"></i>
-                    <span class="logo">Logo</span>
-                </a>
-                
-                <div class="d-lg-none mt-3 mb-2 text-center">
+
+<nav class="bg-white shadow-lg border-b-4 border-suriname-green">
+    <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between h-16">
+            <div class="flex">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="<?= BASE_URL ?>/index.php" class="flex items-center">
+                        <img class="h-12 w-auto" src="<?= BASE_URL ?>/assets/images/logo.png" alt="<?= SITE_NAME ?>">
+                        <span class="ml-2 text-xl font-bold text-suriname-green">E-Stem</span>
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="<?= BASE_URL ?>/index.php" 
+                       class="<?= $current_page === 'index.php' ? 'border-suriname-green text-suriname-green' : 'border-transparent text-gray-500 hover:border-suriname-green hover:text-suriname-green' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                        Home
+                    </a>
                     <?php if (isset($_SESSION['User ID'])): ?>
-                        <button class="btn btn-success me-2 pulse-on-hover" style="background-color: #7ABD7E; border: none;">
-                            <i class="fas fa-user me-1"></i><?= $userName ?>
-                        </button>
-                        <a href="./pages/login.php" class="btn btn-outline-danger mt-2 mt-sm-0 pulse-on-hover" style="border-color: #4C864F; color: #4C864F;">
-                            <i class="fas fa-sign-out-alt me-1"></i>Logout
-                        </a>
-                    <?php else: ?>
-                        <a href="./pages/login.php" class="btn btn-success pulse-on-hover" style="background-color: #7ABD7E; border: none;">
-                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        <a href="<?= BASE_URL ?>/pages/scan.php" 
+                           class="<?= $current_page === 'scan.php' ? 'border-suriname-green text-suriname-green' : 'border-transparent text-gray-500 hover:border-suriname-green hover:text-suriname-green' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Stemmen
                         </a>
                     <?php endif; ?>
                 </div>
             </div>
-            
-            <div class="d-none d-lg-flex align-items-center ms-auto">
+
+            <!-- Right side -->
+            <div class="hidden sm:ml-6 sm:flex sm:items-center">
                 <?php if (isset($_SESSION['User ID'])): ?>
-                    <button class="btn btn-success me-2 pulse-on-hover" style="background-color: #7ABD7E; border: none;">
-                        <i class="fas fa-user me-1"></i><?= $userName ?>
-                    </button>
-                    <a href="../logout.php" class="btn btn-outline-danger pulse-on-hover" style="border-color: #4C864F; color: #4C864F;">
-                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    <?php if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin']): ?>
+                        <a href="<?= BASE_URL ?>/admin/dashboard.php" 
+                           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-green hover:bg-suriname-dark-green shadow-md">
+                            <i class="fas fa-cog mr-2"></i>
+                            Admin Dashboard
+                        </a>
+                    <?php endif; ?>
+                    <a href="<?= BASE_URL ?>/pages/logout.php" 
+                       class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-red hover:bg-suriname-dark-red shadow-md">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        Uitloggen
                     </a>
                 <?php else: ?>
-                    <a href="../login.php" class="btn btn-success pulse-on-hover" style="background-color: #7ABD7E; border: none;">
-                        <i class="fas fa-sign-in-alt me-1"></i>Login
+                    <a href="<?= BASE_URL ?>/pages/login.php" 
+                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-green hover:bg-suriname-dark-green shadow-md">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Inloggen
                     </a>
                 <?php endif; ?>
             </div>
+
+            <!-- Mobile menu button -->
+            <div class="-mr-2 flex items-center sm:hidden">
+                <button type="button" 
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-suriname-green hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-suriname-green"
+                        aria-controls="mobile-menu" 
+                        aria-expanded="false"
+                        onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
         </div>
-    </nav>
-</div>
+    </div>
 
-<style>
-    /* Custom Font */
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+    <!-- Mobile menu -->
+    <div class="sm:hidden hidden" id="mobile-menu">
+        <div class="pt-2 pb-3 space-y-1">
+            <a href="<?= BASE_URL ?>/index.php" 
+               class="<?= $current_page === 'index.php' ? 'bg-suriname-green text-white' : 'text-gray-500 hover:bg-suriname-green hover:text-white' ?> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                <i class="fas fa-home mr-2"></i>
+                Home
+            </a>
+            <?php if (isset($_SESSION['User ID'])): ?>
+                <a href="<?= BASE_URL ?>/pages/scan.php" 
+                   class="<?= $current_page === 'scan.php' ? 'bg-suriname-green text-white' : 'text-gray-500 hover:bg-suriname-green hover:text-white' ?> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                    <i class="fas fa-vote-yea mr-2"></i>
+                    Stemmen
+                </a>
+            <?php endif; ?>
+            <?php if (isset($_SESSION['User ID'])): ?>
+                <?php if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin']): ?>
+                    <a href="<?= BASE_URL ?>/admin/dashboard.php" 
+                       class="text-gray-500 hover:bg-suriname-green hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                        <i class="fas fa-cog mr-2"></i>
+                        Admin Dashboard
+                    </a>
+                <?php endif; ?>
+                <a href="<?= BASE_URL ?>/pages/logout.php" 
+                   class="text-gray-500 hover:bg-suriname-red hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                    <i class="fas fa-sign-out-alt mr-2"></i>
+                    Uitloggen
+                </a>
+            <?php else: ?>
+                <a href="<?= BASE_URL ?>/pages/login.php" 
+                   class="text-gray-500 hover:bg-suriname-green hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    Inloggen
+                </a>
+            <?php endif; ?>
+        </div>
+    </div>
+</nav>
 
-    /* Navbar Styles */
-    .navbar {
-        padding-top: 10px;
-        padding-bottom: 10px;
-        margin-bottom: 50px;
-    }
-
-    .navbar-brand {
-        font-size: 20px;
-        transition: transform 0.3s ease, color 0.3s ease;
-    }
-
-    .navbar-brand:hover {
-        transform: scale(1.05);
-        color: #4C864F !important;
-    }
-
-    .nav-link {
-        position: relative;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 500;
-        color: black;
-        transition: color 0.3s ease;
-    }
-
-    .nav-link:hover {
-        color: #7ABD7E !important;
-    }
-
-    .nav-link.active {
-        color: #7ABD7E !important;
-        font-weight: bold;
-    }
-
-    /* Button Styles */
-    .btn {
-        border-radius: 50px;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    .btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-
-    /* Responsive Design */
-    @media (max-width: 992px) {
-        .navbar-brand {
-            font-size: 18px;
-        }
-        .nav-link {
-            font-size: 14px;
-            text-align: center;
-            margin: 5px 0;
-        }
-        .navbar-collapse {
-            background-color: #D9D9D9;
-            border-radius: 15px;
-            padding: 10px;
-            margin-top: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-    }
-
-    @media (max-width: 768px) {
-        .navbar-brand {
-            font-size: 16px;
-        }
-        .nav-link {
-            font-size: 12px;
-        }
-    }
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleMobileMenu() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    const isHidden = mobileMenu.classList.contains('hidden');
+    mobileMenu.classList.toggle('hidden');
+    
+    // Update aria-expanded
+    const button = document.querySelector('[aria-controls="mobile-menu"]');
+    button.setAttribute('aria-expanded', !isHidden);
+}
+</script>
