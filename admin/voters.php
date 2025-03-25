@@ -106,235 +106,260 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
 }
 
-// Get all voters with pagination
-$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$per_page = 10;
-$offset = ($page - 1) * $per_page;
+// Start output buffering
+ob_start();
+
+// Initialize variables
+$voters = [];
+$total_votes = 0;
+$total_districts = 0;
+$total_active_voters = 0;
 
 try {
-    // Get total count
-    $stmt = $pdo->query("SELECT COUNT(*) FROM users WHERE UserType = 'voter'");
-    $total_voters = $stmt->fetchColumn();
-    $total_pages = ceil($total_voters / $per_page);
-
-    // Get voters for current page
-    $stmt = $pdo->prepare("
-        SELECT u.*, 
+    // Get voters with their vote counts
+    $stmt = $pdo->query("
+        SELECT u.*,
+               d.DistrictName,
                COUNT(DISTINCT v.VoteID) as vote_count,
                MAX(v.Timestamp) as last_vote
         FROM users u
+        LEFT JOIN districts d ON u.DistrictID = d.DistrictID
         LEFT JOIN votes v ON u.UserID = v.UserID
-        WHERE u.UserType = 'voter'
+        WHERE u.Role = 'voter'
         GROUP BY u.UserID
-        ORDER BY u.CreatedAt DESC
-        LIMIT ? OFFSET ?
+        ORDER BY u.LastName ASC, u.FirstName ASC
     ");
-    $stmt->execute([$per_page, $offset]);
     $voters = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Get total votes
+    $stmt = $pdo->query("SELECT COUNT(*) FROM votes");
+    $total_votes = $stmt->fetchColumn();
+
+    // Get total districts
+    $stmt = $pdo->query("SELECT COUNT(*) FROM districts");
+    $total_districts = $stmt->fetchColumn();
+
+    // Get total active voters (voted in the last 30 days)
+    $stmt = $pdo->query("
+        SELECT COUNT(DISTINCT UserID) 
+        FROM votes 
+        WHERE Timestamp >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+    ");
+    $total_active_voters = $stmt->fetchColumn();
 } catch (PDOException $e) {
     error_log("Database error: " . $e->getMessage());
     $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de stemmers.";
-    $voters = [];
-    $total_pages = 0;
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stemmers Beheren - <?= SITE_NAME ?></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'suriname': {
-                            'green': '#007749',
-                            'dark-green': '#006241',
-                            'red': '#C8102E',
-                            'dark-red': '#a50d26',
-                        },
-                    },
-                },
-            },
-        }
-    </script>
-</head>
-<body class="bg-gray-50">
-    <?php include 'nav.php'; ?>
-
-    <main class="container mx-auto px-4 py-16">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-gray-900">Stemmers Beheren</h1>
-                <p class="mt-2 text-gray-600">Beheer stemmers en hun toegang</p>
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600">Totaal Stemmers</p>
+                <p class="text-2xl font-bold text-suriname-green"><?= number_format(count($voters)) ?></p>
             </div>
-
-            <?php if (isset($_SESSION['success_message'])): ?>
-                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6">
-                    <p><?= $_SESSION['success_message'] ?></p>
-                </div>
-                <?php unset($_SESSION['success_message']); ?>
-            <?php endif; ?>
-
-            <?php if (isset($_SESSION['error_message'])): ?>
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
-                    <p><?= $_SESSION['error_message'] ?></p>
-                </div>
-                <?php unset($_SESSION['error_message']); ?>
-            <?php endif; ?>
-
-            <!-- Create Voter Form -->
-            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">Nieuwe Stemmer Toevoegen</h2>
-                <form method="POST" class="space-y-6">
-                    <input type="hidden" name="action" value="create">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">
-                                Naam
-                            </label>
-                            <input type="text" 
-                                   name="name" 
-                                   id="name" 
-                                   required
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                        </div>
-
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700">
-                                E-mailadres
-                            </label>
-                            <input type="email" 
-                                   name="email" 
-                                   id="email" 
-                                   required
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                        </div>
-
-                        <div>
-                            <label for="password" class="block text-sm font-medium text-gray-700">
-                                Wachtwoord
-                            </label>
-                            <input type="password" 
-                                   name="password" 
-                                   id="password" 
-                                   required
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                        </div>
-
-                        <div>
-                            <label for="confirm_password" class="block text-sm font-medium text-gray-700">
-                                Bevestig Wachtwoord
-                            </label>
-                            <input type="password" 
-                                   name="confirm_password" 
-                                   id="confirm_password" 
-                                   required
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button type="submit" 
-                                class="bg-suriname-green text-white px-6 py-2 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
-                            <i class="fas fa-plus mr-2"></i> Stemmer Toevoegen
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Voters List -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">Stemmers Overzicht</h2>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Naam
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    E-mailadres
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Stemmen
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Laatste Stem
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Acties
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <?php foreach ($voters as $voter): ?>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        <?= htmlspecialchars($voter['Name']) ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <?= htmlspecialchars($voter['Email']) ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            <?= $voter['Status'] === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' ?>">
-                                            <?= $voter['Status'] === 'active' ? 'Actief' : 'Inactief' ?>
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <?= $voter['vote_count'] ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <?= $voter['last_vote'] ? date('d-m-Y H:i', strtotime($voter['last_vote'])) : '-' ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <div class="flex space-x-3">
-                                            <a href="edit_voter.php?id=<?= $voter['UserID'] ?>" 
-                                               class="text-blue-600 hover:text-blue-900">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <form method="POST" class="inline" onsubmit="return confirm('Weet u zeker dat u deze stemmer wilt verwijderen?');">
-                                                <input type="hidden" name="action" value="delete">
-                                                <input type="hidden" name="user_id" value="<?= $voter['UserID'] ?>">
-                                                <button type="submit" class="text-red-600 hover:text-red-900">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                <?php if ($total_pages > 1): ?>
-                    <div class="mt-4 flex justify-center">
-                        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                                <a href="?page=<?= $i ?>" 
-                                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50
-                                          <?= $i === $page ? 'z-10 bg-suriname-green border-suriname-green text-white' : '' ?>">
-                                    <?= $i ?>
-                                </a>
-                            <?php endfor; ?>
-                        </nav>
-                    </div>
-                <?php endif; ?>
+            <div class="p-3 bg-suriname-green/10 rounded-full">
+                <i class="fas fa-users text-2xl text-suriname-green"></i>
             </div>
         </div>
-    </main>
+    </div>
 
-    <?php include '../include/footer.php'; ?>
-</body>
-</html> 
+    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600">Totaal Stemmen</p>
+                <p class="text-2xl font-bold text-suriname-green"><?= number_format($total_votes) ?></p>
+            </div>
+            <div class="p-3 bg-suriname-green/10 rounded-full">
+                <i class="fas fa-vote-yea text-2xl text-suriname-green"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600">Districten</p>
+                <p class="text-2xl font-bold text-suriname-green"><?= number_format($total_districts) ?></p>
+            </div>
+            <div class="p-3 bg-suriname-green/10 rounded-full">
+                <i class="fas fa-map-marker-alt text-2xl text-suriname-green"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600">Actieve Stemmers</p>
+                <p class="text-2xl font-bold text-suriname-green"><?= number_format($total_active_voters) ?></p>
+            </div>
+            <div class="p-3 bg-suriname-green/10 rounded-full">
+                <i class="fas fa-user-check text-2xl text-suriname-green"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add New Voter Button -->
+<div class="mb-6">
+    <button onclick="document.getElementById('newVoterModal').classList.remove('hidden')" 
+            class="bg-suriname-green hover:bg-suriname-dark-green text-white font-bold py-2 px-4 rounded transition-all duration-300 transform hover:scale-105">
+        <i class="fas fa-plus mr-2"></i>Nieuwe Stemmer
+    </button>
+</div>
+
+<!-- Voters Table -->
+<div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Naam</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">District</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stemmen</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Laatste Stem</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            <?php if (empty($voters)): ?>
+                <tr>
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                        Geen stemmers gevonden
+                    </td>
+                </tr>
+            <?php else: ?>
+                <?php foreach ($voters as $voter): ?>
+                    <tr class="hover:bg-gray-50 transition-colors duration-200">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 flex-shrink-0">
+                                    <img class="h-10 w-10 rounded-full object-cover transform hover:scale-110 transition-transform duration-200" 
+                                         src="<?= $voter['ProfileImage'] ?? 'https://via.placeholder.com/40' ?>" 
+                                         alt="<?= htmlspecialchars($voter['FirstName']) ?>">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        <?= htmlspecialchars($voter['FirstName'] . ' ' . $voter['LastName']) ?>
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        ID: <?= $voter['UserID'] ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <p class="text-sm text-gray-900"><?= htmlspecialchars($voter['Email']) ?></p>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-suriname-green/10 text-suriname-green">
+                                <?= htmlspecialchars($voter['DistrictName'] ?? 'Onbekend') ?>
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-suriname-green/10 text-suriname-green">
+                                <?= number_format($voter['vote_count']) ?>
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <p class="text-sm text-gray-500">
+                                <?= $voter['last_vote'] ? date('d-m-Y H:i', strtotime($voter['last_vote'])) : 'Nog niet gestemd' ?>
+                            </p>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="edit_voter.php?id=<?= $voter['UserID'] ?>" 
+                               class="text-suriname-green hover:text-suriname-dark-green mr-3 transition-colors duration-200">
+                                <i class="fas fa-edit transform hover:scale-110 transition-transform duration-200"></i>
+                            </a>
+                            <a href="delete_voter.php?id=<?= $voter['UserID'] ?>" 
+                               class="text-suriname-red hover:text-suriname-dark-red transition-colors duration-200"
+                               onclick="return confirm('Weet u zeker dat u deze stemmer wilt verwijderen?')">
+                                <i class="fas fa-trash transform hover:scale-110 transition-transform duration-200"></i>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>
+
+<!-- New Voter Modal -->
+<div id="newVoterModal" class="hidden fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <form action="add_voter.php" method="POST" enctype="multipart/form-data">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">
+                                Voornaam
+                            </label>
+                            <input type="text" name="firstName" id="firstName" required
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="lastName">
+                                Achternaam
+                            </label>
+                            <input type="text" name="lastName" id="lastName" required
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                            Email
+                        </label>
+                        <input type="email" name="email" id="email" required
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="district">
+                            District
+                        </label>
+                        <select name="district" id="district" required
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">Selecteer een district</option>
+                            <?php
+                            $districts = $pdo->query("SELECT * FROM districts ORDER BY DistrictName")->fetchAll();
+                            foreach ($districts as $district) {
+                                echo '<option value="' . $district['DistrictID'] . '">' . htmlspecialchars($district['DistrictName']) . '</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="profileImage">
+                            Profielfoto
+                        </label>
+                        <input type="file" name="profileImage" id="profileImage" accept="image/*"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="submit" 
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-suriname-green text-base font-medium text-white hover:bg-suriname-dark-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300 transform hover:scale-105">
+                        Opslaan
+                    </button>
+                    <button type="button" 
+                            onclick="document.getElementById('newVoterModal').classList.add('hidden')"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300 transform hover:scale-105">
+                        Annuleren
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<?php
+// Get the buffered content
+$content = ob_get_clean();
+
+// Include the layout template
+require_once 'components/layout.php';
+?> 

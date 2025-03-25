@@ -127,232 +127,186 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     }
 }
 
-// Get all parties
+// Start output buffering
+ob_start();
+
+// Initialize variables
+$parties = [];
+$total_candidates = 0;
+
+// Fetch parties data
 try {
     $stmt = $pdo->query("
         SELECT p.*, 
-               (SELECT COUNT(*) FROM candidates c WHERE c.PartyID = p.PartyID) as candidate_count
-        FROM parties p 
-        ORDER BY p.PartyName
+               COUNT(c.CandidateID) as candidate_count,
+               GROUP_CONCAT(DISTINCT e.ElectionName) as elections
+        FROM parties p
+        LEFT JOIN candidates c ON p.PartyID = c.PartyID
+        LEFT JOIN elections e ON c.ElectionID = e.ElectionID
+        GROUP BY p.PartyID
+        ORDER BY p.PartyName ASC
     ");
     $parties = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Get total candidates
+    $stmt = $pdo->query("SELECT COUNT(*) FROM candidates");
+    $total_candidates = $stmt->fetchColumn();
 } catch (PDOException $e) {
     error_log("Database error: " . $e->getMessage());
     $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de partijen.";
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Partijen Beheren - <?= SITE_NAME ?></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'suriname': {
-                            'green': '#007749',
-                            'dark-green': '#006241',
-                            'red': '#C8102E',
-                            'dark-red': '#a50d26',
-                        },
-                    },
-                },
-            },
-        }
-    </script>
-</head>
-<body class="bg-gray-50">
-    <?php include '../include/nav.php'; ?>
-
-    <main class="container mx-auto px-4 py-8">
-        <div class="max-w-7xl mx-auto">
-            <?php if (isset($_SESSION['error_message'])): ?>
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
-                    <p><?= $_SESSION['error_message'] ?></p>
-                </div>
-                <?php unset($_SESSION['error_message']); ?>
-            <?php endif; ?>
-
-            <?php if (isset($_SESSION['success_message'])): ?>
-                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6">
-                    <p><?= $_SESSION['success_message'] ?></p>
-                </div>
-                <?php unset($_SESSION['success_message']); ?>
-            <?php endif; ?>
-
-            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h1 class="text-2xl font-bold text-gray-900">Partijen</h1>
-                    <button onclick="document.getElementById('addPartyModal').classList.remove('hidden')"
-                            class="bg-suriname-green text-white px-4 py-2 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
-                        <i class="fas fa-plus mr-2"></i>
-                        Nieuwe Partij
-                    </button>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Logo
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Partij
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Beschrijving
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Aantal Kandidaten
-                                </th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Acties
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <?php foreach ($parties as $party): ?>
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <?php if ($party['Logo']): ?>
-                                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($party['Logo']) ?>" 
-                                                 alt="<?= htmlspecialchars($party['PartyName']) ?>"
-                                                 class="h-10 w-10 object-contain">
-                                        <?php else: ?>
-                                            <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                                <i class="fas fa-flag text-gray-400"></i>
-                                            </div>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">
-                                            <?= htmlspecialchars($party['PartyName']) ?>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <div class="text-sm text-gray-500 line-clamp-2">
-                                            <?= htmlspecialchars($party['Description'] ?? '') ?>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                            <?= $party['candidate_count'] ?>
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button onclick="editParty(<?= htmlspecialchars(json_encode($party)) ?>)"
-                                                class="text-suriname-green hover:text-suriname-dark-green mr-3">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <?php if ($party['candidate_count'] == 0): ?>
-                                            <a href="?delete=<?= $party['PartyID'] ?>" 
-                                               onclick="return confirm('Weet u zeker dat u deze partij wilt verwijderen?')"
-                                               class="text-suriname-red hover:text-suriname-dark-red">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600">Totaal Partijen</p>
+                <p class="text-2xl font-bold text-suriname-green"><?= number_format(count($parties)) ?></p>
+            </div>
+            <div class="p-3 bg-suriname-green/10 rounded-full">
+                <i class="fas fa-flag text-2xl text-suriname-green"></i>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Add/Edit Party Modal -->
-    <div id="addPartyModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
-        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-medium text-gray-900" id="modalTitle">Nieuwe Partij</h3>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-500">
-                    <i class="fas fa-times"></i>
-                </button>
+    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600">Totaal Kandidaten</p>
+                <p class="text-2xl font-bold text-suriname-green"><?= number_format($total_candidates) ?></p>
             </div>
-            
-            <form method="POST" enctype="multipart/form-data" class="space-y-4">
-                <input type="hidden" name="party_id" id="partyId">
-                
-                <div>
-                    <label for="party_name" class="block text-sm font-medium text-gray-700">
-                        Naam Partij
-                    </label>
-                    <input type="text" 
-                           name="party_name" 
-                           id="partyName" 
-                           required
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                </div>
+            <div class="p-3 bg-suriname-green/10 rounded-full">
+                <i class="fas fa-user-tie text-2xl text-suriname-green"></i>
+            </div>
+        </div>
+    </div>
 
-                <div>
-                    <label for="party_description" class="block text-sm font-medium text-gray-700">
-                        Beschrijving
-                    </label>
-                    <textarea name="party_description" 
-                              id="partyDescription" 
-                              rows="3"
-                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm"></textarea>
-                </div>
+    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600">Gemiddeld Kandidaten per Partij</p>
+                <p class="text-2xl font-bold text-suriname-green">
+                    <?= count($parties) > 0 ? number_format($total_candidates / count($parties), 1) : '0' ?>
+                </p>
+            </div>
+            <div class="p-3 bg-suriname-green/10 rounded-full">
+                <i class="fas fa-chart-pie text-2xl text-suriname-green"></i>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <div>
-                    <label for="logo" class="block text-sm font-medium text-gray-700">
-                        Logo
-                    </label>
-                    <input type="file" 
-                           name="logo" 
-                           id="logo" 
-                           accept="image/jpeg,image/png,image/gif"
-                           class="mt-1 block w-full text-sm text-gray-500
-                                  file:mr-4 file:py-2 file:px-4
-                                  file:rounded-md file:border-0
-                                  file:text-sm file:font-semibold
-                                  file:bg-suriname-green file:text-white
-                                  hover:file:bg-suriname-dark-green">
-                    <p class="mt-1 text-sm text-gray-500">Maximaal 5MB. JPG, PNG of GIF.</p>
-                </div>
+<!-- Add New Party Button -->
+<div class="mb-6">
+    <button onclick="document.getElementById('newPartyModal').classList.remove('hidden')" 
+            class="bg-suriname-green hover:bg-suriname-dark-green text-white font-bold py-2 px-4 rounded transition-all duration-300 transform hover:scale-105">
+        <i class="fas fa-plus mr-2"></i>Nieuwe Partij
+    </button>
+</div>
 
-                <div class="flex justify-end pt-4">
-                    <button type="button" 
-                            onclick="closeModal()"
-                            class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 mr-2">
-                        Annuleren
-                    </button>
+<!-- Parties Table -->
+<div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Logo</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partij</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Afkorting</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kandidaten</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verkiezingen</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            <?php foreach ($parties as $party): ?>
+                <tr class="hover:bg-gray-50 transition-colors duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <img src="<?= $party['LogoURL'] ?? 'https://via.placeholder.com/40' ?>" 
+                             alt="<?= htmlspecialchars($party['PartyName']) ?>" 
+                             class="h-10 w-10 rounded-full object-cover transform hover:scale-110 transition-transform duration-200">
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <p class="text-sm font-medium text-gray-900"><?= htmlspecialchars($party['PartyName']) ?></p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <p class="text-sm text-gray-500"><?= htmlspecialchars($party['Abbreviation']) ?></p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-suriname-green/10 text-suriname-green">
+                            <?= number_format($party['candidate_count']) ?>
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <p class="text-sm text-gray-500"><?= $party['elections'] ? htmlspecialchars($party['elections']) : 'Geen' ?></p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="edit_party.php?id=<?= $party['PartyID'] ?>" 
+                           class="text-suriname-green hover:text-suriname-dark-green mr-3 transition-colors duration-200">
+                            <i class="fas fa-edit transform hover:scale-110 transition-transform duration-200"></i>
+                        </a>
+                        <a href="delete_party.php?id=<?= $party['PartyID'] ?>" 
+                           class="text-suriname-red hover:text-suriname-dark-red transition-colors duration-200"
+                           onclick="return confirm('Weet u zeker dat u deze partij wilt verwijderen?')">
+                            <i class="fas fa-trash transform hover:scale-110 transition-transform duration-200"></i>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<!-- New Party Modal -->
+<div id="newPartyModal" class="hidden fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <form action="add_party.php" method="POST" enctype="multipart/form-data">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="partyName">
+                            Naam Partij
+                        </label>
+                        <input type="text" name="partyName" id="partyName" required
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="abbreviation">
+                            Afkorting
+                        </label>
+                        <input type="text" name="abbreviation" id="abbreviation" required
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="logo">
+                            Logo
+                        </label>
+                        <input type="file" name="logo" id="logo" accept="image/*"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <button type="submit" 
-                            class="bg-suriname-green text-white px-4 py-2 rounded-lg hover:bg-suriname-dark-green">
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-suriname-green text-base font-medium text-white hover:bg-suriname-dark-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300 transform hover:scale-105">
                         Opslaan
+                    </button>
+                    <button type="button" 
+                            onclick="document.getElementById('newPartyModal').classList.add('hidden')"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300 transform hover:scale-105">
+                        Annuleren
                     </button>
                 </div>
             </form>
         </div>
     </div>
+</div>
 
-    <?php include '../include/footer.php'; ?>
+<?php
+// Get the buffered content
+$content = ob_get_clean();
 
-    <script>
-        function closeModal() {
-            document.getElementById('addPartyModal').classList.add('hidden');
-            document.getElementById('modalTitle').textContent = 'Nieuwe Partij';
-            document.getElementById('partyId').value = '';
-            document.getElementById('partyName').value = '';
-            document.getElementById('partyDescription').value = '';
-            document.getElementById('logo').value = '';
-        }
-
-        function editParty(party) {
-            document.getElementById('modalTitle').textContent = 'Partij Bewerken';
-            document.getElementById('partyId').value = party.PartyID;
-            document.getElementById('partyName').value = party.PartyName;
-            document.getElementById('partyDescription').value = party.Description || '';
-            document.getElementById('addPartyModal').classList.remove('hidden');
-        }
-    </script>
-</body>
-</html> 
+// Include the layout template
+require_once 'components/layout.php';
+?> 

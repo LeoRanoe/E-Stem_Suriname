@@ -6,278 +6,296 @@ require_once '../include/auth.php';
 // Check if user is logged in and is admin
 requireAdmin();
 
-// Get election ID from URL
-$election_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+// Start output buffering
+ob_start();
 
-// Get all elections
+// Initialize variables
+$elections = [];
+$selected_election = null;
+$election_results = [];
+$total_votes = 0;
+$total_voters = 0;
+$voter_turnout = 0;
+
 try {
-    $stmt = $pdo->query("SELECT * FROM elections ORDER BY StartDate DESC");
+    // Get all elections
+    $stmt = $pdo->query("
+        SELECT e.*, 
+               COUNT(DISTINCT v.UserID) as vote_count,
+               COUNT(DISTINCT c.CandidateID) as candidate_count
+        FROM elections e
+        LEFT JOIN votes v ON e.ElectionID = v.ElectionID
+        LEFT JOIN candidates c ON e.ElectionID = c.ElectionID
+        GROUP BY e.ElectionID
+        ORDER BY e.EndDate DESC
+    ");
     $elections = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Get selected election
+    if (isset($_GET['election']) && !empty($_GET['election'])) {
+        $stmt = $pdo->prepare("
+            SELECT e.*, 
+                   COUNT(DISTINCT v.UserID) as vote_count,
+                   (SELECT COUNT(*) FROM users WHERE Role = 'voter') as total_voters
+            FROM elections e
+            LEFT JOIN votes v ON e.ElectionID = v.ElectionID
+            WHERE e.ElectionID = ?
+            GROUP BY e.ElectionID
+        ");
+        $stmt->execute([$_GET['election']]);
+        $selected_election = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($selected_election) {
+            // Calculate voter turnout
+            $total_votes = $selected_election['vote_count'];
+            $total_voters = $selected_election['total_voters'];
+            $voter_turnout = $total_voters > 0 ? ($total_votes / $total_voters) * 100 : 0;
+
+            // Get results per candidate
+            $stmt = $pdo->prepare("
+                SELECT c.*,
+                       p.PartyName,
+                       p.Abbreviation as PartyAbbreviation,
+                       COUNT(v.VoteID) as vote_count,
+                       (COUNT(v.VoteID) / (SELECT COUNT(*) FROM votes WHERE ElectionID = ?) * 100) as vote_percentage
+                FROM candidates c
+                LEFT JOIN parties p ON c.PartyID = p.PartyID
+                LEFT JOIN votes v ON c.CandidateID = v.CandidateID
+                WHERE c.ElectionID = ?
+                GROUP BY c.CandidateID
+                ORDER BY vote_count DESC
+            ");
+            $stmt->execute([$_GET['election'], $_GET['election']]);
+            $election_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Get results per district
+            $stmt = $pdo->prepare("
+                SELECT d.DistrictName,
+                       COUNT(v.VoteID) as vote_count,
+                       (COUNT(v.VoteID) / (SELECT COUNT(*) FROM votes WHERE ElectionID = ?) * 100) as vote_percentage
+                FROM districts d
+                LEFT JOIN users u ON d.DistrictID = u.DistrictID
+                LEFT JOIN votes v ON u.UserID = v.UserID AND v.ElectionID = ?
+                GROUP BY d.DistrictID
+                ORDER BY vote_count DESC
+            ");
+            $stmt->execute([$_GET['election'], $_GET['election']]);
+            $district_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    }
 } catch (PDOException $e) {
     error_log("Database error: " . $e->getMessage());
-    $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de verkiezingen.";
-}
-
-// If an election is selected, get its results
-$results = [];
-$election = null;
-if ($election_id > 0) {
-    try {
-        // Get election details
-        $stmt = $pdo->prepare("SELECT * FROM elections WHERE ElectionID = ?");
-        $stmt->execute([$election_id]);
-        $election = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$election) {
-            $_SESSION['error_message'] = "Verkiezing niet gevonden.";
-            header("Location: results.php");
-            exit;
-        }
-
-        // Get results
-        $stmt = $pdo->prepare("
-            SELECT c.*, 
-                   COUNT(v.VoteID) as vote_count,
-                   (COUNT(v.VoteID) / (
-                       SELECT COUNT(*) 
-                       FROM votes 
-                       WHERE ElectionID = ?
-                   ) * 100) as percentage
-            FROM candidates c
-            LEFT JOIN votes v ON c.CandidateID = v.CandidateID
-            WHERE c.ElectionID = ?
-            GROUP BY c.CandidateID
-            ORDER BY vote_count DESC
-        ");
-        $stmt->execute([$election_id, $election_id]);
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        // Get total votes
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM votes WHERE ElectionID = ?");
-        $stmt->execute([$election_id]);
-        $total_votes = $stmt->fetchColumn();
-
-        // Get total voters
-        $stmt = $pdo->prepare("
-            SELECT COUNT(DISTINCT UserID) 
-            FROM votes 
-            WHERE ElectionID = ?
-        ");
-        $stmt->execute([$election_id]);
-        $total_voters = $stmt->fetchColumn();
-
-    } catch (PDOException $e) {
-        error_log("Database error: " . $e->getMessage());
-        $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de resultaten.";
-    }
+    $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de resultaten.";
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verkiezingsresultaten - <?= SITE_NAME ?></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'suriname': {
-                            'green': '#007749',
-                            'dark-green': '#006241',
-                            'red': '#C8102E',
-                            'dark-red': '#a50d26',
-                        },
-                    },
-                },
-            },
-        }
-    </script>
-</head>
-<body class="bg-gray-50">
-    <?php include 'nav.php'; ?>
+<!-- Election Selector -->
+<div class="mb-8">
+    <form action="" method="GET" class="flex gap-4">
+        <select name="election" 
+                onchange="this.form.submit()"
+                class="flex-1 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <option value="">Selecteer een verkiezing</option>
+            <?php foreach ($elections as $election): ?>
+                <option value="<?= $election['ElectionID'] ?>" 
+                        <?= isset($_GET['election']) && $_GET['election'] == $election['ElectionID'] ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($election['ElectionName']) ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </form>
+</div>
 
-    <main class="container mx-auto px-4 py-16">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-gray-900">Verkiezingsresultaten</h1>
-                <p class="mt-2 text-gray-600">Bekijk de resultaten van de verkiezingen</p>
+<?php if ($selected_election): ?>
+    <!-- Statistics Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Totaal Stemmen</p>
+                    <p class="text-2xl font-bold text-suriname-green"><?= number_format($total_votes) ?></p>
+                </div>
+                <div class="p-3 bg-suriname-green/10 rounded-full">
+                    <i class="fas fa-vote-yea text-2xl text-suriname-green"></i>
+                </div>
             </div>
-
-            <?php if (isset($_SESSION['error_message'])): ?>
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
-                    <p><?= $_SESSION['error_message'] ?></p>
-                </div>
-                <?php unset($_SESSION['error_message']); ?>
-            <?php endif; ?>
-
-            <!-- Election Selection -->
-            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-                <form method="GET" class="flex items-center space-x-4">
-                    <div class="flex-1">
-                        <label for="election" class="block text-sm font-medium text-gray-700 mb-1">
-                            Selecteer Verkiezing
-                        </label>
-                        <select name="id" 
-                                id="election"
-                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm"
-                                onchange="this.form.submit()">
-                            <option value="">Selecteer een verkiezing...</option>
-                            <?php foreach ($elections as $e): ?>
-                                <option value="<?= $e['ElectionID'] ?>" <?= $election_id == $e['ElectionID'] ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($e['Name']) ?> 
-                                    (<?= date('d-m-Y', strtotime($e['StartDate'])) ?> - 
-                                    <?= date('d-m-Y', strtotime($e['EndDate'])) ?>)
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="flex items-end">
-                        <button type="submit" 
-                                class="bg-suriname-green text-white px-6 py-2 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
-                            <i class="fas fa-search mr-2"></i> Bekijk Resultaten
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <?php if ($election && !empty($results)): ?>
-                <!-- Election Summary -->
-                <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4">
-                        <?= htmlspecialchars($election['Name']) ?>
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h3 class="text-sm font-medium text-gray-500">Totale Stemmen</h3>
-                            <p class="mt-1 text-2xl font-semibold text-gray-900"><?= $total_votes ?></p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h3 class="text-sm font-medium text-gray-500">Unieke Stemmers</h3>
-                            <p class="mt-1 text-2xl font-semibold text-gray-900"><?= $total_voters ?></p>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-lg">
-                            <h3 class="text-sm font-medium text-gray-500">Opkomst</h3>
-                            <p class="mt-1 text-2xl font-semibold text-gray-900">
-                                <?= round(($total_voters / count($results)) * 100) ?>%
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Results Chart -->
-                <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-                    <canvas id="resultsChart"></canvas>
-                </div>
-
-                <!-- Results Table -->
-                <div class="bg-white rounded-lg shadow-lg p-6">
-                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Gedetailleerde Resultaten</h2>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Kandidaat
-                                    </th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Partij
-                                    </th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Stemmen
-                                    </th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Percentage
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <?php foreach ($results as $result): ?>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="flex-shrink-0 h-10 w-10">
-                                                    <img class="h-10 w-10 rounded-full" 
-                                                         src="<?= htmlspecialchars($result['Photo']) ?>" 
-                                                         alt="<?= htmlspecialchars($result['Name']) ?>">
-                                                </div>
-                                                <div class="ml-4">
-                                                    <div class="text-sm font-medium text-gray-900">
-                                                        <?= htmlspecialchars($result['Name']) ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <?= htmlspecialchars($result['Party']) ?>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            <?= $result['vote_count'] ?>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                            <?= round($result['percentage'], 1) ?>%
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <script>
-                    // Prepare data for the chart
-                    const chartData = {
-                        labels: <?= json_encode(array_map(function($r) { return $r['Name']; }, $results)) ?>,
-                        datasets: [{
-                            data: <?= json_encode(array_map(function($r) { return $r['vote_count']; }, $results)) ?>,
-                            backgroundColor: [
-                                '#007749', // suriname-green
-                                '#C8102E', // suriname-red
-                                '#FFD700', // gold
-                                '#4B0082', // purple
-                                '#FF4500', // orange
-                                '#008080', // teal
-                                '#800000', // maroon
-                                '#483D8B', // dark slate blue
-                            ],
-                        }]
-                    };
-
-                    // Create the chart
-                    const ctx = document.getElementById('resultsChart').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'pie',
-                        data: chartData,
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    position: 'right',
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Verdeling van Stemmen',
-                                    font: {
-                                        size: 16,
-                                    },
-                                },
-                            },
-                        },
-                    });
-                </script>
-            <?php elseif ($election_id > 0): ?>
-                <div class="bg-white rounded-lg shadow-lg p-6 text-center">
-                    <p class="text-gray-500">Er zijn nog geen resultaten beschikbaar voor deze verkiezing.</p>
-                </div>
-            <?php endif; ?>
         </div>
-    </main>
 
-    <?php include '../include/footer.php'; ?>
-</body>
-</html> 
+        <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Unieke Stemmers</p>
+                    <p class="text-2xl font-bold text-suriname-green"><?= number_format($total_voters) ?></p>
+                </div>
+                <div class="p-3 bg-suriname-green/10 rounded-full">
+                    <i class="fas fa-users text-2xl text-suriname-green"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Opkomst</p>
+                    <p class="text-2xl font-bold text-suriname-green"><?= number_format($voter_turnout, 1) ?>%</p>
+                </div>
+                <div class="p-3 bg-suriname-green/10 rounded-full">
+                    <i class="fas fa-chart-line text-2xl text-suriname-green"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Chart -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Resultaten per Kandidaat</h3>
+            <canvas id="resultsChart"></canvas>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Resultaten per District</h3>
+            <canvas id="districtChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Results Table -->
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kandidaat</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partij</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stemmen</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Percentage</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <?php foreach ($election_results as $result): ?>
+                    <tr class="hover:bg-gray-50 transition-colors duration-200">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 flex-shrink-0">
+                                    <img class="h-10 w-10 rounded-full object-cover transform hover:scale-110 transition-transform duration-200" 
+                                         src="<?= $result['ProfileImage'] ?? 'https://via.placeholder.com/40' ?>" 
+                                         alt="<?= htmlspecialchars($result['FirstName']) ?>">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        <?= htmlspecialchars($result['FirstName'] . ' ' . $result['LastName']) ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-suriname-green/10 text-suriname-green">
+                                <?= htmlspecialchars($result['PartyAbbreviation']) ?>
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-suriname-green/10 text-suriname-green">
+                                <?= number_format($result['vote_count']) ?>
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 mr-2">
+                                    <div class="bg-suriname-green h-2.5 rounded-full" style="width: <?= number_format($result['vote_percentage'], 1) ?>%"></div>
+                                </div>
+                                <span class="text-sm text-gray-500"><?= number_format($result['vote_percentage'], 1) ?>%</span>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Prepare data for charts
+        const candidateData = {
+            labels: <?= json_encode(array_map(function($r) { 
+                return $r['FirstName'] . ' ' . $r['LastName'] . ' (' . $r['PartyAbbreviation'] . ')'; 
+            }, $election_results)) ?>,
+            datasets: [{
+                label: 'Stemmen',
+                data: <?= json_encode(array_map(function($r) { return $r['vote_count']; }, $election_results)) ?>,
+                backgroundColor: 'rgba(0, 119, 73, 0.2)',
+                borderColor: '#007749',
+                borderWidth: 1
+            }]
+        };
+
+        const districtData = {
+            labels: <?= json_encode(array_map(function($r) { return $r['DistrictName']; }, $district_results)) ?>,
+            datasets: [{
+                label: 'Stemmen',
+                data: <?= json_encode(array_map(function($r) { return $r['vote_count']; }, $district_results)) ?>,
+                backgroundColor: 'rgba(0, 119, 73, 0.2)',
+                borderColor: '#007749',
+                borderWidth: 1
+            }]
+        };
+
+        // Create charts
+        new Chart(document.getElementById('resultsChart'), {
+            type: 'bar',
+            data: candidateData,
+            options: {
+                responsive: true,
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('districtChart'), {
+            type: 'pie',
+            data: districtData,
+            options: {
+                responsive: true,
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                },
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+    </script>
+<?php else: ?>
+    <div class="bg-white rounded-lg shadow-md p-6 text-center">
+        <i class="fas fa-chart-bar text-6xl text-gray-300 mb-4"></i>
+        <p class="text-gray-500">Selecteer een verkiezing om de resultaten te bekijken</p>
+    </div>
+<?php endif; ?>
+
+<?php
+// Get the buffered content
+$content = ob_get_clean();
+
+// Include the layout template
+require_once 'components/layout.php';
+?> 

@@ -130,242 +130,134 @@ try {
     $candidates = [];
     $total_pages = 0;
 }
+
+// Start output buffering
+ob_start();
+
+// Fetch candidates data
+try {
+    $stmt = $pdo->query("
+        SELECT c.*, p.PartyName, e.ElectionName 
+        FROM candidates c
+        LEFT JOIN parties p ON c.PartyID = p.PartyID
+        LEFT JOIN elections e ON c.ElectionID = e.ElectionID
+        ORDER BY c.CreatedAt DESC
+    ");
+    $candidates = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    error_log("Database error: " . $e->getMessage());
+    $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de kandidaten.";
+}
 ?>
 
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kandidaten Beheren - <?= SITE_NAME ?></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'suriname': {
-                            'green': '#007749',
-                            'dark-green': '#006241',
-                            'red': '#C8102E',
-                            'dark-red': '#a50d26',
-                        },
-                    },
-                },
-            },
-        }
-    </script>
-</head>
-<body class="bg-gray-50">
-    <?php include 'nav.php'; ?>
+<!-- Add New Candidate Button -->
+<div class="mb-6">
+    <button onclick="document.getElementById('newCandidateModal').classList.remove('hidden')" 
+            class="bg-suriname-green hover:bg-suriname-dark-green text-white font-bold py-2 px-4 rounded">
+        <i class="fas fa-plus mr-2"></i>Nieuwe Kandidaat
+    </button>
+</div>
 
-    <main class="container mx-auto px-4 py-16">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-gray-900">Kandidaten Beheren</h1>
-                <p class="mt-2 text-gray-600">Beheer kandidaten voor verkiezingen</p>
-            </div>
+<!-- Candidates Table -->
+<div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Foto</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Naam</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partij</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verkiezing</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            <?php foreach ($candidates as $candidate): ?>
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <img src="<?= $candidate['PhotoURL'] ?? 'https://via.placeholder.com/40' ?>" 
+                             alt="<?= htmlspecialchars($candidate['FirstName']) ?>" 
+                             class="h-10 w-10 rounded-full">
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <?= htmlspecialchars($candidate['FirstName'] . ' ' . $candidate['LastName']) ?>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <?= htmlspecialchars($candidate['PartyName']) ?>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <?= htmlspecialchars($candidate['ElectionName']) ?>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            <?= $candidate['Status'] === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' ?>">
+                            <?= ucfirst($candidate['Status']) ?>
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <a href="edit_candidate.php?id=<?= $candidate['CandidateID'] ?>" 
+                           class="text-suriname-green hover:text-suriname-dark-green mr-3">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="delete_candidate.php?id=<?= $candidate['CandidateID'] ?>" 
+                           class="text-suriname-red hover:text-suriname-dark-red" 
+                           onclick="return confirm('Weet u zeker dat u deze kandidaat wilt verwijderen?')">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
-            <?php if (isset($_SESSION['success_message'])): ?>
-                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6">
-                    <p><?= $_SESSION['success_message'] ?></p>
-                </div>
-                <?php unset($_SESSION['success_message']); ?>
-            <?php endif; ?>
-
-            <?php if (isset($_SESSION['error_message'])): ?>
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
-                    <p><?= $_SESSION['error_message'] ?></p>
-                </div>
-                <?php unset($_SESSION['error_message']); ?>
-            <?php endif; ?>
-
-            <!-- Create Candidate Form -->
-            <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">Nieuwe Kandidaat Toevoegen</h2>
-                <form method="POST" enctype="multipart/form-data" class="space-y-6">
-                    <input type="hidden" name="action" value="create">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">
-                                Naam Kandidaat
-                            </label>
-                            <input type="text" 
-                                   name="name" 
-                                   id="name" 
-                                   required
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                        </div>
-
-                        <div>
-                            <label for="party_id" class="block text-sm font-medium text-gray-700">
-                                Partij
-                            </label>
-                            <select name="party_id" 
-                                    id="party_id" 
-                                    required
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                                <option value="">Selecteer een partij</option>
-                                <?php foreach ($parties as $party): ?>
-                                    <option value="<?= $party['PartyID'] ?>">
-                                        <?= htmlspecialchars($party['PartyName']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="election_id" class="block text-sm font-medium text-gray-700">
-                                Verkiezing
-                            </label>
-                            <select name="election_id" 
-                                    id="election_id" 
-                                    required
-                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                                <option value="">Selecteer een verkiezing</option>
-                                <?php foreach ($elections as $election): ?>
-                                    <option value="<?= $election['ElectionID'] ?>">
-                                        <?= htmlspecialchars($election['ElectionName']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label for="image" class="block text-sm font-medium text-gray-700">
-                                Foto
-                            </label>
-                            <input type="file" 
-                                   name="image" 
-                                   id="image" 
-                                   accept="image/jpeg,image/png,image/gif"
-                                   class="mt-1 block w-full text-sm text-gray-500
-                                          file:mr-4 file:py-2 file:px-4
-                                          file:rounded-md file:border-0
-                                          file:text-sm file:font-semibold
-                                          file:bg-suriname-green file:text-white
-                                          hover:file:bg-suriname-dark-green">
-                            <p class="mt-1 text-sm text-gray-500">Maximaal 5MB. JPG, PNG of GIF.</p>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="description" class="block text-sm font-medium text-gray-700">
-                            Beschrijving
+<!-- New Candidate Modal -->
+<div id="newCandidateModal" class="hidden fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <form action="add_candidate.php" method="POST" enctype="multipart/form-data">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="firstName">
+                            Voornaam
                         </label>
-                        <textarea name="description" 
-                                  id="description" 
-                                  rows="3"
-                                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm"></textarea>
+                        <input type="text" name="firstName" id="firstName" required
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
-
-                    <div class="flex justify-end">
-                        <button type="submit" 
-                                class="bg-suriname-green text-white px-6 py-2 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
-                            <i class="fas fa-plus mr-2"></i> Kandidaat Toevoegen
-                        </button>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="lastName">
+                            Achternaam
+                        </label>
+                        <input type="text" name="lastName" id="lastName" required
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
-                </form>
-            </div>
-
-            <!-- Candidates List -->
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">Kandidaten Overzicht</h2>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Kandidaat
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Partij
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Verkiezing
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Stemmen
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Acties
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
-                            <?php if (!empty($candidates)): ?>
-                                <?php foreach ($candidates as $candidate): ?>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="flex-shrink-0 h-10 w-10">
-                                                    <img class="h-10 w-10 rounded-full" 
-                                                         src="<?= htmlspecialchars($candidate['ImagePath'] ?? '../assets/images/default-avatar.png') ?>" 
-                                                         alt="<?= htmlspecialchars($candidate['Name']) ?>">
-                                                </div>
-                                                <div class="ml-4">
-                                                    <div class="text-sm font-medium text-gray-900">
-                                                        <?= htmlspecialchars($candidate['Name']) ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <?= htmlspecialchars($candidate['PartyName']) ?>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <?= htmlspecialchars($candidate['ElectionName']) ?>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <?= $candidate['vote_count'] ?>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <div class="flex space-x-3">
-                                                <a href="edit_candidate.php?id=<?= $candidate['CandidateID'] ?>" 
-                                                   class="text-blue-600 hover:text-blue-900">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <form method="POST" class="inline" onsubmit="return confirm('Weet u zeker dat u deze kandidaat wilt verwijderen?');">
-                                                    <input type="hidden" name="action" value="delete">
-                                                    <input type="hidden" name="candidate_id" value="<?= $candidate['CandidateID'] ?>">
-                                                    <button type="submit" class="text-red-600 hover:text-red-900">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="5" class="px-6 py-4 text-center text-sm text-gray-500">
-                                        Er zijn nog geen kandidaten toegevoegd.
-                                    </td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="photo">
+                            Foto
+                        </label>
+                        <input type="file" name="photo" id="photo" accept="image/*"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
                 </div>
-
-                <!-- Pagination -->
-                <?php if ($total_pages > 1): ?>
-                    <div class="mt-4 flex justify-center">
-                        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                                <a href="?page=<?= $i ?>" 
-                                   class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50
-                                          <?= $i === $page ? 'z-10 bg-suriname-green border-suriname-green text-white' : '' ?>">
-                                    <?= $i ?>
-                                </a>
-                            <?php endfor; ?>
-                        </nav>
-                    </div>
-                <?php endif; ?>
-            </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-suriname-green text-base font-medium text-white hover:bg-suriname-dark-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:ml-3 sm:w-auto sm:text-sm">
+                        Opslaan
+                    </button>
+                    <button type="button" onclick="document.getElementById('newCandidateModal').classList.add('hidden')"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Annuleren
+                    </button>
+                </div>
+            </form>
         </div>
-    </main>
+    </div>
+</div>
 
-    <?php include '../include/footer.php'; ?>
-</body>
-</html> 
+<?php
+// Get the buffered content
+$content = ob_get_clean();
+
+// Include the layout template
+require_once 'components/layout.php';
+?> 
