@@ -9,224 +9,241 @@ requireAdmin();
 // Get voter ID from URL
 $voter_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-if ($voter_id === 0) {
-    $_SESSION['error_message'] = "Ongeldige kiezer ID.";
-    header("Location: voters.php");
+if ($voter_id <= 0) {
+    $_SESSION['error_message'] = "Ongeldige stemmer ID.";
+    header('Location: voters.php');
     exit;
 }
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $first_name = $_POST['first_name'] ?? '';
-        $last_name = $_POST['last_name'] ?? '';
+        $voornaam = $_POST['voornaam'] ?? '';
+        $achternaam = $_POST['achternaam'] ?? '';
         $email = $_POST['email'] ?? '';
-        $district_id = intval($_POST['district_id'] ?? 0);
+        $password = $_POST['password'] ?? '';
+        $confirm_password = $_POST['confirm_password'] ?? '';
+        $district_id = $_POST['district_id'] ?? '';
+        $id_number = $_POST['id_number'] ?? '';
+        $status = $_POST['status'] ?? 'active';
 
-        if (empty($first_name) || empty($last_name) || empty($email) || empty($district_id)) {
+        if (empty($voornaam) || empty($achternaam) || empty($email) || empty($district_id) || empty($id_number)) {
             throw new Exception('Vul alle verplichte velden in.');
         }
 
-        // Handle image upload
-        $image_path = $_POST['current_image'] ?? null;
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
-            $max_size = 5 * 1024 * 1024; // 5MB
-
-            if (!in_array($_FILES['image']['type'], $allowed_types)) {
-                throw new Exception('Ongeldig bestandstype. Alleen JPG, PNG en GIF zijn toegestaan.');
-            }
-
-            if ($_FILES['image']['size'] > $max_size) {
-                throw new Exception('Bestand is te groot. Maximum grootte is 5MB.');
-            }
-
-            $upload_dir = '../uploads/voters/';
-            if (!file_exists($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
-            }
-
-            $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            $file_name = uniqid() . '.' . $file_extension;
-            $target_path = $upload_dir . $file_name;
-
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $target_path)) {
-                // Delete old image if exists
-                if ($image_path && file_exists('../' . $image_path)) {
-                    unlink('../' . $image_path);
-                }
-                $image_path = 'uploads/voters/' . $file_name;
-            }
+        // Check if email already exists for other users
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE Email = ? AND UserID != ?");
+        $stmt->execute([$email, $voter_id]);
+        if ($stmt->fetchColumn() > 0) {
+            throw new Exception('Dit e-mailadres is al in gebruik.');
         }
 
-        $stmt = $pdo->prepare("
-            UPDATE users 
-            SET FirstName = ?, LastName = ?, Email = ?, DistrictID = ?, Photo = ?
-            WHERE UserID = ?
-        ");
-        $stmt->execute([$first_name, $last_name, $email, $district_id, $image_path, $voter_id]);
+        // Check if ID number already exists for other users
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE IDNumber = ? AND UserID != ?");
+        $stmt->execute([$id_number, $voter_id]);
+        if ($stmt->fetchColumn() > 0) {
+            throw new Exception('Dit ID nummer is al in gebruik.');
+        }
+
+        // Update user data
+        if (!empty($password)) {
+            if ($password !== $confirm_password) {
+                throw new Exception('Wachtwoorden komen niet overeen.');
+            }
+
+            if (strlen($password) < 8) {
+                throw new Exception('Wachtwoord moet minimaal 8 tekens lang zijn.');
+            }
+
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $stmt = $pdo->prepare("
+                UPDATE users 
+                SET Voornaam = ?, Achternaam = ?, Email = ?, Password = ?, DistrictID = ?, IDNumber = ?, Status = ?
+                WHERE UserID = ?
+            ");
+            $stmt->execute([$voornaam, $achternaam, $email, $hashed_password, $district_id, $id_number, $status, $voter_id]);
+        } else {
+            $stmt = $pdo->prepare("
+                UPDATE users 
+                SET Voornaam = ?, Achternaam = ?, Email = ?, DistrictID = ?, IDNumber = ?, Status = ?
+                WHERE UserID = ?
+            ");
+            $stmt->execute([$voornaam, $achternaam, $email, $district_id, $id_number, $status, $voter_id]);
+        }
         
-        $_SESSION['success_message'] = "Kiezer is succesvol bijgewerkt.";
-        header("Location: voters.php");
+        $_SESSION['success_message'] = "Stemmer is succesvol bijgewerkt.";
+        header('Location: voters.php');
         exit;
     } catch (Exception $e) {
         $_SESSION['error_message'] = $e->getMessage();
     }
 }
 
-// Get all districts
-try {
-    $stmt = $pdo->query("SELECT DistrictID, DistrictName FROM districts ORDER BY DistrictName");
-    $districts = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    error_log("Database error: " . $e->getMessage());
-    $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de districten.";
-    header("Location: voters.php");
-    exit;
-}
-
-// Get voter data
+// Fetch voter data
 try {
     $stmt = $pdo->prepare("
         SELECT u.*, d.DistrictName
         FROM users u
-        LEFT JOIN districts d ON u.DistrictID = d.DistrictID
+        LEFT JOIN districten d ON u.DistrictID = d.DistrictID
         WHERE u.UserID = ? AND u.Role = 'voter'
     ");
     $stmt->execute([$voter_id]);
     $voter = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$voter) {
-        $_SESSION['error_message'] = "Kiezer niet gevonden.";
-        header("Location: voters.php");
+        $_SESSION['error_message'] = "Stemmer niet gevonden.";
+        header('Location: voters.php');
         exit;
     }
+
+    // Fetch all districts for dropdown
+    $districts = $pdo->query("SELECT * FROM districten ORDER BY DistrictName")->fetchAll();
 } catch (PDOException $e) {
     error_log("Database error: " . $e->getMessage());
-    $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de kiezer.";
-    header("Location: voters.php");
+    $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de stemmergegevens.";
+    header('Location: voters.php');
     exit;
 }
-
-// Start output buffering
-ob_start();
 ?>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stemmer Bewerken - E-Stem Suriname</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'suriname': {
+                            'green': '#007749',
+                            'dark-green': '#006241',
+                            'red': '#C8102E',
+                            'dark-red': '#a50d26',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen">
+        <?php require_once 'components/nav.php'; ?>
 
-<div class="max-w-3xl mx-auto">
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">Kiezer Bewerken</h1>
-        <a href="voters.php" 
-           class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700">
-            <i class="fas fa-arrow-left mr-2"></i>
-            Terug naar overzicht
-        </a>
-    </div>
+        <!-- Main Content -->
+        <div class="flex-1 ml-64 p-6 overflow-y-auto">
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6">Stemmer Bewerken</h2>
 
-    <?php if (isset($_SESSION['error_message'])): ?>
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
-            <p><?= $_SESSION['error_message'] ?></p>
-        </div>
-        <?php unset($_SESSION['error_message']); ?>
-    <?php endif; ?>
-
-    <div class="bg-white rounded-lg shadow-lg p-6">
-        <form method="POST" enctype="multipart/form-data" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label for="first_name" class="block text-sm font-medium text-gray-700">
-                        Voornaam
-                    </label>
-                    <input type="text" 
-                           name="first_name" 
-                           id="first_name" 
-                           value="<?= htmlspecialchars($voter['FirstName']) ?>"
-                           required
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                </div>
-
-                <div>
-                    <label for="last_name" class="block text-sm font-medium text-gray-700">
-                        Achternaam
-                    </label>
-                    <input type="text" 
-                           name="last_name" 
-                           id="last_name" 
-                           value="<?= htmlspecialchars($voter['LastName']) ?>"
-                           required
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                </div>
-
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">
-                        E-mailadres
-                    </label>
-                    <input type="email" 
-                           name="email" 
-                           id="email" 
-                           value="<?= htmlspecialchars($voter['Email']) ?>"
-                           required
-                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                </div>
-
-                <div>
-                    <label for="district_id" class="block text-sm font-medium text-gray-700">
-                        District
-                    </label>
-                    <select name="district_id" 
-                            id="district_id"
-                            required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
-                        <option value="">Selecteer een district</option>
-                        <?php foreach ($districts as $district): ?>
-                            <option value="<?= $district['DistrictID'] ?>" 
-                                    <?= $voter['DistrictID'] == $district['DistrictID'] ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($district['DistrictName']) ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="image" class="block text-sm font-medium text-gray-700">
-                        Foto
-                    </label>
-                    <?php if ($voter['Photo']): ?>
-                        <div class="mt-2 mb-2">
-                            <img src="<?= BASE_URL ?>/<?= htmlspecialchars($voter['Photo']) ?>" 
-                                 alt="<?= htmlspecialchars($voter['FirstName'] . ' ' . $voter['LastName']) ?>"
-                                 class="h-24 w-24 rounded-full object-cover">
+                    <?php if (isset($_SESSION['error_message'])): ?>
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                            <span class="block sm:inline"><?= $_SESSION['error_message'] ?></span>
+                            <button class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.style.display='none'">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
+                        <?php unset($_SESSION['error_message']); ?>
                     <?php endif; ?>
-                    <input type="file" 
-                           name="image" 
-                           id="image" 
-                           accept="image/jpeg,image/png,image/gif"
-                           class="mt-1 block w-full text-sm text-gray-500
-                                  file:mr-4 file:py-2 file:px-4
-                                  file:rounded-md file:border-0
-                                  file:text-sm file:font-semibold
-                                  file:bg-suriname-green file:text-white
-                                  hover:file:bg-suriname-dark-green">
-                    <input type="hidden" name="current_image" value="<?= htmlspecialchars($voter['Photo']) ?>">
-                    <p class="mt-1 text-sm text-gray-500">Maximaal 5MB. JPG, PNG of GIF.</p>
+
+                    <form method="POST" class="space-y-6">
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="voornaam">
+                                Voornaam
+                            </label>
+                            <input type="text" name="voornaam" id="voornaam" required
+                                   value="<?= htmlspecialchars($voter['Voornaam']) ?>"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="achternaam">
+                                Achternaam
+                            </label>
+                            <input type="text" name="achternaam" id="achternaam" required
+                                   value="<?= htmlspecialchars($voter['Achternaam']) ?>"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
+                                Email
+                            </label>
+                            <input type="email" name="email" id="email" required
+                                   value="<?= htmlspecialchars($voter['Email']) ?>"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+                                Nieuw Wachtwoord (optioneel)
+                            </label>
+                            <input type="password" name="password" id="password"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="confirm_password">
+                                Bevestig Nieuw Wachtwoord
+                            </label>
+                            <input type="password" name="confirm_password" id="confirm_password"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="district_id">
+                                District
+                            </label>
+                            <select name="district_id" id="district_id" required
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <option value="">Selecteer een district</option>
+                                <?php foreach ($districts as $district): ?>
+                                    <option value="<?= $district['DistrictID'] ?>" 
+                                            <?= $district['DistrictID'] == $voter['DistrictID'] ? 'selected' : '' ?>>
+                                        <?= htmlspecialchars($district['DistrictName']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="id_number">
+                                ID Nummer
+                            </label>
+                            <input type="text" name="id_number" id="id_number" required
+                                   value="<?= htmlspecialchars($voter['IDNumber']) ?>"
+                                   class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="status">
+                                Status
+                            </label>
+                            <select name="status" id="status" required
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                <option value="active" <?= $voter['Status'] === 'active' ? 'selected' : '' ?>>Actief</option>
+                                <option value="inactive" <?= $voter['Status'] === 'inactive' ? 'selected' : '' ?>>Inactief</option>
+                            </select>
+                        </div>
+
+                        <div class="flex items-center justify-end space-x-4">
+                            <a href="voters.php" 
+                               class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded transition-all duration-300 transform hover:scale-105">
+                                Annuleren
+                            </a>
+                            <button type="submit" 
+                                    class="bg-suriname-green hover:bg-suriname-dark-green text-white font-bold py-2 px-4 rounded transition-all duration-300 transform hover:scale-105">
+                                Opslaan
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
-            <div class="flex justify-end">
-                <button type="submit" 
-                        class="bg-suriname-green text-white px-6 py-2 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
-                    <i class="fas fa-save mr-2"></i>
-                    Wijzigingen Opslaan
-                </button>
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<?php
-// Get the buffered content
-$content = ob_get_clean();
-
-// Include the layout template
-require_once 'components/layout.php';
-?> 
+</body>
+</html> 

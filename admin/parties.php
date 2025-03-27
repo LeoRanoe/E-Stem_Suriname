@@ -56,10 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $stmt = $pdo->prepare("
                     UPDATE parties 
-                    SET PartyName = ?, Description = ?, Logo = ?
+                    SET PartyName = ?, Logo = ?
                     WHERE PartyID = ?
                 ");
-                $stmt->execute([$party_name, $party_description, $logo_path, $party_id]);
+                $stmt->execute([$party_name, $logo_path, $party_id]);
 
                 // Delete old logo if exists
                 if ($old_logo && file_exists('../' . $old_logo)) {
@@ -68,19 +68,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $stmt = $pdo->prepare("
                     UPDATE parties 
-                    SET PartyName = ?, Description = ?
+                    SET PartyName = ?
                     WHERE PartyID = ?
                 ");
-                $stmt->execute([$party_name, $party_description, $party_id]);
+                $stmt->execute([$party_name, $party_id]);
             }
             $_SESSION['success_message'] = "Partij is succesvol bijgewerkt.";
         } else {
             // Create new party
             $stmt = $pdo->prepare("
-                INSERT INTO parties (PartyName, Description, Logo)
-                VALUES (?, ?, ?)
+                INSERT INTO parties (PartyName, Logo)
+                VALUES (?, ?)
             ");
-            $stmt->execute([$party_name, $party_description, $logo_path]);
+            $stmt->execute([$party_name, $logo_path]);
             $_SESSION['success_message'] = "Partij is succesvol toegevoegd.";
         }
 
@@ -213,47 +213,61 @@ try {
             <tr>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Logo</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partij</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Afkorting</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kandidaten</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verkiezingen</th>
                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-            <?php foreach ($parties as $party): ?>
-                <tr class="hover:bg-gray-50 transition-colors duration-200">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <img src="<?= $party['LogoURL'] ?? 'https://via.placeholder.com/40' ?>" 
-                             alt="<?= htmlspecialchars($party['PartyName']) ?>" 
-                             class="h-10 w-10 rounded-full object-cover transform hover:scale-110 transition-transform duration-200">
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <p class="text-sm font-medium text-gray-900"><?= htmlspecialchars($party['PartyName']) ?></p>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <p class="text-sm text-gray-500"><?= htmlspecialchars($party['Abbreviation']) ?></p>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-suriname-green/10 text-suriname-green">
-                            <?= number_format($party['candidate_count']) ?>
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <p class="text-sm text-gray-500"><?= $party['elections'] ? htmlspecialchars($party['elections']) : 'Geen' ?></p>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a href="edit_party.php?id=<?= $party['PartyID'] ?>" 
-                           class="text-suriname-green hover:text-suriname-dark-green mr-3 transition-colors duration-200">
-                            <i class="fas fa-edit transform hover:scale-110 transition-transform duration-200"></i>
-                        </a>
-                        <a href="delete_party.php?id=<?= $party['PartyID'] ?>" 
-                           class="text-suriname-red hover:text-suriname-dark-red transition-colors duration-200"
-                           onclick="return confirm('Weet u zeker dat u deze partij wilt verwijderen?')">
-                            <i class="fas fa-trash transform hover:scale-110 transition-transform duration-200"></i>
-                        </a>
+            <?php if (empty($parties)): ?>
+                <tr>
+                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                        Geen partijen gevonden
                     </td>
                 </tr>
-            <?php endforeach; ?>
+            <?php else: ?>
+                <?php foreach ($parties as $party): ?>
+                    <tr class="hover:bg-gray-50 transition-colors duration-200">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 flex-shrink-0">
+                                    <?php if ($party['Logo']): ?>
+                                        <img class="h-10 w-10 rounded-full object-cover transform hover:scale-110 transition-transform duration-200" 
+                                             src="<?php echo htmlspecialchars($party['Logo']); ?>" 
+                                             alt="<?php echo htmlspecialchars($party['PartyName']); ?>">
+                                    <?php else: ?>
+                                        <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                            <span class="text-gray-500 text-sm font-bold">
+                                                <?php echo strtoupper(substr($party['PartyName'], 0, 1)); ?>
+                                            </span>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">
+                                <?php echo htmlspecialchars($party['PartyName']); ?>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-suriname-green/10 text-suriname-green">
+                                <?php echo number_format($party['candidate_count']); ?>
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="edit_party.php?id=<?php echo $party['PartyID']; ?>" 
+                               class="text-suriname-green hover:text-suriname-dark-green mr-3 transition-colors duration-200">
+                                <i class="fas fa-edit transform hover:scale-110 transition-transform duration-200"></i>
+                            </a>
+                            <a href="delete_party.php?id=<?php echo $party['PartyID']; ?>" 
+                               onclick="return confirm('Weet u zeker dat u deze partij wilt verwijderen?')"
+                               class="text-suriname-red hover:text-suriname-dark-red transition-colors duration-200">
+                                <i class="fas fa-trash transform hover:scale-110 transition-transform duration-200"></i>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>
@@ -273,18 +287,12 @@ try {
                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
                     <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="abbreviation">
-                            Afkorting
-                        </label>
-                        <input type="text" name="abbreviation" id="abbreviation" required
-                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    </div>
-                    <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="logo">
                             Logo
                         </label>
                         <input type="file" name="logo" id="logo" accept="image/*"
                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <p class="text-sm text-gray-500 mt-1">Maximaal 5MB. Toegestane formaten: JPG, PNG, GIF</p>
                     </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">

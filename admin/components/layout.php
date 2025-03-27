@@ -94,10 +94,10 @@ requireAdmin();
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen">
-        <?php include 'components/nav.php'; ?>
+        <?php require_once 'nav.php'; ?>
 
         <!-- Main Content -->
-        <div class="flex-1 p-6 overflow-y-auto">
+        <div class="flex-1 ml-64 p-6 overflow-y-auto">
             <?php if (isset($_SESSION['success_message'])): ?>
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 animate-fade-in" role="alert">
                     <span class="block sm:inline"><?= $_SESSION['success_message'] ?></span>
