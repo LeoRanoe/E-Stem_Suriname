@@ -134,6 +134,7 @@ CREATE TABLE `parties` (
 CREATE TABLE `qrcodes` (
   `QRCodeID` bigint(20) NOT NULL,
   `UserID` bigint(20) NOT NULL,
+  `ElectionID` bigint(20) NOT NULL,
   `QRCode` varchar(32) NOT NULL,
   `Status` enum('active','used') NOT NULL DEFAULT 'active',
   `UsedAt` datetime DEFAULT NULL,
@@ -275,7 +276,8 @@ ALTER TABLE `parties`
 ALTER TABLE `qrcodes`
   ADD PRIMARY KEY (`QRCodeID`),
   ADD UNIQUE KEY `QRCode` (`QRCode`),
-  ADD KEY `UserID` (`UserID`);
+  ADD KEY `UserID` (`UserID`),
+  ADD KEY `ElectionID` (`ElectionID`);
 
 --
 -- Indexes for table `users`
@@ -397,7 +399,8 @@ ALTER TABLE `news`
 -- Constraints for table `qrcodes`
 --
 ALTER TABLE `qrcodes`
-  ADD CONSTRAINT `qrcodes_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`);
+  ADD CONSTRAINT `qrcodes_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`),
+  ADD CONSTRAINT `qrcodes_ibfk_2` FOREIGN KEY (`ElectionID`) REFERENCES `elections` (`ElectionID`);
 
 --
 -- Constraints for table `users`
@@ -407,22 +410,7 @@ ALTER TABLE `users`
 
 --
 -- Constraints for table `votes`
---
-ALTER TABLE `votes`
-  ADD CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`),
-  ADD CONSTRAINT `votes_ibfk_2` FOREIGN KEY (`CandidateID`) REFERENCES `candidates` (`CandidateID`),
-  ADD CONSTRAINT `votes_ibfk_3` FOREIGN KEY (`ElectionID`) REFERENCES `elections` (`ElectionID`),
-  ADD CONSTRAINT `votes_ibfk_4` FOREIGN KEY (`QRCodeID`) REFERENCES `qrcodes` (`QRCodeID`);
 
---
--- Constraints for table `voting_sessions`
---
-ALTER TABLE `voting_sessions`
-  ADD CONSTRAINT `voting_sessions_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`),
-  ADD CONSTRAINT `voting_sessions_ibfk_2` FOREIGN KEY (`QRCodeID`) REFERENCES `qrcodes` (`QRCodeID`);
-
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- Add sample election data
+INSERT INTO `elections` (`ElectionID`, `ElectionName`, `ElectionDate`, `Status`, `StartDate`, `EndDate`) VALUES
+(1, 'Verkiezing 2025', '2025-05-25', 'active', '2025-05-25 08:00:00', '2025-05-25 18:00:00');

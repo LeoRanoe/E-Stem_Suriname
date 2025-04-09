@@ -15,10 +15,9 @@ require_once __DIR__ . '/config.php';
                 extend: {
                     colors: {
                         'suriname': {
-                            'green': '#007749',
-                            'dark-green': '#006241',
-                            'red': '#C8102E',
-                            'dark-red': '#a50d26',
+                            'green': '#377E3F', // Primary actions, key elements
+                            'red': '#B40A2D',   // Secondary actions, warnings
+                            'yellow': '#FFD700', // Accents, highlights
                         },
                     },
                     animation: {

@@ -35,22 +35,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Record the vote
             $stmt = $pdo->prepare("
-                INSERT INTO votes (UserID, CandidateID, QRCode) 
-                VALUES (:user_id, :candidate_id, :qr_code)
+                INSERT INTO votes (UserID, CandidateID, ElectionID, QRCodeID, TimeStamp) 
+                VALUES (:user_id, :candidate_id, :election_id, :qr_code_id, NOW())
             ");
             $stmt->execute([
                 'user_id' => $currentUser['UserID'],
                 'candidate_id' => $candidate_id,
-                'qr_code' => $_SESSION['voting_session']['qr_code']
+                'election_id' => $_SESSION['voting_session']['election_id'],
+                'qr_code_id' => $_SESSION['voting_session']['qr_code_id']
             ]);
             
             // Mark QR code as used
             $stmt = $pdo->prepare("
                 UPDATE qrcodes 
-                SET Status = 'used' 
-                WHERE QRCode = :qr_code
+                SET Status = 'used', UsedAt = NOW() 
+                WHERE QRCodeID = :qr_code_id
             ");
-            $stmt->execute(['qr_code' => $_SESSION['voting_session']['qr_code']]);
+            $stmt->execute(['qr_code_id' => $_SESSION['voting_session']['qr_code_id']]);
             
             $pdo->commit();
             
@@ -69,34 +70,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Get active election
+// Get election from session
+$election_id = $_SESSION['voting_session']['election_id'];
+$election_name = $_SESSION['voting_session']['election_name'];
+
+// Get candidates for the election
 try {
     $stmt = $pdo->prepare("
-        SELECT * FROM elections 
-        WHERE Status = 'active' 
-        LIMIT 1
+        SELECT c.*, p.PartyName, ct.CandidateType 
+        FROM candidates c 
+        JOIN parties p ON c.PartyID = p.PartyID 
+        JOIN candidatetype ct ON c.CandidateTypeID = ct.CandidateTypeID 
+        WHERE c.ElectionID = :election_id
+        ORDER BY ct.CandidateType, p.PartyName
     ");
-    $stmt->execute();
-    $election = $stmt->fetch();
+    $stmt->execute(['election_id' => $election_id]);
+    $candidates = $stmt->fetchAll();
     
-    if (!$election) {
-        $error = "Er is momenteel geen actieve verkiezing";
-    } else {
-        // Get candidates for the election
-        $stmt = $pdo->prepare("
-            SELECT c.*, p.PartyName, ct.TypeName 
-            FROM candidates c 
-            JOIN parties p ON c.PartyID = p.PartyID 
-            JOIN candidatetype ct ON c.CandidateTypeID = ct.CandidateTypeID 
-            WHERE c.ElectionID = :election_id AND c.Status = 'active'
-            ORDER BY ct.TypeName, p.PartyName
-        ");
-        $stmt->execute(['election_id' => $election['ElectionID']]);
-        $candidates = $stmt->fetchAll();
+    if (empty($candidates)) {
+        $error = "Er zijn geen kandidaten gevonden voor deze verkiezing";
     }
 } catch(PDOException $e) {
-    error_log("Error fetching election data: " . $e->getMessage());
-    $error = "Er is een fout opgetreden bij het ophalen van de verkiezingsgegevens.";
+    error_log("Error fetching candidates: " . $e->getMessage());
+    $error = "Er is een fout opgetreden bij het ophalen van de kandidaten.";
 }
 ?>
 

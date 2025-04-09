@@ -104,68 +104,43 @@ try {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stemmen - <?= SITE_NAME ?></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'suriname': {
-                            'green': '#007749',
-                            'dark-green': '#006241',
-                            'red': '#C8102E',
-                            'dark-red': '#a50d26',
-                        },
-                    },
-                },
-            },
-        }
-    </script>
-</head>
-<body class="bg-gray-50">
+<body class="bg-white">
     <?php include '../include/nav.php'; ?>
 
-    <main class="container mx-auto px-4 py-16">
+    <main class="container mx-auto px-4 py-8 md:py-12">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-gray-900">Stemmen</h1>
-                <p class="mt-2 text-gray-600">Selecteer uw kandidaat</p>
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Stemmen</h1>
+                <p class="mt-2 text-lg text-gray-700">Selecteer uw kandidaat voor <?= htmlspecialchars($election['ElectionName']) ?></p>
             </div>
 
             <?php if (isset($_SESSION['error_message'])): ?>
-                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6">
-                    <p><?= $_SESSION['error_message'] ?></p>
+                <div class="bg-red-50 border-l-4 border-suriname-red text-red-800 p-4 mb-6 rounded-md shadow-sm">
+                    <p class="font-medium">Fout:</p>
+                    <p><?= htmlspecialchars($_SESSION['error_message']) ?></p>
                 </div>
                 <?php unset($_SESSION['error_message']); ?>
             <?php endif; ?>
 
-            <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
                 <form method="POST" class="space-y-6">
                     <!-- Election Info -->
                     <div class="mb-8">
-                        <h2 class="text-xl font-semibold mb-2"><?= htmlspecialchars($election['ElectionName']) ?></h2>
-                        <p class="text-gray-600"><?= htmlspecialchars($election['Description']) ?></p>
+                        <h2 class="text-2xl font-semibold mb-2 text-gray-800"><?= htmlspecialchars($election['ElectionName']) ?></h2>
+                        <p class="text-gray-700"><?= htmlspecialchars($election['Description']) ?></p>
                     </div>
 
                     <!-- Candidates -->
                     <div class="space-y-4">
                         <?php foreach ($candidates as $candidate): ?>
-                            <div class="flex items-center p-4 border rounded-lg hover:bg-gray-50">
+                            <label for="candidate_<?= $candidate['CandidateID'] ?>" class="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md hover:border-suriname-green transition duration-150 ease-in-out cursor-pointer has-[:checked]:border-suriname-green has-[:checked]:border-2 has-[:checked]:bg-green-50">
                                 <input type="radio" 
                                        name="candidate_id" 
                                        value="<?= $candidate['CandidateID'] ?>" 
                                        id="candidate_<?= $candidate['CandidateID'] ?>"
-                                       class="h-4 w-4 text-suriname-green focus:ring-suriname-green border-gray-300"
+                                       class="h-5 w-5 text-suriname-green focus:ring-suriname-yellow focus:ring-offset-1 border-gray-300 cursor-pointer"
                                        required>
-                                <label for="candidate_<?= $candidate['CandidateID'] ?>" 
-                                       class="ml-4 flex items-center flex-1">
+                               <div class="ml-4 flex items-center flex-1">
                                     <?php if ($candidate['PartyLogo']): ?>
                                         <img src="<?= htmlspecialchars($candidate['PartyLogo']) ?>" 
                                              alt="<?= htmlspecialchars($candidate['PartyName']) ?>"
@@ -175,15 +150,16 @@ try {
                                         <p class="font-medium"><?= htmlspecialchars($candidate['CandidateName']) ?></p>
                                         <p class="text-sm text-gray-500"><?= htmlspecialchars($candidate['PartyName']) ?></p>
                                     </div>
-                                </label>
-                            </div>
+                               </div>
+                           </label>
                         <?php endforeach; ?>
                     </div>
 
                     <!-- Submit Button -->
                     <div class="flex justify-end">
-                        <button type="submit" 
-                                class="bg-suriname-green text-white px-6 py-2 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
+                        <button type="submit"
+                                class="inline-flex items-center bg-suriname-green text-white px-6 py-3 rounded-md font-semibold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-yellow transition duration-150 ease-in-out shadow-sm disabled:opacity-50"
+                                >
                             <i class="fas fa-check mr-2"></i> Stem Uitbrengen
                         </button>
                     </div>

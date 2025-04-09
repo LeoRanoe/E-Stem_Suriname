@@ -2,69 +2,80 @@
 session_start();
 require_once '../include/db_connect.php';
 require_once '../include/auth.php';
+require_once '../include/config.php';
 
 // Check if user is logged in
-if (!isset($_SESSION['User ID'])) {
-    $_SESSION['error_message'] = "U moet ingelogd zijn om te stemmen.";
-    header("Location: " . BASE_URL . "/pages/login.php");
-    exit;
+if (!isLoggedIn()) {
+    header("Location: login.php");
+    exit();
 }
 
-// If QR code is already verified, redirect to vote page
-if (isset($_SESSION['QRVerified']) && $_SESSION['QRVerified']) {
-    header("Location: " . BASE_URL . "/pages/vote.php");
-    exit;
-}
+// Get current user's data
+$currentUser = getCurrentUser();
 
 // Handle QR code verification
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qr_code'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qr_token'])) {
+    $qrToken = filter_input(INPUT_POST, 'qr_token', FILTER_SANITIZE_STRING);
+    
     try {
+        // Check if QR code exists and is valid
         $stmt = $pdo->prepare("
-            SELECT * FROM qr_codes 
-            WHERE Code = :code 
-            AND IsUsed = 0
+            SELECT q.*, u.Username, e.ElectionName, e.ElectionID
+            FROM qrcodes q
+            JOIN users u ON q.UserID = u.UserID
+            JOIN elections e ON q.ElectionID = e.ElectionID
+            WHERE q.Token = ? AND q.Status = 'active'
         ");
-        $stmt->execute(['code' => $_POST['qr_code']]);
-        $qr_code = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($qr_code) {
-            // Mark QR code as used
+        $stmt->execute([$qrToken]);
+        $qrCode = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($qrCode) {
+            // Check if user has already voted in this election
             $stmt = $pdo->prepare("
-                UPDATE qr_codes 
-                SET IsUsed = 1, 
-                    UsedBy = :user_id, 
-                    UsedAt = NOW() 
-                WHERE Code = :code
+                SELECT COUNT(*) FROM votes 
+                WHERE UserID = ? AND ElectionID = ?
             ");
-            $stmt->execute([
-                'code' => $_POST['qr_code'],
-                'user_id' => $_SESSION['User ID']
-            ]);
-
-            // Set QR verification in session
-            $_SESSION['QRVerified'] = true;
-            $_SESSION['success_message'] = "QR code succesvol geverifieerd. U kunt nu stemmen.";
-            header("Location: " . BASE_URL . "/pages/vote.php");
-            exit;
+            $stmt->execute([$currentUser['UserID'], $qrCode['ElectionID']]);
+            $hasVoted = $stmt->fetchColumn() > 0;
+            
+            if ($hasVoted) {
+                $_SESSION['error'] = "You have already voted in this election.";
+            } else {
+                // Mark QR code as used
+                $stmt = $pdo->prepare("
+                    UPDATE qrcodes 
+                    SET Status = 'used', UsedAt = NOW() 
+                    WHERE QRCodeID = ?
+                ");
+                $stmt->execute([$qrCode['QRCodeID']]);
+                
+                // Redirect to voting page
+                $_SESSION['election_id'] = $qrCode['ElectionID'];
+                header("Location: vote.php");
+                exit();
+            }
         } else {
-            $_SESSION['error_message'] = "Ongeldige of reeds gebruikte QR code.";
+            $_SESSION['error'] = "Invalid or expired QR code.";
         }
-    } catch (PDOException $e) {
-        error_log("Database error: " . $e->getMessage());
-        $_SESSION['error_message'] = "Er is een fout opgetreden bij het verifiëren van de QR code.";
+    } catch (Exception $e) {
+        error_log("QR code verification error: " . $e->getMessage());
+        $_SESSION['error'] = "An error occurred while verifying the QR code.";
     }
+    
+    header("Location: scan.php");
+    exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stemmen - <?= SITE_NAME ?></title>
+    <title>E-Stem Suriname - Scan QR Code</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/html5-qrcode"></script>
+    <!-- Add QR Scanner library -->
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -75,103 +86,220 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qr_code'])) {
                             'dark-green': '#006241',
                             'red': '#C8102E',
                             'dark-red': '#a50d26',
-                            'yellow': '#FFD700',
-                            'white': '#FFFFFF',
-                            'black': '#000000'
+                        },
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.5s ease-out',
+                        'slide-in': 'slideIn 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
                         },
                     },
                 },
             },
         }
     </script>
+    <style>
+        #qr-reader {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        #qr-reader__dashboard {
+            padding: 1rem;
+        }
+        #qr-reader__scan_region {
+            background: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        #qr-reader__scan_region > img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
-<body class="bg-gray-50">
+<body class="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-100">
     <?php include '../include/nav.php'; ?>
 
-    <main class="container mx-auto px-4 py-16">
-        <div class="max-w-2xl mx-auto">
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-suriname-green">Stemmen</h1>
-                <p class="mt-2 text-gray-600">Scan uw QR code om te verifiëren dat u stemgerechtigd bent</p>
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-r from-suriname-green to-suriname-dark-green text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-3xl md:text-4xl font-bold mb-4 animate-fade-in-up">
+                    Scan Your QR Code
+                </h1>
+                <p class="text-lg mb-6 text-emerald-50 animate-fade-in-up">
+                    Scan your QR code or enter it manually to proceed with voting
+                </p>
             </div>
+        </div>
+    </section>
 
-            <?php if (isset($_SESSION['error_message'])): ?>
-                <div class="bg-red-100 border-l-4 border-suriname-red text-red-700 p-4 mb-6 rounded-md">
-                    <p><?= $_SESSION['error_message'] ?></p>
+    <!-- Main Content -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="max-w-2xl mx-auto mb-8 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative animate-fade-in-up">
+                    <span class="block sm:inline"><?= htmlspecialchars($_SESSION['error']) ?></span>
+                    <?php unset($_SESSION['error']); ?>
                 </div>
-                <?php unset($_SESSION['error_message']); ?>
+            <?php endif; ?>
+            
+            <?php if (isset($_SESSION['success'])): ?>
+                <div class="max-w-2xl mx-auto mb-8 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative animate-fade-in-up">
+                    <span class="block sm:inline"><?= htmlspecialchars($_SESSION['success']) ?></span>
+                    <?php unset($_SESSION['success']); ?>
+                </div>
             <?php endif; ?>
 
-            <div class="bg-white rounded-lg shadow-lg p-6 border-2 border-suriname-green">
-                <div class="mb-6">
-                    <div id="reader" class="rounded-lg overflow-hidden border-2 border-suriname-green"></div>
-                </div>
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- QR Scanner -->
+                            <div>
+                                <h2 class="text-xl font-semibold mb-4 text-suriname-green">
+                                    <i class="fas fa-qrcode mr-2"></i>Scan QR Code
+                                </h2>
+                                <div id="qr-reader"></div>
+                                <div id="qr-reader-results"></div>
+                                <div class="mt-4">
+                                    <button id="startButton" class="bg-suriname-green text-white py-2 px-4 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
+                                        Start Camera
+                                    </button>
+                                    <button id="stopButton" class="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors duration-200 ml-2" style="display: none;">
+                                        Stop Camera
+                                    </button>
+                                </div>
+                                <p class="text-gray-600 text-sm mt-4">
+                                    Position your QR code within the scanner frame to scan.
+                                </p>
+                            </div>
 
-                <form id="qr-form" method="POST" class="hidden">
-                    <input type="hidden" name="qr_code" id="qr_code">
-                </form>
+                            <!-- Manual Entry -->
+                            <div>
+                                <h2 class="text-xl font-semibold mb-4 text-suriname-green">
+                                    <i class="fas fa-keyboard mr-2"></i>Manual Entry
+                                </h2>
+                                <form method="POST" action="scan.php" class="space-y-4">
+                                    <div>
+                                        <label for="qr_token" class="block text-sm font-medium text-gray-700 mb-1">
+                                            Enter QR Code
+                                        </label>
+                                        <input type="text" 
+                                               name="qr_token" 
+                                               id="qr_token" 
+                                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-suriname-green focus:border-suriname-green"
+                                               placeholder="Enter your QR code here"
+                                               required>
+                                    </div>
+                                    <button type="submit" 
+                                            class="w-full bg-suriname-green text-white py-2 px-4 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
+                                        Submit QR Code
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
 
-                <div class="text-center">
-                    <p class="text-gray-600 mb-4">
-                        Of voer de QR code handmatig in:
-                    </p>
-                    <div class="flex justify-center space-x-4">
-                        <input type="text" 
-                               id="manual-qr" 
-                               class="rounded-md border-2 border-suriname-green shadow-sm focus:border-suriname-green focus:ring-suriname-green"
-                               placeholder="Voer QR code in">
-                        <button type="button" 
-                                onclick="submitManualQR()"
-                                class="bg-suriname-green text-white px-6 py-2 rounded-md hover:bg-suriname-dark-green transition-colors duration-200 shadow-md">
-                            <i class="fas fa-check mr-2"></i>
-                            Verifiëren
-                        </button>
+                        <!-- Instructions -->
+                        <div class="mt-8 border-t border-gray-200 pt-6">
+                            <h3 class="text-lg font-semibold mb-4 text-suriname-green">
+                                <i class="fas fa-info-circle mr-2"></i>Instructions
+                            </h3>
+                            <ol class="list-decimal list-inside space-y-2 text-gray-600">
+                                <li>Make sure you have received your QR code from the election officials.</li>
+                                <li>You can either scan the QR code using your camera or enter it manually.</li>
+                                <li>If scanning, click "Start Camera" and allow camera access when prompted.</li>
+                                <li>Position your QR code within the scanner frame.</li>
+                                <li>If entering manually, type the code carefully to avoid errors.</li>
+                                <li>Once verified, you will be redirected to the voting page.</li>
+                                <li>If you encounter any issues, please contact the election officials.</li>
+                            </ol>
+                        </div>
                     </div>
-                </div>
-
-                <div class="mt-6 text-center text-sm text-gray-500">
-                    <p><i class="fas fa-info-circle mr-2"></i>Zorg ervoor dat uw QR code goed zichtbaar is in het scherm</p>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
 
     <?php include '../include/footer.php'; ?>
 
     <script>
-        function onScanSuccess(decodedText, decodedResult) {
-            // Stop scanning
-            html5QrCode.clear();
-            
-            // Submit the form
-            document.getElementById('qr_code').value = decodedText;
-            document.getElementById('qr-form').submit();
-        }
+    document.addEventListener('DOMContentLoaded', function() {
+        let scanner = null;
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const qrReader = document.getElementById('qr-reader');
+        const qrReaderResults = document.getElementById('qr-reader-results');
 
-        function onScanFailure(error) {
-            // Handle scan failure
-            console.warn(`QR code scanning failed: ${error}`);
-        }
+        startButton.addEventListener('click', function() {
+            // Create new scanner instance
+            scanner = new Instascan.Scanner({ 
+                video: document.createElement('video'),
+                mirror: false,
+                scanPeriod: 5
+            });
 
-        let html5QrCode = new Html5Qrcode("reader");
-        let config = { fps: 10, qrbox: { width: 250, height: 250 } };
+            // Add scan listener
+            scanner.addListener('scan', function(content) {
+                console.log('QR Code scanned:', content);
+                // Stop scanner
+                scanner.stop();
+                startButton.style.display = 'inline-block';
+                stopButton.style.display = 'none';
+                
+                // Create and submit form
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = 'scan.php';
+                
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'qr_token';
+                input.value = content;
+                
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            });
 
-        html5QrCode.start(
-            { facingMode: "environment" },
-            config,
-            onScanSuccess,
-            onScanFailure
-        ).catch((err) => {
-            console.error(`Failed to start QR scanner: ${err}`);
+            // Start scanner
+            Instascan.Camera.getCameras().then(function(cameras) {
+                if (cameras.length > 0) {
+                    // Use the first available camera
+                    scanner.start(cameras[0]);
+                    startButton.style.display = 'none';
+                    stopButton.style.display = 'inline-block';
+                } else {
+                    console.error('No cameras found.');
+                    alert('No cameras found. Please use manual entry instead.');
+                }
+            }).catch(function(e) {
+                console.error('Error accessing camera:', e);
+                alert('Error accessing camera. Please use manual entry instead.');
+            });
+
+            // Add video element to the page
+            qrReader.innerHTML = '';
+            qrReader.appendChild(scanner.video);
         });
 
-        function submitManualQR() {
-            const manualQR = document.getElementById('manual-qr').value.trim();
-            if (manualQR) {
-                document.getElementById('qr_code').value = manualQR;
-                document.getElementById('qr-form').submit();
+        stopButton.addEventListener('click', function() {
+            if (scanner) {
+                scanner.stop();
+                startButton.style.display = 'inline-block';
+                stopButton.style.display = 'none';
             }
-        }
+        });
+    });
     </script>
 </body>
-</html>
+</html> 

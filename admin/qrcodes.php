@@ -2,162 +2,640 @@
 session_start();
 require_once '../include/db_connect.php';
 require_once '../include/auth.php';
+require_once '../include/config.php';
 
-// Check if user is logged in and is admin
+// Check if user is logged in and is an admin
 requireAdmin();
 
-// Handle QR code actions
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+// Get current user's data
+$currentUser = getCurrentUser();
+
+// Handle bulk QR code generation
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['generate_bulk_qr'])) {
+    $electionId = $_POST['election_id'] ?? null;
+    $districtId = $_POST['district_id'] ?? null;
+    
+    if (!$electionId) {
+        $_SESSION['error'] = "Selecteer een verkiezing.";
+    } else {
+        try {
+            $pdo->beginTransaction();
+            
+            // Query to get users without QR codes for the selected election and district
+            $userQuery = "
+                SELECT u.* 
+                FROM users u 
+                LEFT JOIN qrcodes q ON u.UserID = q.UserID AND q.ElectionID = :election_id
+                WHERE u.Role = 'voter' 
+                AND q.QRCodeID IS NULL
+                AND u.Status = 'active'";
+            
+            $params = ['election_id' => $electionId];
+            
+            if ($districtId) {
+                $userQuery .= " AND u.DistrictID = :district_id";
+                $params['district_id'] = $districtId;
+            }
+            
+            $stmt = $pdo->prepare($userQuery);
+            $stmt->execute($params);
+            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            $successCount = 0;
+            $errorCount = 0;
+            
+            foreach ($users as $user) {
+                $token = bin2hex(random_bytes(16)); // Generate unique token
+                
+                $insertStmt = $pdo->prepare("
+                    INSERT INTO qrcodes (UserID, ElectionID, QRCode, Status)
+                    VALUES (:user_id, :election_id, :qr_code, 'active')
+                ");
+                
+                if ($insertStmt->execute([
+                    'user_id' => $user['UserID'],
+                    'election_id' => $electionId,
+                    'qr_code' => $token
+                ])) {
+                    $successCount++;
+                } else {
+                    $errorCount++;
+                }
+            }
+            
+            $pdo->commit();
+            
+            if ($successCount > 0) {
+                $_SESSION['success'] = "QR codes gegenereerd voor $successCount gebruikers.";
+            } else {
+                $_SESSION['info'] = "Geen nieuwe QR codes nodig voor de geselecteerde criteria.";
+            }
+            if ($errorCount > 0) {
+                $_SESSION['error'] = "$errorCount QR codes konden niet worden gegenereerd.";
+            }
+            
+        } catch (Exception $e) {
+            $pdo->rollBack();
+            $_SESSION['error'] = "Er is een fout opgetreden: " . $e->getMessage();
+        }
+    }
+    header("Location: qrcodes.php");
+    exit;
+}
+
+// Handle QR code revocation
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['revoke_qr'])) {
+    $qr_code_id = $_POST['qr_code_id'] ?? '';
+    
+    if (empty($qr_code_id)) {
+        $_SESSION['error_message'] = "QR code ID is verplicht";
+    } else {
+        try {
+            // Update the QR code status to revoked
+            $stmt = $pdo->prepare("
+                UPDATE qrcodes 
+                SET Status = 'used', UsedAt = NOW() 
+                WHERE QRCodeID = :qr_code_id AND Status = 'active'
+            ");
+            $stmt->execute(['qr_code_id' => $qr_code_id]);
+            
+            if ($stmt->rowCount() > 0) {
+                $_SESSION['success_message'] = "QR code is succesvol ingetrokken";
+            } else {
+                $_SESSION['error_message'] = "QR code kon niet worden ingetrokken";
+            }
+        } catch(PDOException $e) {
+            error_log("QR code revocation error: " . $e->getMessage());
+            $_SESSION['error_message'] = "Er is een fout opgetreden bij het intrekken van de QR code";
+        }
+    }
+    
+    header("Location: qrcodes.php");
+    exit;
+}
+
+// Handle QR code deletion
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_qr'])) {
+    $qr_code_id = $_POST['qr_code_id'] ?? '';
+    
+    if (empty($qr_code_id)) {
+        $_SESSION['error_message'] = "QR code ID is verplicht";
+    } else {
+        try {
+            // Delete the QR code
+            $stmt = $pdo->prepare("
+                DELETE FROM qrcodes 
+                WHERE QRCodeID = :qr_code_id
+            ");
+            $stmt->execute(['qr_code_id' => $qr_code_id]);
+            
+            if ($stmt->rowCount() > 0) {
+                $_SESSION['success_message'] = "QR code is succesvol verwijderd";
+            } else {
+                $_SESSION['error_message'] = "QR code kon niet worden verwijderd";
+            }
+        } catch(PDOException $e) {
+            error_log("QR code deletion error: " . $e->getMessage());
+            $_SESSION['error_message'] = "Er is een fout opgetreden bij het verwijderen van de QR code";
+        }
+    }
+    
+    header("Location: qrcodes.php");
+    exit;
+}
+
+// Handle QR code download
+if (isset($_GET['download']) && isset($_GET['id'])) {
+    $qrId = $_GET['id'];
     try {
-        switch ($_POST['action']) {
-            case 'generate':
-                $election_id = intval($_POST['election_id']);
-                $quantity = intval($_POST['quantity']);
-
-                if (empty($election_id) || $quantity < 1 || $quantity > 100) {
-                    throw new Exception('Ongeldige invoer. Kies een verkiezing en een hoeveelheid tussen 1 en 100.');
-                }
-
-                // Start transaction
-                $pdo->beginTransaction();
-
-                // Generate QR codes
-                for ($i = 0; $i < $quantity; $i++) {
-                    $code = bin2hex(random_bytes(16)); // Generate a random 32-character hex string
-                    $stmt = $pdo->prepare("
-                        INSERT INTO qr_codes (ElectionID, Code, Status, CreatedAt)
-                        VALUES (?, ?, 'active', NOW())
-                    ");
-                    $stmt->execute([$election_id, $code]);
-                }
-
-                $pdo->commit();
-                $_SESSION['success_message'] = "QR codes zijn succesvol gegenereerd.";
-                break;
-
-            case 'revoke':
-                $qr_id = intval($_POST['qr_id']);
-                $stmt = $pdo->prepare("UPDATE qr_codes SET Status = 'revoked' WHERE QRCodeID = ?");
-                $stmt->execute([$qr_id]);
-                $_SESSION['success_message'] = "QR code is succesvol ingetrokken.";
-                break;
-
-            case 'activate':
-                $qr_id = intval($_POST['qr_id']);
-                $stmt = $pdo->prepare("UPDATE qr_codes SET Status = 'active' WHERE QRCodeID = ?");
-                $stmt->execute([$qr_id]);
-                $_SESSION['success_message'] = "QR code is succesvol geactiveerd.";
-                break;
+        $stmt = $pdo->prepare("
+            SELECT q.QRCode, u.Voornaam, u.Achternaam, d.DistrictName, e.ElectionName
+            FROM qrcodes q
+            JOIN users u ON q.UserID = u.UserID
+            JOIN districten d ON u.DistrictID = d.DistrictID
+            JOIN elections e ON q.ElectionID = e.ElectionID
+            WHERE q.QRCodeID = :qr_id
+        ");
+        $stmt->execute(['qr_id' => $qrId]);
+        $qrData = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($qrData) {
+            require_once '../vendor/autoload.php'; // Make sure you have QR code library installed
+            
+            // Generate QR code image
+            $writer = new \BaconQrCode\Writer(new \BaconQrCode\Renderer\ImageRenderer(
+                new \BaconQrCode\Renderer\RendererStyle\RendererStyle(400),
+                new \BaconQrCode\Renderer\Image\SvgImageBackEnd()
+            ));
+            
+            $qrContent = $qrData['QRCode'];
+            $fileName = sprintf('qr_code_%s_%s_%s.svg', 
+                $qrData['Voornaam'],
+                $qrData['Achternaam'],
+                date('Ymd')
+            );
+            
+            header('Content-Type: image/svg+xml');
+            header('Content-Disposition: attachment; filename="' . $fileName . '"');
+            echo $writer->writeString($qrContent);
+            exit;
         }
     } catch (Exception $e) {
-        if ($pdo->inTransaction()) {
-            $pdo->rollBack();
-        }
-        $_SESSION['error_message'] = $e->getMessage();
+        $_SESSION['error'] = "Kon QR code niet downloaden: " . $e->getMessage();
+        header("Location: qrcodes.php");
+        exit;
     }
 }
 
-// Get all elections for the dropdown
-try {
-    $stmt = $pdo->query("SELECT ElectionID, ElectionName FROM elections WHERE Status = 'active' ORDER BY ElectionName");
-    $elections = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    error_log("Database error: " . $e->getMessage());
-    $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de verkiezingen.";
+// Add this function at the top of the file
+function generateVoucher($qrCode, $userName) {
+    $voucherHtml = '
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>E-Stem Suriname - Stem Voucher</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+            }
+            .voucher {
+                width: 600px;
+                height: 250px;
+                border: 2px dashed #48BB78;
+                border-radius: 15px;
+                display: flex;
+                overflow: hidden;
+                background: white;
+            }
+            .voucher-left {
+                flex: 1;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .voucher-right {
+                width: 250px;
+                background: #48BB78;
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .title {
+                font-size: 32px;
+                font-weight: bold;
+                margin: 0;
+                color: #2D3748;
+            }
+            .subtitle {
+                font-size: 24px;
+                color: #48BB78;
+                margin: 10px 0;
+            }
+            .code {
+                font-size: 18px;
+                color: #718096;
+                margin: 10px 0;
+            }
+            .qr-code {
+                width: 200px;
+                height: 200px;
+                background: white;
+                padding: 10px;
+                border-radius: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="voucher">
+            <div class="voucher-left">
+                <h1 class="title">E-STEM SURINAME</h1>
+                <p class="subtitle">Stem Voucher</p>
+                <p class="code">CODE: ' . htmlspecialchars(substr($qrCode, 0, 8)) . '</p>
+                <p class="code">Voor: ' . htmlspecialchars($userName) . '</p>
+            </div>
+            <div class="voucher-right">
+                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?data=' . urlencode($qrCode) . '&size=200x200" alt="QR Code">
+            </div>
+        </div>
+    </body>
+    </html>';
+    
+    return $voucherHtml;
 }
 
-// Get all QR codes with pagination
-$page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$per_page = 20;
-$offset = ($page - 1) * $per_page;
-
-try {
-    // Get total count
-    $stmt = $pdo->query("SELECT COUNT(*) FROM qr_codes");
-    $total_qr_codes = $stmt->fetchColumn();
-    $total_pages = ceil($total_qr_codes / $per_page);
-
-    // Get QR codes for current page
-    $stmt = $pdo->prepare("
-        SELECT q.*, e.ElectionName,
-               CASE 
-                   WHEN v.VoteID IS NOT NULL THEN 'used'
-                   WHEN q.Status = 'revoked' THEN 'revoked'
-                   ELSE 'active'
-               END as CurrentStatus
-        FROM qr_codes q
-        LEFT JOIN elections e ON q.ElectionID = e.ElectionID
-        LEFT JOIN votes v ON q.QRCodeID = v.QRCodeID
-        ORDER BY q.CreatedAt DESC
-        LIMIT ? OFFSET ?
-    ");
-    $stmt->execute([$per_page, $offset]);
-    $qr_codes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    error_log("Database error: " . $e->getMessage());
-    $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de QR codes.";
-    $qr_codes = [];
-    $total_pages = 0;
+// Add a new route to handle voucher generation
+if (isset($_GET['generate_voucher']) && isset($_GET['qr_code']) && isset($_GET['user_name'])) {
+    $qrCode = $_GET['qr_code'];
+    $userName = $_GET['user_name'];
+    
+    // Verify if this QR code exists in the database
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM qrcodes WHERE QRCode = ?");
+    $stmt->execute([$qrCode]);
+    $exists = $stmt->fetchColumn();
+    
+    if ($exists) {
+        $voucherHtml = generateVoucher($qrCode, $userName);
+        header('Content-Type: text/html');
+        echo $voucherHtml;
+        exit;
+    }
+    
+    header('HTTP/1.1 404 Not Found');
+    exit;
 }
 
 // Start output buffering
 ob_start();
 
 // Initialize variables
-$qrcodes = [];
-$total_scanned = 0;
-$total_active = 0;
-$total_expired = 0;
+$qr_codes = [];
+$total_qr_codes = 0;
+$active_qr_codes = 0;
+$used_qr_codes = 0;
+$districtStats = [];
 
+// Get district statistics
 try {
-    // Get QR codes with their scan counts
-    $stmt = $pdo->query("
-        SELECT q.*,
+    // First get all districts
+    $stmt = $pdo->query("SELECT * FROM districten ORDER BY DistrictName");
+    $districts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Then get QR code statistics for each district
+    foreach ($districts as $district) {
+        $stmt = $pdo->prepare("
+            SELECT 
+                COALESCE(COUNT(DISTINCT q.QRCodeID), 0) as total_qr_codes,
+                COALESCE(SUM(CASE WHEN q.Status = 'active' THEN 1 ELSE 0 END), 0) as active_qr_codes,
+                COALESCE(SUM(CASE WHEN q.Status = 'used' THEN 1 ELSE 0 END), 0) as used_qr_codes,
+                (
+                    SELECT COUNT(DISTINCT u2.UserID)
+                    FROM users u2
+                    LEFT JOIN qrcodes q2 ON u2.UserID = q2.UserID AND q2.ElectionID = e.ElectionID
+                    WHERE u2.DistrictID = :district_id
+                    AND u2.Role = 'voter'
+                    AND u2.Status = 'active'
+                    AND q2.QRCodeID IS NULL
+                ) as new_users
+            FROM users u
+            LEFT JOIN qrcodes q ON u.UserID = q.UserID
+            LEFT JOIN elections e ON q.ElectionID = e.ElectionID
+            WHERE u.DistrictID = :district_id
+            AND u.Role = 'voter'
+            AND u.Status = 'active'
+            GROUP BY u.DistrictID
+        ");
+        
+        $stmt->execute(['district_id' => $district['DistrictID']]);
+        $stats = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$stats) {
+            $stats = [
+                'total_qr_codes' => 0,
+                'active_qr_codes' => 0,
+                'used_qr_codes' => 0,
+                'new_users' => 0
+            ];
+        }
+        
+        $stats['total_qr_codes'] = (int)$stats['total_qr_codes'];
+        $stats['active_qr_codes'] = (int)$stats['active_qr_codes'];
+        $stats['used_qr_codes'] = (int)$stats['used_qr_codes'];
+        $stats['new_users'] = (int)$stats['new_users'];
+        
+        $districtStats[] = array_merge($district, $stats);
+        
+        $total_qr_codes += $stats['total_qr_codes'];
+        $active_qr_codes += $stats['active_qr_codes'];
+        $used_qr_codes += $stats['used_qr_codes'];
+    }
+} catch(PDOException $e) {
+    error_log("Error fetching district statistics: " . $e->getMessage());
+    $_SESSION['error'] = "Er is een fout opgetreden bij het ophalen van de district statistieken: " . $e->getMessage();
+}
+
+// Fetch all QR codes with district and election information
+try {
+    $stmt = $pdo->prepare("
+        SELECT q.*, 
+               CONCAT(u.Voornaam, ' ', u.Achternaam) as UserName,
+               d.DistrictName,
                e.ElectionName,
-               COUNT(s.ScanID) as scan_count,
-               MAX(s.Timestamp) as last_scan
+               CASE 
+                   WHEN q.Status = 'active' THEN 'Actief'
+                   WHEN q.Status = 'used' THEN 'Gebruikt'
+                   ELSE q.Status
+               END as StatusText
         FROM qrcodes q
-        LEFT JOIN elections e ON q.ElectionID = e.ElectionID
-        LEFT JOIN scans s ON q.QRCodeID = s.QRCodeID
-        GROUP BY q.QRCodeID
-        ORDER BY q.CreatedAt DESC
-    ");
-    $qrcodes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Get total scans
-    $stmt = $pdo->query("SELECT COUNT(*) FROM scans");
-    $total_scanned = $stmt->fetchColumn();
-
-    // Get total active QR codes
-    $stmt = $pdo->query("
-        SELECT COUNT(*) 
-        FROM qrcodes q
+        JOIN users u ON q.UserID = u.UserID
+        JOIN districten d ON u.DistrictID = d.DistrictID
         JOIN elections e ON q.ElectionID = e.ElectionID
-        WHERE e.EndDate >= NOW()
+        ORDER BY e.ElectionName, d.DistrictName, q.CreatedAt DESC
     ");
-    $total_active = $stmt->fetchColumn();
+    $stmt->execute();
+    $qr_codes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    error_log("Error fetching QR codes: " . $e->getMessage());
+    $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de QR codes";
+}
 
-    // Get total expired QR codes
-    $stmt = $pdo->query("
-        SELECT COUNT(*) 
-        FROM qrcodes q
-        JOIN elections e ON q.ElectionID = e.ElectionID
-        WHERE e.EndDate < NOW()
+// Fetch active elections for the dropdown
+try {
+    $stmt = $pdo->prepare("
+        SELECT ElectionID, ElectionName
+        FROM elections
+        WHERE Status = 'active'
+        ORDER BY ElectionName
     ");
-    $total_expired = $stmt->fetchColumn();
-} catch (PDOException $e) {
-    error_log("Database error: " . $e->getMessage());
-    $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de QR codes.";
+    $stmt->execute();
+    $elections = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    error_log("Error fetching elections: " . $e->getMessage());
+    $elections = [];
+}
+
+// Add bulk download functionality
+if (isset($_GET['bulk_download']) && isset($_GET['district_id'])) {
+    try {
+        require_once '../vendor/autoload.php';
+        
+        // Create ZIP archive
+        $zip = new ZipArchive();
+        $tempFile = tempnam(sys_get_temp_dir(), 'qrcodes_');
+        
+        if ($zip->open($tempFile, ZipArchive::CREATE) === TRUE) {
+            // Get QR codes for the district
+            $stmt = $pdo->prepare("
+                SELECT 
+                    q.QRCode,
+                    u.Voornaam,
+                    u.Achternaam,
+                    d.DistrictName,
+                    e.ElectionName
+                FROM qrcodes q
+                JOIN users u ON q.UserID = u.UserID
+                JOIN districten d ON u.DistrictID = d.DistrictID
+                JOIN elections e ON q.ElectionID = e.ElectionID
+                WHERE u.DistrictID = :district_id
+                AND q.Status = 'active'
+            ");
+            
+            $stmt->execute(['district_id' => $_GET['district_id']]);
+            $qrCodes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Generate QR codes and add to ZIP
+            $writer = new \BaconQrCode\Writer(new \BaconQrCode\Renderer\ImageRenderer(
+                new \BaconQrCode\Renderer\RendererStyle\RendererStyle(400),
+                new \BaconQrCode\Renderer\Image\SvgImageBackEnd()
+            ));
+            
+            foreach ($qrCodes as $qr) {
+                $fileName = sprintf('qr_code_%s_%s_%s.svg',
+                    $qr['Voornaam'],
+                    $qr['Achternaam'],
+                    date('Ymd')
+                );
+                
+                // Generate QR code
+                $qrContent = $writer->writeString($qr['QRCode']);
+                
+                // Add to ZIP
+                $zip->addFromString($fileName, $qrContent);
+                
+                // Generate and add voucher
+                $voucherFileName = sprintf('voucher_%s_%s_%s.html',
+                    $qr['Voornaam'],
+                    $qr['Achternaam'],
+                    date('Ymd')
+                );
+                $voucherHtml = generateVoucher($qr['QRCode'], $qr['Voornaam'] . ' ' . $qr['Achternaam']);
+                $zip->addFromString($voucherFileName, $voucherHtml);
+            }
+            
+            $zip->close();
+            
+            // Send ZIP file
+            header('Content-Type: application/zip');
+            header('Content-Disposition: attachment; filename="qrcodes_' . date('Ymd_His') . '.zip"');
+            header('Content-Length: ' . filesize($tempFile));
+            readfile($tempFile);
+            unlink($tempFile);
+            exit;
+        }
+    } catch (Exception $e) {
+        $_SESSION['error'] = "Fout bij het downloaden van QR codes: " . $e->getMessage();
+        header("Location: qrcodes.php");
+        exit;
+    }
 }
 ?>
 
+<!-- Search and Filters Section -->
+<div class="mb-8">
+    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+            <h2 class="text-lg font-semibold flex items-center mb-4 md:mb-0">
+                <i class="fas fa-filter mr-2 text-suriname-green"></i>
+                Filters & Zoeken
+            </h2>
+            <div class="flex flex-wrap gap-2">
+                <button onclick="document.getElementById('importUsersModal').classList.remove('hidden')" 
+                        class="bg-suriname-green hover:bg-suriname-dark-green text-white px-4 py-2 rounded-md text-sm flex items-center">
+                    <i class="fas fa-file-import mr-2"></i>
+                    Importeer Users
+                </button>
+                <button onclick="document.getElementById('generateQRModal').classList.remove('hidden')" 
+                        class="bg-suriname-green hover:bg-suriname-dark-green text-white px-4 py-2 rounded-md text-sm flex items-center">
+                    <i class="fas fa-qrcode mr-2"></i>
+                    Genereer QR Codes
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <!-- Search -->
+            <div class="col-span-2">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Zoeken</label>
+                <div class="relative">
+                    <input type="text" id="searchInput" 
+                           class="w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green pl-10"
+                           placeholder="Zoek op naam, ID nummer of district...">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- District Filter -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">District</label>
+                <select id="districtFilter" class="w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green">
+                    <option value="">Alle districten</option>
+                    <?php foreach ($districts as $district): ?>
+                        <option value="<?= $district['DistrictID'] ?>"><?= htmlspecialchars($district['DistrictName']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <!-- Status Filter -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <select id="statusFilter" class="w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green">
+                    <option value="">Alle statussen</option>
+                    <option value="active">Actief</option>
+                    <option value="used">Gebruikt</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Import Users Modal -->
+<div id="importUsersModal" class="hidden fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <form method="POST" action="import_users.php" enctype="multipart/form-data">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2">
+                            CSV Bestand
+                        </label>
+                        <input type="file" name="csv_file" accept=".csv" required
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-suriname-green focus:border-suriname-green">
+                        <p class="mt-2 text-sm text-gray-500">
+                            Upload een CSV bestand met de volgende kolommen: Voornaam, Achternaam, Email, IDNumber, DistrictID
+                        </p>
+                    </div>
+                    <div class="bg-gray-50 mt-4 p-4 rounded-md">
+                        <h4 class="text-sm font-medium text-gray-900 mb-2">Voorbeeld CSV format:</h4>
+                        <code class="text-xs text-gray-600">
+                            Voornaam,Achternaam,Email,IDNumber,DistrictID<br>
+                            John,Doe,john@example.com,12345,1<br>
+                            Jane,Smith,jane@example.com,67890,2
+                        </code>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="submit" 
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-suriname-green text-base font-medium text-white hover:bg-suriname-dark-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:ml-3 sm:w-auto sm:text-sm">
+                        Importeren
+                    </button>
+                    <button type="button" 
+                            onclick="document.getElementById('importUsersModal').classList.add('hidden')"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Annuleren
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Generate QR Codes Modal -->
+<div id="generateQRModal" class="hidden fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <form method="POST" action="">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="election_id">
+                            Verkiezing
+                        </label>
+                        <select name="election_id" id="election_id" required
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">Selecteer een verkiezing</option>
+                            <?php foreach ($elections as $election): ?>
+                                <option value="<?php echo $election['ElectionID']; ?>">
+                                    <?php echo htmlspecialchars($election['ElectionName']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="district_id">
+                            District (Optioneel)
+                        </label>
+                        <select name="district_id" id="district_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <option value="">Alle districten</option>
+                            <?php foreach ($districts as $district): ?>
+                                <option value="<?php echo $district['DistrictID']; ?>">
+                                    <?php echo htmlspecialchars($district['DistrictName']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">Genereer QR codes voor alle kiezers in één keer.</p>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="submit" name="generate_bulk_qr" 
+                            onclick="return confirm('Weet u zeker dat u QR codes wilt genereren voor alle kiezers? Dit kan even duren.')"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-suriname-green text-base font-medium text-white hover:bg-suriname-dark-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300 transform hover:scale-105">
+                        Genereren
+                    </button>
+                    <button type="button" 
+                            onclick="document.getElementById('generateQRModal').classList.add('hidden')"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300 transform hover:scale-105">
+                        Annuleren
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- Statistics Cards -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
     <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600">Totaal QR Codes</p>
-                <p class="text-2xl font-bold text-suriname-green"><?= number_format(count($qrcodes)) ?></p>
+                <p class="text-2xl font-bold text-suriname-green"><?= number_format((int)$total_qr_codes) ?></p>
             </div>
             <div class="p-3 bg-suriname-green/10 rounded-full">
                 <i class="fas fa-qrcode text-2xl text-suriname-green"></i>
@@ -168,23 +646,11 @@ try {
     <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600">Totaal Scans</p>
-                <p class="text-2xl font-bold text-suriname-green"><?= number_format($total_scanned) ?></p>
-            </div>
-            <div class="p-3 bg-suriname-green/10 rounded-full">
-                <i class="fas fa-search text-2xl text-suriname-green"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
-        <div class="flex items-center justify-between">
-            <div>
                 <p class="text-sm font-medium text-gray-600">Actieve QR Codes</p>
-                <p class="text-2xl font-bold text-suriname-green"><?= number_format($total_active) ?></p>
+                <p class="text-2xl font-bold text-green-600"><?= number_format((int)$active_qr_codes) ?></p>
             </div>
-            <div class="p-3 bg-suriname-green/10 rounded-full">
-                <i class="fas fa-check-circle text-2xl text-suriname-green"></i>
+            <div class="p-3 bg-green-100 rounded-full">
+                <i class="fas fa-check-circle text-2xl text-green-600"></i>
             </div>
         </div>
     </div>
@@ -192,21 +658,102 @@ try {
     <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 transform hover:scale-105 transition-all duration-300">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600">Verlopen QR Codes</p>
-                <p class="text-2xl font-bold text-suriname-green"><?= number_format($total_expired) ?></p>
+                <p class="text-sm font-medium text-gray-600">Gebruikte QR Codes</p>
+                <p class="text-2xl font-bold text-blue-600"><?= number_format((int)$used_qr_codes) ?></p>
             </div>
-            <div class="p-3 bg-suriname-green/10 rounded-full">
-                <i class="fas fa-clock text-2xl text-suriname-green"></i>
+            <div class="p-3 bg-blue-100 rounded-full">
+                <i class="fas fa-vote-yea text-2xl text-blue-600"></i>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add New QR Code Button -->
+<!-- District Statistics -->
+<?php if (!empty($districtStats)): ?>
+<div class="bg-white rounded-lg shadow-md p-6 border border-gray-200 mb-8">
+    <h2 class="text-lg font-semibold mb-6 flex items-center">
+        <i class="fas fa-chart-pie mr-2 text-suriname-green"></i>
+        QR Codes per District
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <?php foreach ($districtStats as $stat): ?>
+            <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-4 hover:shadow-md transition-shadow duration-300">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-semibold text-gray-800 text-lg">
+                        <?= htmlspecialchars($stat['DistrictName']) ?>
+                    </h3>
+                    <div class="flex items-center space-x-2">
+                        <?php if ($stat['new_users'] > 0): ?>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                <?= $stat['new_users'] ?> nieuwe
+                            </span>
+                        <?php endif; ?>
+                        <?php if ($stat['active_qr_codes'] > 0): ?>
+                            <a href="?bulk_download=1&district_id=<?= $stat['DistrictID'] ?>" 
+                               class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-suriname-green text-white hover:bg-suriname-dark-green transition-colors duration-200">
+                                <i class="fas fa-download mr-1"></i> Download Alle
+                            </a>
+                        <?php endif; ?>
+                        <div class="w-2 h-2 rounded-full <?= $stat['total_qr_codes'] > 0 ? 'bg-green-500' : 'bg-gray-300' ?>"></div>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <!-- Total QR Codes -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Totaal</span>
+                        <div class="flex items-center">
+                            <span class="font-medium text-lg"><?= number_format((int)$stat['total_qr_codes']) ?></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Active QR Codes -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Actief</span>
+                        <div class="flex items-center">
+                            <div class="w-24 h-2 bg-gray-200 rounded-full mr-3">
+                                <div class="h-2 bg-green-500 rounded-full" style="width: <?= $stat['total_qr_codes'] > 0 ? ($stat['active_qr_codes'] / $stat['total_qr_codes'] * 100) : 0 ?>%"></div>
+                            </div>
+                            <span class="font-medium text-green-600"><?= number_format((int)$stat['active_qr_codes']) ?></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Used QR Codes -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600">Gebruikt</span>
+                        <div class="flex items-center">
+                            <div class="w-24 h-2 bg-gray-200 rounded-full mr-3">
+                                <div class="h-2 bg-blue-500 rounded-full" style="width: <?= $stat['total_qr_codes'] > 0 ? ($stat['used_qr_codes'] / $stat['total_qr_codes'] * 100) : 0 ?>%"></div>
+                            </div>
+                            <span class="font-medium text-blue-600"><?= number_format((int)$stat['used_qr_codes']) ?></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Percentage Bar -->
+                <div class="mt-4 pt-4 border-t border-gray-100">
+                    <div class="flex h-2 rounded-full overflow-hidden bg-gray-200">
+                        <?php if ($stat['total_qr_codes'] > 0): ?>
+                            <div class="bg-green-500" style="width: <?= ($stat['active_qr_codes'] / $stat['total_qr_codes'] * 100) ?>%"></div>
+                            <div class="bg-blue-500" style="width: <?= ($stat['used_qr_codes'] / $stat['total_qr_codes'] * 100) ?>%"></div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="flex justify-between mt-2 text-xs text-gray-500">
+                        <span><?= $stat['total_qr_codes'] > 0 ? round(($stat['active_qr_codes'] / $stat['total_qr_codes'] * 100)) : 0 ?>% actief</span>
+                        <span><?= $stat['total_qr_codes'] > 0 ? round(($stat['used_qr_codes'] / $stat['total_qr_codes'] * 100)) : 0 ?>% gebruikt</span>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+<?php endif; ?>
+
+<!-- Generate QR Codes Button -->
 <div class="mb-6">
-    <button onclick="document.getElementById('newQRCodeModal').classList.remove('hidden')" 
+    <button onclick="document.getElementById('generateQRModal').classList.remove('hidden')" 
             class="bg-suriname-green hover:bg-suriname-dark-green text-white font-bold py-2 px-4 rounded transition-all duration-300 transform hover:scale-105">
-        <i class="fas fa-plus mr-2"></i>Nieuwe QR Code
+        <i class="fas fa-qrcode mr-2"></i>Massaal QR Codes Genereren
     </button>
 </div>
 
@@ -215,66 +762,113 @@ try {
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
             <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">QR Code</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gebruiker</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">District</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verkiezing</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aangemaakt</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Scans</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Laatste Scan</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gebruikt</th>
                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-            <?php if (empty($qrcodes)): ?>
+            <?php if (empty($qr_codes)): ?>
                 <tr>
-                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
-                        Geen QR codes gevonden
+                    <td colspan="7" class="px-6 py-4 text-center text-gray-500">
+                        Er zijn nog geen QR codes gegenereerd
                     </td>
                 </tr>
             <?php else: ?>
-                <?php foreach ($qrcodes as $qrcode): ?>
+                <?php 
+                $currentElection = '';
+                $currentDistrict = '';
+                foreach ($qr_codes as $qr): 
+                    if ($currentElection !== $qr['ElectionName']):
+                        $currentElection = $qr['ElectionName'];
+                ?>
+                    <tr class="bg-suriname-green/10">
+                        <td colspan="7" class="px-6 py-3 text-sm font-bold text-suriname-green">
+                            <?= htmlspecialchars($currentElection) ?>
+                        </td>
+                    </tr>
+                <?php 
+                        $currentDistrict = '';
+                    endif;
+                    if ($currentDistrict !== $qr['DistrictName']):
+                        $currentDistrict = $qr['DistrictName'];
+                ?>
+                    <tr class="bg-gray-50">
+                        <td colspan="7" class="px-6 py-2 text-sm font-semibold text-gray-600">
+                            <?= htmlspecialchars($currentDistrict) ?>
+                        </td>
+                    </tr>
+                <?php endif; ?>
                     <tr class="hover:bg-gray-50 transition-colors duration-200">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded object-cover transform hover:scale-110 transition-transform duration-200" 
-                                         src="<?= $qrcode['QRCodeImage'] ?>" 
-                                         alt="QR Code">
-                                </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        <?= htmlspecialchars($qrcode['QRCodeID']) ?>
-                                    </div>
-                                </div>
+                            <div class="text-sm font-medium text-gray-900">
+                                <?php echo htmlspecialchars($qr['UserName']); ?>
                             </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <p class="text-sm text-gray-900"><?= htmlspecialchars($qrcode['ElectionName']) ?></p>
+                            <div class="text-sm text-gray-500">
+                                <?php echo htmlspecialchars($qr['DistrictName']); ?>
+                            </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <p class="text-sm text-gray-500">
-                                <?= date('d-m-Y H:i', strtotime($qrcode['CreatedAt'])) ?>
-                            </p>
+                            <div class="text-sm text-gray-500">
+                                <?php echo htmlspecialchars($qr['ElectionName']); ?>
+                            </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-suriname-green/10 text-suriname-green">
-                                <?= number_format($qrcode['scan_count']) ?>
-                            </span>
+                            <?php if ($qr['Status'] === 'active'): ?>
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    <?php echo htmlspecialchars($qr['StatusText']); ?>
+                                </span>
+                            <?php elseif ($qr['Status'] === 'used'): ?>
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    <?php echo htmlspecialchars($qr['StatusText']); ?>
+                                </span>
+                            <?php else: ?>
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                    <?php echo htmlspecialchars($qr['StatusText']); ?>
+                                </span>
+                            <?php endif; ?>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <p class="text-sm text-gray-500">
-                                <?= $qrcode['last_scan'] ? date('d-m-Y H:i', strtotime($qrcode['last_scan'])) : 'Nog niet gescand' ?>
-                            </p>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <?php echo date('d-m-Y H:i', strtotime($qr['CreatedAt'])); ?>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <?php echo $qr['UsedAt'] ? date('d-m-Y H:i', strtotime($qr['UsedAt'])) : '-'; ?>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <a href="download_qrcode.php?id=<?= $qrcode['QRCodeID'] ?>" 
-                               class="text-suriname-green hover:text-suriname-dark-green mr-3 transition-colors duration-200">
-                                <i class="fas fa-download transform hover:scale-110 transition-transform duration-200"></i>
+                            <?php if ($qr['Status'] === 'active'): ?>
+                                <form method="POST" action="" style="display: inline;">
+                                    <input type="hidden" name="qr_code_id" value="<?php echo $qr['QRCodeID']; ?>">
+                                    <button type="submit" name="revoke_qr" 
+                                            onclick="return confirm('Weet u zeker dat u deze QR code wilt intrekken?')"
+                                            class="text-red-600 hover:text-red-900 mr-3 transition-colors duration-200">
+                                        <i class="fas fa-ban transform hover:scale-110 transition-transform duration-200"></i>
+                                    </button>
+                                </form>
+                            <?php endif; ?>
+                            <a href="?generate_voucher=1&qr_code=<?php echo urlencode($qr['QRCode']); ?>&user_name=<?php echo urlencode($qr['UserName']); ?>" 
+                               class="text-suriname-green hover:text-suriname-dark-green mr-3 transition-colors duration-200"
+                               target="_blank">
+                                <i class="fas fa-ticket-alt transform hover:scale-110 transition-transform duration-200"></i>
                             </a>
-                            <a href="delete_qrcode.php?id=<?= $qrcode['QRCodeID'] ?>" 
-                               class="text-suriname-red hover:text-suriname-dark-red transition-colors duration-200"
-                               onclick="return confirm('Weet u zeker dat u deze QR code wilt verwijderen?')">
-                                <i class="fas fa-trash transform hover:scale-110 transition-transform duration-200"></i>
+                            <a href="https://api.qrserver.com/v1/create-qr-code/?data=<?php echo urlencode($qr['QRCode']); ?>&size=300x300" 
+                               class="text-suriname-green hover:text-suriname-dark-green mr-3 transition-colors duration-200"
+                               target="_blank">
+                                <i class="fas fa-qrcode transform hover:scale-110 transition-transform duration-200"></i>
                             </a>
+                            <form method="POST" action="" style="display: inline;">
+                                <input type="hidden" name="qr_code_id" value="<?php echo $qr['QRCodeID']; ?>">
+                                <button type="submit" name="delete_qr" 
+                                        onclick="return confirm('Weet u zeker dat u deze QR code wilt verwijderen?')"
+                                        class="text-red-600 hover:text-red-900 transition-colors duration-200">
+                                    <i class="fas fa-trash transform hover:scale-110 transition-transform duration-200"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -283,56 +877,73 @@ try {
     </table>
 </div>
 
-<!-- New QR Code Modal -->
-<div id="newQRCodeModal" class="hidden fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form action="generate_qrcode.php" method="POST">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="election">
-                            Verkiezing
-                        </label>
-                        <select name="election" id="election" required
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <option value="">Selecteer een verkiezing</option>
-                            <?php
-                            $elections = $pdo->query("
-                                SELECT * FROM elections 
-                                WHERE EndDate >= NOW() 
-                                ORDER BY StartDate ASC
-                            ")->fetchAll();
-                            foreach ($elections as $election) {
-                                echo '<option value="' . $election['ElectionID'] . '">' . htmlspecialchars($election['ElectionName']) . '</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="quantity">
-                            Aantal QR Codes
-                        </label>
-                        <input type="number" name="quantity" id="quantity" min="1" max="100" value="1" required
-                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        <p class="mt-1 text-xs text-gray-500">Maximaal 100 QR codes per keer</p>
-                    </div>
-                </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="submit" 
-                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-suriname-green text-base font-medium text-white hover:bg-suriname-dark-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300 transform hover:scale-105">
-                        Genereren
-                    </button>
-                    <button type="button" 
-                            onclick="document.getElementById('newQRCodeModal').classList.add('hidden')"
-                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-all duration-300 transform hover:scale-105">
-                        Annuleren
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<!-- Add this JavaScript at the bottom of the file -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const districtFilter = document.getElementById('districtFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    const tableRows = document.querySelectorAll('tbody tr:not(.bg-suriname-green/10):not(.bg-gray-50)');
+
+    function filterTable() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const selectedDistrict = districtFilter.value;
+        const selectedStatus = statusFilter.value;
+
+        tableRows.forEach(row => {
+            const userName = row.querySelector('td:nth-child(1)')?.textContent.toLowerCase() || '';
+            const district = row.querySelector('td:nth-child(2)')?.textContent.toLowerCase() || '';
+            const status = row.querySelector('.rounded-full')?.textContent.toLowerCase().trim() || '';
+
+            const matchesSearch = userName.includes(searchTerm) || district.includes(searchTerm);
+            const matchesDistrict = !selectedDistrict || row.querySelector('td:nth-child(2)')?.textContent.includes(districtFilter.options[districtFilter.selectedIndex].text);
+            const matchesStatus = !selectedStatus || status.includes(selectedStatus === 'active' ? 'actief' : 'gebruikt');
+
+            row.style.display = (matchesSearch && matchesDistrict && matchesStatus) ? '' : 'none';
+        });
+
+        // Update header rows visibility
+        updateHeaderRows();
+    }
+
+    function updateHeaderRows() {
+        let currentElection = '';
+        let currentDistrict = '';
+        let hasVisibleRows = false;
+
+        document.querySelectorAll('tbody tr').forEach(row => {
+            if (row.classList.contains('bg-suriname-green/10')) {
+                // Election header
+                currentElection = row;
+                hasVisibleRows = false;
+            } else if (row.classList.contains('bg-gray-50')) {
+                // District header
+                currentDistrict = row;
+                hasVisibleRows = false;
+            } else if (row.style.display !== 'none') {
+                hasVisibleRows = true;
+                if (currentElection) {
+                    currentElection.style.display = '';
+                    currentElection = null;
+                }
+                if (currentDistrict) {
+                    currentDistrict.style.display = '';
+                    currentDistrict = null;
+                }
+            }
+
+            if (!hasVisibleRows) {
+                if (currentElection) currentElection.style.display = 'none';
+                if (currentDistrict) currentDistrict.style.display = 'none';
+            }
+        });
+    }
+
+    searchInput.addEventListener('input', filterTable);
+    districtFilter.addEventListener('change', filterTable);
+    statusFilter.addEventListener('change', filterTable);
+});
+</script>
 
 <?php
 // Get the buffered content
