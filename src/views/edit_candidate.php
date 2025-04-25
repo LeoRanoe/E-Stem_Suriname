@@ -1,7 +1,7 @@
-<?php
+------------<?php
 session_start();
-require_once '../include/db_connect.php';
-require_once '../include/auth.php';
+require_once __DIR__ . '/../../include/db_connect.php'; // Corrected path
+require_once __DIR__ . '/../../include/auth.php'; // Corrected path
 
 // Check if user is logged in and is admin
 requireAdmin();
@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $name = $_POST['name'] ?? '';
         $party_id = intval($_POST['party_id'] ?? 0);
-        $description = $_POST['description'] ?? '';
+        // $description = $_POST['description'] ?? ''; // Removed
 
         if (empty($name) || empty($party_id)) {
             throw new Exception('Vul alle verplichte velden in.');
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception('Bestand is te groot. Maximum grootte is 5MB.');
             }
 
-            $upload_dir = '../uploads/candidates/';
+            $upload_dir = __DIR__ . '/../../uploads/candidates/'; // Use __DIR__ for reliable path
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
             }
@@ -50,20 +50,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $target_path = $upload_dir . $file_name;
 
             if (move_uploaded_file($_FILES['image']['tmp_name'], $target_path)) {
-                // Delete old image if exists
-                if ($image_path && file_exists('../' . $image_path)) {
-                    unlink('../' . $image_path);
+                // Delete old image if exists (use absolute path based on __DIR__)
+                $old_image_absolute_path = __DIR__ . '/../../' . $image_path;
+                if ($image_path && file_exists($old_image_absolute_path)) {
+                    unlink($old_image_absolute_path);
                 }
-                $image_path = 'uploads/candidates/' . $file_name;
+                $image_path = 'uploads/candidates/' . $file_name; // Keep relative path for DB
             }
         }
 
         $stmt = $pdo->prepare("
-            UPDATE candidates 
-            SET Name = ?, PartyID = ?, Description = ?, Photo = ?
+            UPDATE candidates
+            SET Name = ?, PartyID = ?, Photo = ? -- Removed Description = ?
             WHERE CandidateID = ?
         ");
-        $stmt->execute([$name, $party_id, $description, $image_path, $candidate_id]);
+        $stmt->execute([$name, $party_id, $image_path, $candidate_id]); // Removed $description
         
         $_SESSION['success_message'] = "Kandidaat is succesvol bijgewerkt.";
         header("Location: candidates.php");
@@ -199,18 +200,10 @@ ob_start();
                 </div>
             </div>
 
-            <div>
-                <label for="description" class="block text-sm font-medium text-gray-700">
-                    Beschrijving
-                </label>
-                <textarea name="description" 
-                          id="description" 
-                          rows="3"
-                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm"><?= htmlspecialchars($candidate['Description']) ?></textarea>
-            </div>
+            <!-- Removed Description Field -->
 
             <div class="flex justify-end">
-                <button type="submit" 
+                <button type="submit"
                         class="bg-suriname-green text-white px-6 py-2 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
                     <i class="fas fa-save mr-2"></i>
                     Wijzigingen Opslaan
@@ -225,5 +218,5 @@ ob_start();
 $content = ob_get_clean();
 
 // Include the layout template
-require_once 'components/layout.php';
-?> 
+require_once __DIR__ . '/../../admin/components/layout.php'; // Corrected path
+?>

@@ -43,10 +43,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         Home
                     </a>
                     <?php if (isset($_SESSION['User ID'])): ?>
-                        <a href="<?= BASE_URL ?>/pages/scan.php" 
-                           class="<?= $current_page === 'scan.php' ? 'border-suriname-green text-suriname-green' : 'border-transparent text-gray-500 hover:border-suriname-green hover:text-suriname-green' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Stemmen
-                        </a>
+                        <a href="<?= BASE_URL ?>/src/views/scan.php"
+                                                   class="<?= $current_page === 'scan.php' ? 'border-suriname-green text-suriname-green' : 'border-transparent text-gray-500 hover:border-suriname-green hover:text-suriname-green' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                                                    Stemmen
+                                                </a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -67,11 +67,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         Uitloggen
                     </a>
                 <?php else: ?>
-                    <a href="<?= BASE_URL ?>/pages/login.php" 
-                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-green hover:bg-suriname-dark-green shadow-md">
-                        <i class="fas fa-sign-in-alt mr-2"></i>
-                        Inloggen
-                    </a>
+                    <a href="<?= BASE_URL ?>/src/views/login.php"
+                                           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-green hover:bg-suriname-dark-green shadow-md">
+                                            <i class="fas fa-sign-in-alt mr-2"></i>
+                                            Inloggen
+                                        </a>
                 <?php endif; ?>
             </div>
 
@@ -103,11 +103,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 Home
             </a>
             <?php if (isset($_SESSION['User ID'])): ?>
-                <a href="<?= BASE_URL ?>/pages/scan.php" 
-                   class="<?= $current_page === 'scan.php' ? 'bg-suriname-green text-white' : 'text-gray-500 hover:bg-suriname-green hover:text-white' ?> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    <i class="fas fa-vote-yea mr-2"></i>
-                    Stemmen
-                </a>
+                <a href="<?= BASE_URL ?>/src/views/scan.php"
+                                   class="<?= $current_page === 'scan.php' ? 'bg-suriname-green text-white' : 'text-gray-500 hover:bg-suriname-green hover:text-white' ?> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                                    <i class="fas fa-vote-yea mr-2"></i>
+                                    Stemmen
+                                </a>
             <?php endif; ?>
             <?php if (isset($_SESSION['User ID'])): ?>
                 <?php if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin']): ?>
@@ -123,11 +123,11 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     Uitloggen
                 </a>
             <?php else: ?>
-                <a href="<?= BASE_URL ?>/pages/login.php" 
-                   class="text-gray-500 hover:bg-suriname-green hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    <i class="fas fa-sign-in-alt mr-2"></i>
-                    Inloggen
-                </a>
+                <a href="<?= BASE_URL ?>/src/views/login.php"
+                                   class="text-gray-500 hover:bg-suriname-green hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                                    <i class="fas fa-sign-in-alt mr-2"></i>
+                                    Inloggen
+                                </a>
             <?php endif; ?>
         </div>
     </div>

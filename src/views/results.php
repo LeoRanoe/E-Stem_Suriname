@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../include/db_connect.php';
-require_once '../include/config.php';
+require_once __DIR__ . '/../../include/db_connect.php'; // Corrected path
+require_once __DIR__ . '/../../include/config.php'; // Corrected path
 
 try {
     // Get election ID from URL or use most recent completed election
@@ -145,7 +145,7 @@ foreach ($results as $result) {
     </script>
 </head>
 <body class="bg-gray-50">
-    <?php include '../include/nav.php'; ?>
+    <?php include __DIR__ . '/../../include/nav.php'; // Corrected path ?>
 
     <main class="container mx-auto px-4 py-8">
         <div class="max-w-7xl mx-auto">
@@ -295,7 +295,7 @@ foreach ($results as $result) {
         </div>
     </main>
 
-    <?php include '../include/footer.php'; ?>
+    <?php include __DIR__ . '/../../include/footer.php'; // Corrected path ?>
 
     <script>
         const ctx = document.getElementById('resultsChart').getContext('2d');

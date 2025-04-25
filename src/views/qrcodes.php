@@ -1,191 +1,16 @@
 <?php
-session_start();
-require_once '../include/db_connect.php';
-require_once '../include/auth.php';
-require_once '../include/config.php';
+require_once __DIR__ . '/../../include/auth.php'; // Corrected path
+require_once __DIR__ . '/../../include/config.php'; // Corrected path
+require_once __DIR__ . '/../controllers/QrCodeController.php'; // Corrected path
+
+$controller = new QrCodeController();
 
 // Check if user is logged in and is an admin
 requireAdmin();
 
-// Get current user's data
-$currentUser = getCurrentUser();
-
-// Handle bulk QR code generation
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['generate_bulk_qr'])) {
-    $electionId = $_POST['election_id'] ?? null;
-    $districtId = $_POST['district_id'] ?? null;
-    
-    if (!$electionId) {
-        $_SESSION['error'] = "Selecteer een verkiezing.";
-    } else {
-        try {
-            $pdo->beginTransaction();
-            
-            // Query to get users without QR codes for the selected election and district
-            $userQuery = "
-                SELECT u.* 
-                FROM users u 
-                LEFT JOIN qrcodes q ON u.UserID = q.UserID AND q.ElectionID = :election_id
-                WHERE u.Role = 'voter' 
-                AND q.QRCodeID IS NULL
-                AND u.Status = 'active'";
-            
-            $params = ['election_id' => $electionId];
-            
-            if ($districtId) {
-                $userQuery .= " AND u.DistrictID = :district_id";
-                $params['district_id'] = $districtId;
-            }
-            
-            $stmt = $pdo->prepare($userQuery);
-            $stmt->execute($params);
-            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-            $successCount = 0;
-            $errorCount = 0;
-            
-            foreach ($users as $user) {
-                $token = bin2hex(random_bytes(16)); // Generate unique token
-                
-                $insertStmt = $pdo->prepare("
-                    INSERT INTO qrcodes (UserID, ElectionID, QRCode, Status)
-                    VALUES (:user_id, :election_id, :qr_code, 'active')
-                ");
-                
-                if ($insertStmt->execute([
-                    'user_id' => $user['UserID'],
-                    'election_id' => $electionId,
-                    'qr_code' => $token
-                ])) {
-                    $successCount++;
-                } else {
-                    $errorCount++;
-                }
-            }
-            
-            $pdo->commit();
-            
-            if ($successCount > 0) {
-                $_SESSION['success'] = "QR codes gegenereerd voor $successCount gebruikers.";
-            } else {
-                $_SESSION['info'] = "Geen nieuwe QR codes nodig voor de geselecteerde criteria.";
-            }
-            if ($errorCount > 0) {
-                $_SESSION['error'] = "$errorCount QR codes konden niet worden gegenereerd.";
-            }
-            
-        } catch (Exception $e) {
-            $pdo->rollBack();
-            $_SESSION['error'] = "Er is een fout opgetreden: " . $e->getMessage();
-        }
-    }
-    header("Location: qrcodes.php");
-    exit;
-}
-
-// Handle QR code revocation
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['revoke_qr'])) {
-    $qr_code_id = $_POST['qr_code_id'] ?? '';
-    
-    if (empty($qr_code_id)) {
-        $_SESSION['error_message'] = "QR code ID is verplicht";
-    } else {
-        try {
-            // Update the QR code status to revoked
-            $stmt = $pdo->prepare("
-                UPDATE qrcodes 
-                SET Status = 'used', UsedAt = NOW() 
-                WHERE QRCodeID = :qr_code_id AND Status = 'active'
-            ");
-            $stmt->execute(['qr_code_id' => $qr_code_id]);
-            
-            if ($stmt->rowCount() > 0) {
-                $_SESSION['success_message'] = "QR code is succesvol ingetrokken";
-            } else {
-                $_SESSION['error_message'] = "QR code kon niet worden ingetrokken";
-            }
-        } catch(PDOException $e) {
-            error_log("QR code revocation error: " . $e->getMessage());
-            $_SESSION['error_message'] = "Er is een fout opgetreden bij het intrekken van de QR code";
-        }
-    }
-    
-    header("Location: qrcodes.php");
-    exit;
-}
-
-// Handle QR code deletion
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_qr'])) {
-    $qr_code_id = $_POST['qr_code_id'] ?? '';
-    
-    if (empty($qr_code_id)) {
-        $_SESSION['error_message'] = "QR code ID is verplicht";
-    } else {
-        try {
-            // Delete the QR code
-            $stmt = $pdo->prepare("
-                DELETE FROM qrcodes 
-                WHERE QRCodeID = :qr_code_id
-            ");
-            $stmt->execute(['qr_code_id' => $qr_code_id]);
-            
-            if ($stmt->rowCount() > 0) {
-                $_SESSION['success_message'] = "QR code is succesvol verwijderd";
-            } else {
-                $_SESSION['error_message'] = "QR code kon niet worden verwijderd";
-            }
-        } catch(PDOException $e) {
-            error_log("QR code deletion error: " . $e->getMessage());
-            $_SESSION['error_message'] = "Er is een fout opgetreden bij het verwijderen van de QR code";
-        }
-    }
-    
-    header("Location: qrcodes.php");
-    exit;
-}
-
-// Handle QR code download
-if (isset($_GET['download']) && isset($_GET['id'])) {
-    $qrId = $_GET['id'];
-    try {
-        $stmt = $pdo->prepare("
-            SELECT q.QRCode, u.Voornaam, u.Achternaam, d.DistrictName, e.ElectionName
-            FROM qrcodes q
-            JOIN users u ON q.UserID = u.UserID
-            JOIN districten d ON u.DistrictID = d.DistrictID
-            JOIN elections e ON q.ElectionID = e.ElectionID
-            WHERE q.QRCodeID = :qr_id
-        ");
-        $stmt->execute(['qr_id' => $qrId]);
-        $qrData = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if ($qrData) {
-            require_once '../vendor/autoload.php'; // Make sure you have QR code library installed
-            
-            // Generate QR code image
-            $writer = new \BaconQrCode\Writer(new \BaconQrCode\Renderer\ImageRenderer(
-                new \BaconQrCode\Renderer\RendererStyle\RendererStyle(400),
-                new \BaconQrCode\Renderer\Image\SvgImageBackEnd()
-            ));
-            
-            $qrContent = $qrData['QRCode'];
-            $fileName = sprintf('qr_code_%s_%s_%s.svg', 
-                $qrData['Voornaam'],
-                $qrData['Achternaam'],
-                date('Ymd')
-            );
-            
-            header('Content-Type: image/svg+xml');
-            header('Content-Disposition: attachment; filename="' . $fileName . '"');
-            echo $writer->writeString($qrContent);
-            exit;
-        }
-    } catch (Exception $e) {
-        $_SESSION['error'] = "Kon QR code niet downloaden: " . $e->getMessage();
-        header("Location: qrcodes.php");
-        exit;
-    }
-}
+$districts = $controller->getDistricts();
+$qr_codes = $controller->getQrCodesWithDetails(); // Corrected method name
+$elections = $controller->getActiveElections(); // Corrected method name
 
 // Add this function at the top of the file
 function generateVoucher($qrCode, $userName) {
@@ -266,27 +91,6 @@ function generateVoucher($qrCode, $userName) {
     </html>';
     
     return $voucherHtml;
-}
-
-// Add a new route to handle voucher generation
-if (isset($_GET['generate_voucher']) && isset($_GET['qr_code']) && isset($_GET['user_name'])) {
-    $qrCode = $_GET['qr_code'];
-    $userName = $_GET['user_name'];
-    
-    // Verify if this QR code exists in the database
-    $stmt = $pdo->prepare("SELECT COUNT(*) FROM qrcodes WHERE QRCode = ?");
-    $stmt->execute([$qrCode]);
-    $exists = $stmt->fetchColumn();
-    
-    if ($exists) {
-        $voucherHtml = generateVoucher($qrCode, $userName);
-        header('Content-Type: text/html');
-        echo $voucherHtml;
-        exit;
-    }
-    
-    header('HTTP/1.1 404 Not Found');
-    exit;
 }
 
 // Start output buffering
@@ -883,7 +687,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchInput');
     const districtFilter = document.getElementById('districtFilter');
     const statusFilter = document.getElementById('statusFilter');
-    const tableRows = document.querySelectorAll('tbody tr:not(.bg-suriname-green/10):not(.bg-gray-50)');
+    const tableRows = document.querySelectorAll('tbody tr:not(.bg-suriname-green\\/10):not(.bg-gray-50)'); // Escaped '/' in class name
 
     function filterTable() {
         const searchTerm = searchInput.value.toLowerCase();
@@ -950,5 +754,5 @@ document.addEventListener('DOMContentLoaded', function() {
 $content = ob_get_clean();
 
 // Include the layout template
-require_once 'components/layout.php';
+require_once __DIR__ . '/../../admin/components/layout.php'; // Corrected path
 ?> 

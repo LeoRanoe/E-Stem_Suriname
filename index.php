@@ -1,10 +1,10 @@
 <?php
 session_start();
-require 'db.php';
+require 'include/db_connect.php';
 
 // Fetch latest news
 try {
-    $news_stmt = $conn->query("SELECT * FROM news WHERE Status = 'published' ORDER BY DatePosted DESC LIMIT 3");
+    $news_stmt = $pdo->query("SELECT * FROM news WHERE Status = 'published' ORDER BY DatePosted DESC LIMIT 3");
     $latest_news = $news_stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $latest_news = [];
@@ -12,7 +12,7 @@ try {
 
 // Fetch active elections
 try {
-    $election_stmt = $conn->query("SELECT * FROM elections WHERE Status = 'active' ORDER BY ElectionDate DESC");
+    $election_stmt = $pdo->query("SELECT * FROM elections WHERE Status = 'active' ORDER BY ElectionDate DESC");
     $active_elections = $election_stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     $active_elections = [];
@@ -71,11 +71,11 @@ try {
                     Neem deel aan de digitale democratie van Suriname. Uw stem telt mee voor de toekomst van ons land.
                 </p>
                 <?php if (!isset($_SESSION['user_id'])): ?>
-                    <a href="pages/register_step1.php" 
-                       class="inline-flex items-center space-x-2 bg-white text-suriname-green px-8 py-3 rounded-lg hover:bg-emerald-50 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl group animate-fade-in-up">
-                        <i class="fas fa-user-plus transform group-hover:scale-110 transition-transform duration-300"></i>
-                        <span>Registreer nu om te stemmen</span>
-                    </a>
+                    <a href="src/views/register_step1.php"
+                                           class="inline-flex items-center space-x-2 bg-white text-suriname-green px-8 py-3 rounded-lg hover:bg-emerald-50 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl group animate-fade-in-up">
+                                            <i class="fas fa-user-plus transform group-hover:scale-110 transition-transform duration-300"></i>
+                                            <span>Registreer nu om te stemmen</span>
+                                        </a>
                 <?php endif; ?>
             </div>
         </div>
@@ -140,10 +140,10 @@ try {
                             <i class="fas fa-calendar-alt mr-2"></i>
                             <span><?= date('d F Y', strtotime($election['ElectionDate'])) ?></span>
                         </div>
-                        <a href="pages/vote.php?election=<?= $election['ElectionID'] ?>" 
-                           class="block w-full text-center bg-suriname-green text-white py-2 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
-                            Stem nu
-                        </a>
+                        <a href="src/controllers/vote.php?election=<?= $election['ElectionID'] ?>"
+                                                   class="block w-full text-center bg-suriname-green text-white py-2 rounded-lg hover:bg-suriname-dark-green transition-colors duration-200">
+                                                    Stem nu
+                                                </a>
                     </div>
                 </div>
                 <?php endforeach; ?>

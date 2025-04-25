@@ -1,6 +1,6 @@
 <?php
-require_once '../include/db_connect.php';
-require_once '../include/auth.php';
+require_once __DIR__ . '/../../include/db_connect.php'; // Corrected path
+require_once __DIR__ . '/../../include/auth.php'; // Corrected path
 
 // Check if user is logged in and is admin
 requireAdmin();
@@ -94,10 +94,11 @@ requireAdmin();
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen">
-        <?php require_once 'nav.php'; ?>
+        <?php require_once __DIR__ . '/nav.php'; // Updated path to new nav component ?>
 
         <!-- Main Content -->
-        <div class="flex-1 ml-64 p-6 overflow-y-auto">
+        <!-- Main Content: Added id="main-content" and updated margin for collapsible sidebar -->
+        <div id="main-content" class="flex-1 ml-16 lg:ml-64 p-6 overflow-y-auto transition-all duration-300 ease-in-out">
             <?php if (isset($_SESSION['success_message'])): ?>
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 animate-fade-in" role="alert">
                     <span class="block sm:inline"><?= $_SESSION['success_message'] ?></span>

@@ -1,179 +1,18 @@
 <?php
-session_start();
-require_once '../include/db_connect.php';
-require_once '../include/auth.php';
+require_once __DIR__ . '/../../include/auth.php'; // Corrected path
+require_once __DIR__ . '/../../include/config.php'; // Corrected path
+
+require_once __DIR__ . '/../controllers/VoterController.php'; // Corrected path
+
+$controller = new VoterController();
 
 // Check if user is logged in and is admin
 requireAdmin();
 
-// Handle voter actions
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    try {
-        switch ($_POST['action']) {
-            case 'create':
-                $voornaam = $_POST['voornaam'] ?? '';
-                $achternaam = $_POST['achternaam'] ?? '';
-                $email = $_POST['email'] ?? '';
-                $password = $_POST['password'] ?? '';
-                $confirm_password = $_POST['confirm_password'] ?? '';
-                $district_id = $_POST['district_id'] ?? '';
-                $id_number = $_POST['id_number'] ?? '';
-
-                if (empty($voornaam) || empty($achternaam) || empty($email) || empty($password) || empty($confirm_password) || empty($district_id) || empty($id_number)) {
-                    throw new Exception('Vul alle verplichte velden in.');
-                }
-
-                if ($password !== $confirm_password) {
-                    throw new Exception('Wachtwoorden komen niet overeen.');
-                }
-
-                if (strlen($password) < 8) {
-                    throw new Exception('Wachtwoord moet minimaal 8 tekens lang zijn.');
-                }
-
-                // Check if email already exists
-                $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE Email = ?");
-                $stmt->execute([$email]);
-                if ($stmt->fetchColumn() > 0) {
-                    throw new Exception('Dit e-mailadres is al in gebruik.');
-                }
-
-                // Check if ID number already exists
-                $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE IDNumber = ?");
-                $stmt->execute([$id_number]);
-                if ($stmt->fetchColumn() > 0) {
-                    throw new Exception('Dit ID nummer is al in gebruik.');
-                }
-
-                // Hash password
-                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-                $stmt = $pdo->prepare("
-                    INSERT INTO users (Voornaam, Achternaam, Email, Password, DistrictID, Role, IDNumber, Status, CreatedAt)
-                    VALUES (?, ?, ?, ?, ?, 'voter', ?, 'active', NOW())
-                ");
-                $stmt->execute([$voornaam, $achternaam, $email, $hashed_password, $district_id, $id_number]);
-                $_SESSION['success_message'] = "Stemmer is succesvol toegevoegd.";
-                break;
-
-            case 'update':
-                $user_id = intval($_POST['user_id']);
-                $voornaam = $_POST['voornaam'] ?? '';
-                $achternaam = $_POST['achternaam'] ?? '';
-                $email = $_POST['email'] ?? '';
-                $password = $_POST['password'] ?? '';
-                $confirm_password = $_POST['confirm_password'] ?? '';
-                $district_id = $_POST['district_id'] ?? '';
-                $id_number = $_POST['id_number'] ?? '';
-                $status = $_POST['status'] ?? 'active';
-
-                if (empty($voornaam) || empty($achternaam) || empty($email) || empty($district_id) || empty($id_number)) {
-                    throw new Exception('Vul alle verplichte velden in.');
-                }
-
-                // Check if email already exists for other users
-                $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE Email = ? AND UserID != ?");
-                $stmt->execute([$email, $user_id]);
-                if ($stmt->fetchColumn() > 0) {
-                    throw new Exception('Dit e-mailadres is al in gebruik.');
-                }
-
-                // Check if ID number already exists for other users
-                $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE IDNumber = ? AND UserID != ?");
-                $stmt->execute([$id_number, $user_id]);
-                if ($stmt->fetchColumn() > 0) {
-                    throw new Exception('Dit ID nummer is al in gebruik.');
-                }
-
-                // Update user data
-                if (!empty($password)) {
-                    if ($password !== $confirm_password) {
-                        throw new Exception('Wachtwoorden komen niet overeen.');
-                    }
-
-                    if (strlen($password) < 8) {
-                        throw new Exception('Wachtwoord moet minimaal 8 tekens lang zijn.');
-                    }
-
-                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                    $stmt = $pdo->prepare("
-                        UPDATE users 
-                        SET Voornaam = ?, Achternaam = ?, Email = ?, Password = ?, DistrictID = ?, IDNumber = ?, Status = ?
-                        WHERE UserID = ?
-                    ");
-                    $stmt->execute([$voornaam, $achternaam, $email, $hashed_password, $district_id, $id_number, $status, $user_id]);
-                } else {
-                    $stmt = $pdo->prepare("
-                        UPDATE users 
-                        SET Voornaam = ?, Achternaam = ?, Email = ?, DistrictID = ?, IDNumber = ?, Status = ?
-                        WHERE UserID = ?
-                    ");
-                    $stmt->execute([$voornaam, $achternaam, $email, $district_id, $id_number, $status, $user_id]);
-                }
-                
-                $_SESSION['success_message'] = "Stemmer is succesvol bijgewerkt.";
-                break;
-
-            case 'delete':
-                $user_id = intval($_POST['user_id']);
-                $stmt = $pdo->prepare("DELETE FROM users WHERE UserID = ?");
-                $stmt->execute([$user_id]);
-                $_SESSION['success_message'] = "Stemmer is succesvol verwijderd.";
-                break;
-        }
-    } catch (Exception $e) {
-        $_SESSION['error_message'] = $e->getMessage();
-    }
-}
-
-// Initialize variables
-$voters = [];
-$total_votes = 0;
-$total_districts = 0;
-$total_active_voters = 0;
-
-try {
-    // Get voters with their vote counts
-    $stmt = $pdo->query("
-        SELECT u.UserID,
-               u.Voornaam,
-               u.Achternaam,
-               u.Email,
-               u.DistrictID,
-               u.Status,
-               u.CreatedAt,
-               u.IDNumber,
-               d.DistrictName,
-               COUNT(DISTINCT v.VoteID) as vote_count,
-               MAX(v.TimeStamp) as last_vote
-        FROM users u
-        LEFT JOIN districten d ON u.DistrictID = d.DistrictID
-        LEFT JOIN votes v ON u.UserID = v.UserID
-        WHERE u.Role = 'voter'
-        GROUP BY u.UserID
-        ORDER BY u.Voornaam ASC, u.Achternaam ASC
-    ");
-    $voters = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Get total votes
-    $stmt = $pdo->query("SELECT COUNT(*) FROM votes");
-    $total_votes = $stmt->fetchColumn();
-
-    // Get total districts
-    $stmt = $pdo->query("SELECT COUNT(*) FROM districten");
-    $total_districts = $stmt->fetchColumn();
-
-    // Get total active voters (voted in the last 30 days)
-    $stmt = $pdo->query("
-        SELECT COUNT(DISTINCT UserID) 
-        FROM votes 
-        WHERE TimeStamp >= DATE_SUB(NOW(), INTERVAL 30 DAY)
-    ");
-    $total_active_voters = $stmt->fetchColumn();
-} catch (PDOException $e) {
-    error_log("Database error: " . $e->getMessage());
-    $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de stemmers.";
-}
+$voters = $controller->getVoters();
+$total_votes = $controller->getTotalVotes();
+$total_districts = $controller->getTotalDistricts();
+$total_active_voters = $controller->getTotalActiveVoters();
 ?>
 <!DOCTYPE html>
 <html lang="nl">
@@ -246,8 +85,7 @@ try {
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen">
-        <!-- Include the navigation -->
-        <?php require_once 'components/nav.php'; ?>
+        <!-- Navigation is now included via layout.php -->
 
         <!-- Main Content -->
         <div class="flex-1 ml-64 p-6 overflow-y-auto">
@@ -357,8 +195,33 @@ try {
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="h-10 w-10 flex-shrink-0">
-                                                    <img class="h-10 w-10 rounded-full object-cover transform hover:scale-110 transition-transform duration-200" 
-                                                         src="<?= $voter['ProfileImage'] ?? 'https://via.placeholder.com/40' ?>" 
+                                                    <?php
+                                                    $imageSrc = 'https://via.placeholder.com/40'; // Default placeholder
+                                                    if (isset($voter['ProfileImage']) && !empty(trim($voter['ProfileImage']))) {
+                                                        // Trim whitespace, remove leading/trailing slashes, then urlencode path segments
+                                                        $trimmedPath = trim($voter['ProfileImage'], " \t\n\r\0\x0B/");
+                                                        $pathSegments = explode('/', $trimmedPath);
+                                                        $encodedPath = implode('/', array_map('rawurlencode', $pathSegments));
+                                                        
+                                                        // Ensure BASE_URL is defined and ends with a slash
+                                                        if (!defined('BASE_URL')) {
+                                                            define('BASE_URL', 'http://localhost/E-Stem_Suriname'); // Default if not defined
+                                                        }
+                                                        $baseUrl = rtrim(BASE_URL, '/');
+                                                        
+                                                        // Construct the full URL
+                                                        $imageSrc = $baseUrl . '/' . $encodedPath;
+                                                        
+                                                        // Debugging: Check if the file exists
+                                                        $absolutePath = __DIR__ . '/../../' . $trimmedPath;
+                                                        if (!file_exists($absolutePath)) {
+                                                            error_log("Voter profile image not found: " . $absolutePath);
+                                                            $imageSrc = 'https://via.placeholder.com/40'; // Fallback to placeholder
+                                                        }
+                                                    }
+                                                    ?>
+                                                    <img class="h-10 w-10 rounded-full object-cover transform hover:scale-110 transition-transform duration-200"
+                                                         src="<?= htmlspecialchars($imageSrc) ?>"
                                                          alt="<?= htmlspecialchars($voter['Voornaam'] . ' ' . $voter['Achternaam']) ?>">
                                                 </div>
                                                 <div class="ml-4">
@@ -528,3 +391,11 @@ try {
     </script>
 </body>
 </html>
+<?php
+// Get the buffered content
+// Note: ob_start() should be called at the beginning of the script if using layout this way
+// $content = ob_get_clean(); // This line might be needed depending on how layout uses $content
+
+// Include the layout template
+require_once __DIR__ . '/../../admin/components/layout.php'; 
+?>

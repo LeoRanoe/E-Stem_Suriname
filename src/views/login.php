@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../include/db_connect.php';
-require_once '../include/auth.php';
+require_once __DIR__ . '/../../include/db_connect.php'; // Corrected path
+require_once __DIR__ . '/../../include/auth.php'; // Corrected path
 
 // Check if user is already logged in
 if (isLoggedIn()) {
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-emerald-50 via-green-50 to-emerald-100">
-    <?php include '../include/nav.php'; ?>
+    <?php include __DIR__ . '/../../include/nav.php'; // Corrected path ?>
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 pt-32 pb-16">
@@ -212,6 +212,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </main>
 
-    <?php include '../include/footer.php'; ?>
+    <?php include __DIR__ . '/../../include/footer.php'; // Corrected path ?>
 </body>
 </html>

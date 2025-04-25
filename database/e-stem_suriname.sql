@@ -27,7 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `candidates` (
-  `CandidateID` bigint(20) NOT NULL,
+  `CandidateID` bigint(20) NOT NULL AUTO_INCREMENT,
   `CandidateTypeID` bigint(20) DEFAULT NULL,
   `Name` varchar(255) NOT NULL,
   `PartyID` bigint(20) NOT NULL,

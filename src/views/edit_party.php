@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../include/db_connect.php';
-require_once '../include/auth.php';
+require_once __DIR__ . '/../../include/db_connect.php'; // Corrected path
+require_once __DIR__ . '/../../include/auth.php'; // Corrected path
 
 // Check if user is logged in and is admin
 requireAdmin();
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception('Bestand is te groot. Maximum grootte is 5MB.');
             }
 
-            $upload_dir = '../uploads/parties/';
+            $upload_dir = __DIR__ . '/../../uploads/parties/'; // Use __DIR__ for reliable path
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
             }
@@ -66,9 +66,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ");
             $stmt->execute([$party_name, $logo_path, $party_id]);
 
-            // Delete old logo if exists
-            if ($old_logo && file_exists('../' . $old_logo)) {
-                unlink('../' . $old_logo);
+            // Delete old logo if exists (use absolute path based on __DIR__)
+            $old_logo_absolute_path = __DIR__ . '/../../' . $old_logo;
+            if ($old_logo && file_exists($old_logo_absolute_path)) {
+                unlink($old_logo_absolute_path);
             }
         } else {
             $stmt = $pdo->prepare("
@@ -129,8 +130,8 @@ ob_start();
                 </label>
                 <?php if ($party['Logo']): ?>
                     <div class="mt-2 mb-4">
-                        <img src="<?php echo htmlspecialchars($party['Logo']); ?>" 
-                             alt="<?php echo htmlspecialchars($party['PartyName']); ?>"
+                        <img src="<?= BASE_URL ?>/<?= htmlspecialchars($party['Logo']) ?>"
+                             alt="<?= htmlspecialchars($party['PartyName']) ?>"
                              class="h-20 w-20 object-contain rounded-lg">
                     </div>
                 <?php endif; ?>
@@ -163,5 +164,5 @@ ob_start();
 $content = ob_get_clean();
 
 // Include the layout template
-require_once 'components/layout.php';
-?> 
+require_once __DIR__ . '/../../admin/components/layout.php'; // Corrected path
+?>

@@ -8,7 +8,7 @@ requireVoter();
 
 // Check if user has an active voting session
 if (!isset($_SESSION['voting_session'])) {
-    header('Location: scan_to_vote.php');
+    header('Location: scan.php');
     exit();
 }
 
@@ -16,7 +16,7 @@ if (!isset($_SESSION['voting_session'])) {
 $session_timeout = 1800; // 30 minutes in seconds
 if (time() - $_SESSION['voting_session']['start_time'] > $session_timeout) {
     unset($_SESSION['voting_session']);
-    header('Location: scan_to_vote.php?error=session_expired');
+    header('Location: scan.php?error=session_expired');
     exit();
 }
 
@@ -278,7 +278,7 @@ try {
                         countdownElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
                         
                         if (timeLeft === 0) {
-                            window.location.href = 'scan_to_vote.php?error=session_expired';
+                            window.location.href = 'scan.php?error=session_expired';
                         } else {
                             timeLeft--;
                             setTimeout(updateTimer, 1000);
@@ -295,4 +295,4 @@ try {
         </div>
     </div>
 </body>
-</html> 
+</html>
