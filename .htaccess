@@ -1,0 +1,12 @@
+# Set PHP session configuration
+php_value session.save_handler files
+php_value session.save_path "/var/www/html/E-Stem_Suriname/var/sessions"
+php_value session.cookie_httponly 1
+php_value session.use_only_cookies 1
+php_value session.cookie_secure 0
+
+# Disable directory listing
+Options -Indexes
+
+# Set default charset
+AddDefaultCharset UTF-8

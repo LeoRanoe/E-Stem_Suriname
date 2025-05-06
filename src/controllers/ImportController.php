@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../include/db_connect.php';
-require_once __DIR__ . '/../../include/auth.php';
+require_once __DIR__ . '/../../include/admin_auth.php';
 require_once __DIR__ . '/../../include/config.php';
 
 class ImportController {

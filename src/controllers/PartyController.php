@@ -103,6 +103,7 @@ class PartyController {
             $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
             $max_size = 5 * 1024 * 1024; // 5MB
 
+            // Validate file type and size
             if (!in_array($_FILES['logo']['type'], $allowed_types)) {
                 throw new Exception('Ongeldig bestandstype. Alleen JPG, PNG en GIF zijn toegestaan.');
             }
@@ -111,24 +112,83 @@ class PartyController {
                 throw new Exception('Bestand is te groot. Maximum grootte is 5MB.');
             }
 
-            $upload_dir = __DIR__ . '/../../uploads/parties/';
-            if (!file_exists($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
+            // Validate actual file content
+            $file_info = getimagesize($_FILES['logo']['tmp_name']);
+            if (!$file_info || !in_array($file_info['mime'], $allowed_types)) {
+                throw new Exception('Bestand is geen geldige afbeelding.');
             }
 
-            $file_extension = pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION);
+            $upload_dir = __DIR__ . '/../../uploads/parties/';
+            
+            // Check parent directory permissions first
+            $parent_dir = dirname($upload_dir);
+            if (!is_dir($parent_dir)) {
+                if (!mkdir($parent_dir, 0755, true)) {
+                    $error = error_get_last();
+                    throw new Exception(sprintf(
+                        'Kon bovenliggende map niet aanmaken: %s. Fout: %s. Controleer schrijfrechten (755 nodig). Web server gebruiker: %s.',
+                        $parent_dir,
+                        $error['message'] ?? 'onbekende fout',
+                        exec('whoami')
+                    ));
+                }
+                // Explicitly set permissions in case umask affects it
+                chmod($parent_dir, 0755);
+            }
+            
+            if (!is_writable($parent_dir)) {
+                $perms = substr(sprintf('%o', fileperms($parent_dir)), -4);
+                throw new Exception(sprintf(
+                    'Bovenliggende map is niet beschrijfbaar: %s. Huidige permissies: %s. Vereiste permissies: 755. Web server gebruiker: %s. Eigenaar: %s:%s.',
+                    $parent_dir,
+                    $perms,
+                    exec('whoami'),
+                    posix_getpwuid(fileowner($parent_dir))['name'],
+                    posix_getgrgid(filegroup($parent_dir))['name']
+                ));
+            }
+
+            if (!file_exists($upload_dir)) {
+                if (!mkdir($upload_dir, 0755, true)) {
+                    $error = error_get_last();
+                    throw new Exception(sprintf(
+                        'Kon upload map niet aanmaken: %s. Fout: %s. Controleer schrijfrechten (755 nodig). Web server gebruiker: %s.',
+                        $upload_dir,
+                        $error['message'] ?? 'onbekende fout',
+                        exec('whoami')
+                    ));
+                }
+                // Explicitly set permissions in case umask affects it
+                chmod($upload_dir, 0755);
+            } elseif (!is_writable($upload_dir)) {
+                $perms = substr(sprintf('%o', fileperms($upload_dir)), -4);
+                throw new Exception(sprintf(
+                    'Upload map is niet beschrijfbaar: %s. Huidige permissies: %s. Vereiste permissies: 755. Web server gebruiker: %s. Eigenaar: %s:%s.',
+                    $upload_dir,
+                    $perms,
+                    exec('whoami'),
+                    posix_getpwuid(fileowner($upload_dir))['name'],
+                    posix_getgrgid(filegroup($upload_dir))['name']
+                ));
+            }
+
+            $file_extension = strtolower(pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION));
             $file_name = uniqid() . '.' . $file_extension;
             $target_path = $upload_dir . $file_name;
 
-            if (move_uploaded_file($_FILES['logo']['tmp_name'], $target_path)) {
-                 // Delete old logo if a new one is uploaded and the old one exists
-                if ($current_logo && file_exists(__DIR__ . '/../../' . $current_logo)) {
-                    unlink(__DIR__ . '/../../' . $current_logo);
-                }
-                $logo_path = 'uploads/parties/' . $file_name; // Relative path for DB
-            } else {
-                 throw new Exception('Kon het logo niet uploaden.');
+            if (!move_uploaded_file($_FILES['logo']['tmp_name'], $target_path)) {
+                throw new Exception('Kon het logo niet uploaden.');
             }
+
+            // Set proper permissions on uploaded file (644 allows web server read access)
+            chmod($target_path, 0644);
+
+            // Delete old logo if a new one is uploaded and the old one exists
+            if ($current_logo && file_exists(__DIR__ . '/../../' . $current_logo)) {
+                unlink(__DIR__ . '/../../' . $current_logo);
+            }
+            
+            $logo_path = 'uploads/parties/' . $file_name; // Relative path for DB
         }
         return $logo_path;
     }

@@ -4,7 +4,7 @@ require '../db.php';
 
 // Fetch districts from the database
 try {
-    $district_stmt = $conn->query("SELECT DistrictID, DistrictName FROM Districten");
+    $district_stmt = $conn->query("SELECT DistrictID, DistrictName FROM districten");
     $districts = $district_stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Database error: " . $e->getMessage());

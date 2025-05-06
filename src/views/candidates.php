@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../include/auth.php';
+require_once __DIR__ . '/../../include/admin_auth.php';
 require_once __DIR__ . '/../../include/config.php';
 require_once __DIR__ . '/../controllers/CandidateController.php';
 
@@ -11,13 +11,13 @@ $controller = new CandidateController();
 // Get data for the view
 $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $per_page = 10; // Or get from config
-$candidates = $controller->getCandidates($page, $per_page);
-$total_candidates = $controller->getTotalCandidatesCount();
-$total_pages = ceil($total_candidates / $per_page);
-$formData = $controller->getFormData();
-$elections = $formData['elections'];
-$parties = $formData['parties'];
-$districts = $formData['districts'];
+$candidates = $controller->getCandidates($page, $per_page) ?? [];
+$total_candidates = $controller->getTotalCandidatesCount() ?? 0;
+$total_pages = $total_candidates > 0 ? ceil($total_candidates / $per_page) : 1;
+$formData = $controller->getFormData() ?? [];
+$elections = isset($formData['elections']) && is_array($formData['elections']) ? $formData['elections'] : [];
+$parties = isset($formData['parties']) && is_array($formData['parties']) ? $formData['parties'] : [];
+$districts = isset($formData['districts']) && is_array($formData['districts']) ? $formData['districts'] : [];
 
 
 // Start output buffering
@@ -48,20 +48,41 @@ ob_start();
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
             <?php if (empty($candidates)): ?>
-                 <tr>
-                    <td colspan="7" class="px-6 py-4 text-center text-gray-500">
-                        Geen kandidaten gevonden
+                <tr>
+                    <td colspan="7" class="px-6 py-8 text-center">
+                        <div class="flex flex-col items-center justify-center space-y-4">
+                            <svg class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <h3 class="text-lg font-medium text-gray-900">
+                                <?= isset($_SESSION['info_message']) ? $_SESSION['info_message'] : 'Geen kandidaten gevonden' ?>
+                            </h3>
+                            <p class="text-gray-500 mb-4">
+                                <?php if ($page > 1): ?>
+                                    Probeer een vorige pagina of verfijn uw zoekopdracht.
+                                <?php else: ?>
+                                    Er zijn nog geen kandidaten geregistreerd voor dit systeem.
+                                <?php endif; ?>
+                            </p>
+                            <?php if ($page === 1): ?>
+                                <button onclick="document.getElementById('newCandidateModal').classList.remove('hidden')"
+                                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-suriname-green hover:bg-suriname-dark-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green">
+                                    <i class="fas fa-plus mr-2"></i>Voeg eerste kandidaat toe
+                                </button>
+                            <?php endif; ?>
+                        </div>
                     </td>
                 </tr>
+                <?php unset($_SESSION['info_message']); ?>
             <?php else: ?>
                 <?php foreach ($candidates as $candidate): ?>
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <?php
                                 $imageSrc = 'https://via.placeholder.com/40'; // Default placeholder
-                                if (isset($candidate['Photo']) && !empty(trim($candidate['Photo']))) { // Changed ImagePath to Photo
+                                if (!empty($candidate['Photo'] ?? '') && is_string($candidate['Photo'])) {
                                     // Trim whitespace, remove leading/trailing slashes, then urlencode path segments
-                                    $trimmedPath = trim($candidate['Photo'], " \t\n\r\0\x0B/"); // Changed ImagePath to Photo
+                                    $trimmedPath = trim($candidate['Photo'], " \t\n\r\0\x0B/");
                                     $pathSegments = explode('/', $trimmedPath);
                                     $encodedPath = implode('/', array_map('rawurlencode', $pathSegments));
                                     // Ensure BASE_URL ends with a slash and path doesn't start with one
@@ -73,30 +94,30 @@ ob_start();
                                  class="h-10 w-10 rounded-full object-cover">
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <?= htmlspecialchars($candidate['Name']) ?>
+                            <?= htmlspecialchars($candidate['Name'] ?? 'N/A') ?>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <?= htmlspecialchars($candidate['PartyName']) ?>
+                            <?= htmlspecialchars($candidate['PartyName'] ?? 'N/A') ?>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <?= htmlspecialchars($candidate['ElectionName']) ?>
+                            <?= htmlspecialchars($candidate['ElectionName'] ?? 'N/A') ?>
                         </td>
                          <td class="px-6 py-4 whitespace-nowrap">
-                            <?= htmlspecialchars($candidate['DistrictName'] ?? 'N/A') ?> <!-- Display district name -->
+                            <?= htmlspecialchars($candidate['DistrictName'] ?? 'N/A') ?>
                         </td>
                          <td class="px-6 py-4 whitespace-nowrap">
                              <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                <?= number_format($candidate['vote_count']) ?>
+                                <?= number_format($candidate['vote_count'] ?? 0) ?>
                              </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <a href="<?= BASE_URL ?>/src/views/edit_candidate.php?id=<?= $candidate['CandidateID'] ?>"
+                            <a href="<?= BASE_URL ?>/src/views/edit_candidate.php?id=<?= $candidate['CandidateID'] ?? '' ?>"
                                class="text-suriname-green hover:text-suriname-dark-green mr-3">
                                 <i class="fas fa-edit"></i>
                             </a>
                              <form action="<?= BASE_URL ?>/src/controllers/CandidateController.php" method="POST" style="display:inline;">
                                 <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="candidate_id" value="<?= $candidate['CandidateID'] ?>">
+                                <input type="hidden" name="candidate_id" value="<?= $candidate['CandidateID'] ?? '' ?>">
                                 <button type="submit"
                                         class="text-suriname-red hover:text-suriname-dark-red"
                                         onclick="return confirm('Weet u zeker dat u deze kandidaat wilt verwijderen?')">

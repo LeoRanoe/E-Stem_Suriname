@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../include/auth.php'; // Corrected path
+require_once __DIR__ . '/../../include/admin_auth.php'; // Corrected path
 require_once __DIR__ . '/../../include/config.php'; // Corrected path
 
 require_once __DIR__ . '/../controllers/VoterController.php'; // Corrected path

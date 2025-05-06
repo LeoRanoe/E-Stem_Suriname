@@ -1,12 +1,12 @@
 <?php
-require_once __DIR__ . '/../../include/auth.php'; // Corrected path
+require_once __DIR__ . '/../../include/admin_auth.php';
 require_once __DIR__ . '/../../include/config.php'; // Corrected path
 require_once __DIR__ . '/../controllers/QrCodeController.php'; // Corrected path
 
 $controller = new QrCodeController();
 
 // Check if user is logged in and is an admin
-requireAdmin();
+requireAdminLogin();
 
 $districts = $controller->getDistricts();
 $qr_codes = $controller->getQrCodesWithDetails(); // Corrected method name

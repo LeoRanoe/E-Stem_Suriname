@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../include/db_connect.php';
-require_once '../include/auth.php';
+require_once __DIR__ . '/../../include/admin_auth.php';
 
 // Check if user is logged in and is admin
 requireAdmin();

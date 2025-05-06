@@ -27,6 +27,10 @@ class CandidateController {
                     $this->createCandidate();
                     $_SESSION['success_message'] = "Kandidaat is succesvol toegevoegd.";
                     break;
+                case 'edit':
+                    $this->editCandidate();
+                    $_SESSION['success_message'] = "Kandidaat is succesvol bijgewerkt.";
+                    break;
                 case 'delete':
                     $this->deleteCandidate();
                     $_SESSION['success_message'] = "Kandidaat is succesvol verwijderd.";
@@ -43,6 +47,8 @@ class CandidateController {
     private function handleImageUpload() {
         $image_path = null;
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            error_log("File upload detected. File info: " . print_r($_FILES['image'], true));
+            
             $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
             $max_size = 5 * 1024 * 1024; // 5MB
 
@@ -55,22 +61,34 @@ class CandidateController {
             }
 
             $upload_dir = __DIR__ . '/../../uploads/candidates/';
+            
+            // Verify upload directory exists and is writable
             if (!file_exists($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
+                if (!mkdir($upload_dir, 0777, true)) {
+                    error_log("Failed to create upload directory: " . $upload_dir);
+                    throw new Exception('Kon upload directory niet aanmaken.');
+                }
+            }
+            
+            if (!is_writable($upload_dir)) {
+                error_log("Upload directory not writable: " . $upload_dir . " Permissions: " . substr(sprintf('%o', fileperms($upload_dir)), -4));
+                throw new Exception('Upload directory is niet beschrijfbaar.');
             }
 
             $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            // Use separate variables for first and last name if available, otherwise use 'name'
-            $firstName = $_POST['firstName'] ?? ''; // Assuming firstName is passed
-            $lastName = $_POST['lastName'] ?? '';   // Assuming lastName is passed
+            $firstName = $_POST['firstName'] ?? '';
+            $lastName = $_POST['lastName'] ?? '';
             $name = !empty($firstName) && !empty($lastName) ? $firstName . '_' . $lastName : ($_POST['name'] ?? 'candidate');
-            $file_name = $name . '_' . uniqid() . '.' . $file_extension; // Make filename more descriptive
+            $file_name = $name . '_' . uniqid() . '.' . $file_extension;
             $target_path = $upload_dir . $file_name;
 
+            error_log("Attempting to move uploaded file to: " . $target_path);
             if (move_uploaded_file($_FILES['image']['tmp_name'], $target_path)) {
-                $image_path = 'uploads/candidates/' . $file_name; // Relative path for DB
+                error_log("File moved successfully to: " . $target_path);
+                $image_path = 'uploads/candidates/' . $file_name;
             } else {
-                 throw new Exception('Kon de afbeelding niet uploaden.');
+                error_log("Failed to move uploaded file. Error: " . print_r(error_get_last(), true));
+                throw new Exception('Kon de afbeelding niet uploaden.');
             }
         }
         return $image_path;
@@ -120,6 +138,33 @@ class CandidateController {
         $stmt->execute([trim($name), $party_id, $election_id, $district_id, $image_path]);
     }
 
+    private function editCandidate() {
+        $candidate_id = intval($_POST['candidate_id']);
+        $name = ($_POST['firstName'] ?? '') . ' ' . ($_POST['lastName'] ?? '');
+        $party_id = intval($_POST['party_id'] ?? 0);
+        $district_id = intval($_POST['district_id'] ?? 0);
+
+        if (empty(trim($name)) || empty($party_id) || empty($district_id)) {
+            throw new Exception('Vul alle verplichte velden in (Naam, Partij, District).');
+        }
+
+        $image_path = $this->handleImageUploadForEdit($candidate_id);
+
+        $stmt = $this->pdo->prepare("
+            UPDATE candidates
+            SET Name = ?, PartyID = ?, DistrictID = ?, Photo = ?
+            WHERE CandidateID = ?
+        ");
+        error_log("Updating candidate with ID $candidate_id. New image path: " . ($image_path ?? 'null'));
+        $stmt->execute([trim($name), $party_id, $district_id, $image_path, $candidate_id]);
+        
+        // Verify update
+        $stmt = $this->pdo->prepare("SELECT Photo FROM candidates WHERE CandidateID = ?");
+        $stmt->execute([$candidate_id]);
+        $updated_image = $stmt->fetchColumn();
+        error_log("After update, candidate photo is: " . ($updated_image ?? 'null'));
+    }
+
     private function deleteCandidate() {
         $candidate_id = intval($_POST['candidate_id']);
         
@@ -147,20 +192,36 @@ class CandidateController {
                 FROM candidates c
                 LEFT JOIN parties p ON c.PartyID = p.PartyID
                 LEFT JOIN elections e ON c.ElectionID = e.ElectionID
-                LEFT JOIN districten d ON c.DistrictID = d.DistrictID -- Assuming DistrictID link
+                LEFT JOIN districten d ON c.DistrictID = d.DistrictID
                 LEFT JOIN votes v ON c.CandidateID = v.CandidateID
-                GROUP BY c.CandidateID
+                GROUP BY c.CandidateID, c.Name, c.PartyID, c.ElectionID, c.DistrictID, c.Photo, c.CreatedAt, p.PartyName, e.ElectionName, d.DistrictName
                 ORDER BY c.CreatedAt DESC
                 LIMIT ? OFFSET ?
             ");
             $stmt->bindParam(1, $per_page, PDO::PARAM_INT);
             $stmt->bindParam(2, $offset, PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            $candidates = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            if (empty($candidates)) {
+                if ($page > 1) {
+                    // No candidates on this page but there might be on previous pages
+                    $_SESSION['info_message'] = "Geen kandidaten gevonden op pagina $page.";
+                } else {
+                    // No candidates at all in the system
+                    $_SESSION['info_message'] = "Er zijn nog geen kandidaten geregistreerd.";
+                }
+            }
+            
+            return $candidates;
         } catch (PDOException $e) {
             error_log("Database error fetching candidates: " . $e->getMessage());
-            $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de kandidaten.";
-            return [];
+            $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de kandidaten: " . $e->getMessage();
+            return [
+                'error' => true,
+                'message' => 'Database error occurred'
+            ];
         }
     }
     

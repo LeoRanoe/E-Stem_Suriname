@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../include/auth.php';
+require_once __DIR__ . '/../../include/admin_auth.php';
 require_once __DIR__ . '/../../include/config.php';
 require_once __DIR__ . '/../controllers/PartyController.php';
 

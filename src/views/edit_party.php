@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../../include/db_connect.php'; // Corrected path
-require_once __DIR__ . '/../../include/auth.php'; // Corrected path
+require_once __DIR__ . '/../../include/admin_auth.php';
 
 // Check if user is logged in and is admin
 requireAdmin();

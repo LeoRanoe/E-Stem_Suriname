@@ -13,6 +13,10 @@ try {
             PDO::ATTR_EMULATE_PREPARES => false
         ]
     );
+
+    // Temporary session SQL mode to remove ONLY_FULL_GROUP_BY
+    $pdo->exec("SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'");
+
 } catch (PDOException $e) {
     // Log error and show user-friendly message
     error_log("Database connection error: " . $e->getMessage());

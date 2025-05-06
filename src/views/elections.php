@@ -1,21 +1,77 @@
 <?php
-require_once __DIR__ . '/../../include/auth.php';
-require_once __DIR__ . '/../../include/config.php';
-require_once __DIR__ . '/../controllers/ElectionController.php';
+// Verify includes are working
+if (!@require_once __DIR__ . '/../../include/admin_auth.php') {
+    die('Failed to load admin authentication');
+}
+if (!@require_once __DIR__ . '/../../include/config.php') {
+    die('Failed to load configuration');
+}
+if (!@require_once __DIR__ . '/../../include/db_connect.php') {
+    die('Failed to load database connection');
+}
 
 // Check if user is logged in and is admin
 requireAdmin();
 
-$controller = new ElectionController();
-$electionData = $controller->getElectionData();
-
-$active_elections = $electionData['active_elections'];
-$upcoming_elections = $electionData['upcoming_elections'];
-$completed_elections = $electionData['completed_elections'];
-$total_votes = $electionData['total_votes'];
-
 // Start output buffering
 ob_start();
+
+try {
+    // Get current date for status calculations
+    $currentDate = date('Y-m-d');
+
+    // Fetch all elections with candidate and vote counts
+    $stmt = $pdo->prepare("
+        SELECT
+            e.ElectionID,
+            e.ElectionName,
+            e.StartDate,
+            e.EndDate,
+            e.Status,
+            e.CreatedAt,
+            e.UpdatedAt,
+            COUNT(DISTINCT c.CandidateID) as candidate_count,
+            COUNT(DISTINCT v.VoteID) as vote_count
+        FROM elections e
+        LEFT JOIN candidates c ON e.ElectionID = c.ElectionID
+        LEFT JOIN votes v ON e.ElectionID = v.ElectionID
+        GROUP BY e.ElectionID
+        ORDER BY
+            CASE
+                WHEN e.Status = 'active' THEN 1
+                WHEN e.Status = 'upcoming' THEN 2
+                ELSE 3
+            END,
+            e.StartDate ASC
+    ");
+    $stmt->execute();
+    $allElections = $stmt->fetchAll();
+
+    // Categorize elections by status
+    $active_elections = [];
+    $upcoming_elections = [];
+    $completed_elections = [];
+    $total_votes = 0;
+
+    foreach ($allElections as $election) {
+        $total_votes += $election['vote_count'];
+        
+        if ($election['Status'] === 'active') {
+            $active_elections[] = $election;
+        } elseif ($election['Status'] === 'upcoming') {
+            $upcoming_elections[] = $election;
+        } else {
+            $completed_elections[] = $election;
+        }
+    }
+} catch (PDOException $e) {
+    error_log("Database error: " . $e->getMessage());
+    if (defined('DEVELOPMENT_MODE') && DEVELOPMENT_MODE) {
+        die("Database error: " . $e->getMessage());
+    } else {
+        die("Er is een fout opgetreden bij het ophalen van verkiezingsgegevens.");
+    }
+}
 ?>
 
 <!-- Statistics Cards -->
@@ -104,7 +160,7 @@ ob_start();
                         <tr class="hover:bg-gray-50 transition-colors duration-200">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <p class="text-sm font-medium text-gray-900"><?= htmlspecialchars($election['ElectionName']) ?></p>
-                                <p class="text-xs text-gray-500"><?= htmlspecialchars($election['Description']) ?></p>
+                                <p class="text-xs text-gray-500"><?= htmlspecialchars($election['ElectionName']) ?></p>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <p class="text-sm text-gray-900">
@@ -171,7 +227,7 @@ ob_start();
                         <tr class="hover:bg-gray-50 transition-colors duration-200">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <p class="text-sm font-medium text-gray-900"><?= htmlspecialchars($election['ElectionName']) ?></p>
-                                <p class="text-xs text-gray-500"><?= htmlspecialchars($election['Description']) ?></p>
+                                <p class="text-xs text-gray-500"><?= htmlspecialchars($election['ElectionName']) ?></p>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <p class="text-sm text-gray-900">
@@ -239,7 +295,7 @@ ob_start();
                         <tr class="hover:bg-gray-50 transition-colors duration-200">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <p class="text-sm font-medium text-gray-900"><?= htmlspecialchars($election['ElectionName']) ?></p>
-                                <p class="text-xs text-gray-500"><?= htmlspecialchars($election['Description']) ?></p>
+                                <p class="text-xs text-gray-500"><?= htmlspecialchars($election['ElectionName']) ?></p>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <p class="text-sm text-gray-900">

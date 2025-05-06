@@ -1,9 +1,12 @@
 <?php
 require_once __DIR__ . '/../../include/db_connect.php'; // Corrected path
-require_once __DIR__ . '/../../include/auth.php'; // Corrected path
+require_once __DIR__ . '/../../include/admin_auth.php'; // Corrected path
 
-// Check if user is logged in and is admin
-requireAdmin();
+// Check if admin is logged in
+if (!isAdminLoggedIn()) {
+    header('Location: ' . BASE_URL . '/admin/login.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="nl">

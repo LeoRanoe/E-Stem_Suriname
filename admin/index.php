@@ -4,10 +4,13 @@ ob_start();
 
 session_start();
 require_once '../include/db_connect.php';
-require_once '../include/auth.php';
+require_once '../include/admin_auth.php';
 
-// Check if user is logged in and is admin
-requireAdmin();
+// Check if admin is logged in
+if (!isAdminLoggedIn()) {
+    header('Location: ' . BASE_URL . '/admin/login.php');
+    exit();
+}
 
 // Initialize variables
 $user_count = 0;

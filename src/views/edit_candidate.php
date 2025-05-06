@@ -1,7 +1,7 @@
 ------------<?php
 session_start();
 require_once __DIR__ . '/../../include/db_connect.php'; // Corrected path
-require_once __DIR__ . '/../../include/auth.php'; // Corrected path
+require_once __DIR__ . '/../../include/admin_auth.php';
 
 // Check if user is logged in and is admin
 requireAdmin();
@@ -15,69 +15,34 @@ if ($candidate_id === 0) {
     exit;
 }
 
+// Initialize controller
+require_once __DIR__ . '/../../src/controllers/CandidateController.php';
+$controller = new CandidateController();
+
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $name = $_POST['name'] ?? '';
-        $party_id = intval($_POST['party_id'] ?? 0);
-        // $description = $_POST['description'] ?? ''; // Removed
-
-        if (empty($name) || empty($party_id)) {
-            throw new Exception('Vul alle verplichte velden in.');
-        }
-
-        // Handle image upload
-        $image_path = $_POST['current_image'] ?? null;
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
-            $max_size = 5 * 1024 * 1024; // 5MB
-
-            if (!in_array($_FILES['image']['type'], $allowed_types)) {
-                throw new Exception('Ongeldig bestandstype. Alleen JPG, PNG en GIF zijn toegestaan.');
-            }
-
-            if ($_FILES['image']['size'] > $max_size) {
-                throw new Exception('Bestand is te groot. Maximum grootte is 5MB.');
-            }
-
-            $upload_dir = __DIR__ . '/../../uploads/candidates/'; // Use __DIR__ for reliable path
-            if (!file_exists($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
-            }
-
-            $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            $file_name = uniqid() . '.' . $file_extension;
-            $target_path = $upload_dir . $file_name;
-
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $target_path)) {
-                // Delete old image if exists (use absolute path based on __DIR__)
-                $old_image_absolute_path = __DIR__ . '/../../' . $image_path;
-                if ($image_path && file_exists($old_image_absolute_path)) {
-                    unlink($old_image_absolute_path);
-                }
-                $image_path = 'uploads/candidates/' . $file_name; // Keep relative path for DB
-            }
-        }
-
-        $stmt = $pdo->prepare("
-            UPDATE candidates
-            SET Name = ?, PartyID = ?, Photo = ? -- Removed Description = ?
-            WHERE CandidateID = ?
-        ");
-        $stmt->execute([$name, $party_id, $image_path, $candidate_id]); // Removed $description
+        // Add action and candidate_id to POST data for controller
+        $_POST['action'] = 'edit';
+        $_POST['candidate_id'] = $candidate_id;
         
-        $_SESSION['success_message'] = "Kandidaat is succesvol bijgewerkt.";
-        header("Location: candidates.php");
+        // Let controller handle the request
+        $controller->handleRequest();
+        
+        // Redirect handled by controller
         exit;
     } catch (Exception $e) {
         $_SESSION['error_message'] = $e->getMessage();
     }
 }
 
-// Get all parties
+// Get all parties and districts
 try {
     $stmt = $pdo->query("SELECT PartyID, PartyName FROM parties ORDER BY PartyName");
     $parties = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    $stmt = $pdo->query("SELECT DistrictID, DistrictName FROM districten ORDER BY DistrictName");
+    $districts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     error_log("Database error: " . $e->getMessage());
     $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de partijen.";
@@ -88,10 +53,11 @@ try {
 // Get candidate data
 try {
     $stmt = $pdo->prepare("
-        SELECT c.*, e.ElectionName, p.PartyName, p.PartyID
+        SELECT c.*, e.ElectionName, p.PartyName, p.PartyID, d.DistrictID, d.DistrictName
         FROM candidates c
         LEFT JOIN elections e ON c.ElectionID = e.ElectionID
         LEFT JOIN parties p ON c.PartyID = p.PartyID
+        LEFT JOIN districten d ON c.DistrictID = d.DistrictID
         WHERE c.CandidateID = ?
     ");
     $stmt->execute([$candidate_id]);
@@ -167,11 +133,29 @@ ob_start();
                     <label for="election" class="block text-sm font-medium text-gray-700">
                         Verkiezing
                     </label>
-                    <input type="text" 
-                           id="election" 
+                    <input type="text"
+                           id="election"
                            value="<?= htmlspecialchars($candidate['ElectionName']) ?>"
                            disabled
                            class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 shadow-sm sm:text-sm">
+                </div>
+
+                <div>
+                    <label for="district_id" class="block text-sm font-medium text-gray-700">
+                        District
+                    </label>
+                    <select name="district_id"
+                            id="district_id"
+                            required
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
+                        <option value="">Selecteer een district</option>
+                        <?php foreach ($districts as $district): ?>
+                            <option value="<?= $district['DistrictID'] ?>"
+                                    <?= $candidate['DistrictID'] == $district['DistrictID'] ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($district['DistrictName']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
 
                 <div>
@@ -196,6 +180,8 @@ ob_start();
                                   file:bg-suriname-green file:text-white
                                   hover:file:bg-suriname-dark-green">
                     <input type="hidden" name="current_image" value="<?= htmlspecialchars($candidate['Photo']) ?>">
+                    <input type="hidden" name="firstName" value="<?= explode(' ', $candidate['Name'])[0] ?? '' ?>">
+                    <input type="hidden" name="lastName" value="<?= explode(' ', $candidate['Name'])[1] ?? '' ?>">
                     <p class="mt-1 text-sm text-gray-500">Maximaal 5MB. JPG, PNG of GIF.</p>
                 </div>
             </div>
