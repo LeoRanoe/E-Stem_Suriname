@@ -85,18 +85,36 @@ class ElectionController {
         if (empty($name) || empty($start_date) || empty($end_date)) {
             throw new Exception('Please fill all required fields.');
         }
-
-        if (strtotime($start_date) >= strtotime($end_date)) {
-            throw new Exception('End date must be after start date.');
+            try {
+                $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM elections WHERE Status = 'upcoming'");
+                $stmt->execute();
+                return $stmt->fetchColumn();
+            } catch (PDOException $e) {
+                error_log("Error getting upcoming elections count: " . $e->getMessage());
+                return 0;
+            }
         }
-
-        $stmt = $this->pdo->prepare("
-            UPDATE elections 
-            SET ElectionName = ?, Description = ?, StartDate = ?, EndDate = ?, Status = ?
-            WHERE ElectionID = ?
-        ");
-        $stmt->execute([$name, $description, $start_date, $end_date, $status, $election_id]);
-    }
+    
+        public function getCompletedElectionsCount() {
+            try {
+                $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM elections WHERE Status = 'completed'");
+                $stmt->execute();
+                return $stmt->fetchColumn();
+            } catch (PDOException $e) {
+                error_log("Error getting completed elections count: " . $e->getMessage());
+                return 0;
+            }
+        }
+    
+        public function getTotalVotesCount() {
+            try {
+                $stmt = $this->pdo->query("SELECT COUNT(*) FROM votes");
+                return $stmt->fetchColumn();
+            } catch (PDOException $e) {
+                error_log("Error getting total votes count: " . $e->getMessage());
+                return 0;
+            }
+        }
     
     private function deleteElection() {
          $election_id = intval($_POST['election_id']);
@@ -166,6 +184,29 @@ class ElectionController {
         }
         return $data;
     }
+
+    public function getActiveElectionsCount() {
+        try {
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM elections WHERE Status = 'active'");
+            $stmt->execute();
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Error getting active elections count: " . $e->getMessage());
+            return 0;
+        }
+    }
+
+    public function getUpcomingElectionsCount() {
+        try {
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM elections WHERE Status = 'upcoming'");
+            $stmt->execute();
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Error getting upcoming elections count: " . $e->getMessage());
+            return 0;
+        }
+    }
+
 }
 
 // Instantiate and handle request if accessed directly

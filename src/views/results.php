@@ -26,16 +26,60 @@ try {
         exit;
     }
     
-    // Get election details
+    // Get election details and candidate results in single optimized query
     $stmt = $pdo->prepare("
-        SELECT ElectionID, ElectionName, StartDate, EndDate, ShowResults,
-               (SELECT COUNT(*) FROM votes WHERE ElectionID = e.ElectionID) as total_votes,
-               (SELECT COUNT(DISTINCT VoterID) FROM votes WHERE ElectionID = e.ElectionID) as unique_voters
+        SELECT
+            e.ElectionID,
+            e.ElectionName,
+            e.StartDate,
+            e.EndDate,
+            e.ShowResults,
+            (SELECT COUNT(*) FROM votes WHERE ElectionID = e.ElectionID) as total_votes,
+            (SELECT COUNT(DISTINCT VoterID) FROM votes WHERE ElectionID = e.ElectionID) as unique_voters,
+            c.CandidateID,
+            c.Name as CandidateName,
+            c.Photo,
+            p.PartyName,
+            COUNT(v.VoteID) as vote_count,
+            (COUNT(v.VoteID) * 100.0 / NULLIF((SELECT COUNT(*) FROM votes WHERE ElectionID = e.ElectionID), 0)) as vote_percentage
         FROM elections e
-        WHERE ElectionID = ?
+        LEFT JOIN candidates c ON c.ElectionID = e.ElectionID
+        LEFT JOIN parties p ON c.PartyID = p.PartyID
+        LEFT JOIN votes v ON c.CandidateID = v.CandidateID AND v.ElectionID = e.ElectionID
+        WHERE e.ElectionID = ?
+        GROUP BY
+            e.ElectionID, e.ElectionName, e.StartDate, e.EndDate, e.ShowResults,
+            c.CandidateID, c.Name, c.Photo, p.PartyName
+        ORDER BY vote_count DESC
     ");
     $stmt->execute([$election_id]);
-    $election = $stmt->fetch(PDO::FETCH_ASSOC);
+    $results = [];
+    $election = null;
+    
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if (!$election) {
+            $election = [
+                'ElectionID' => $row['ElectionID'],
+                'ElectionName' => $row['ElectionName'],
+                'StartDate' => $row['StartDate'],
+                'EndDate' => $row['EndDate'],
+                'ShowResults' => $row['ShowResults'],
+                'total_votes' => $row['total_votes'],
+                'unique_voters' => $row['unique_voters']
+            ];
+        }
+        
+        if ($row['CandidateID']) {
+            $results[] = [
+                'CandidateID' => $row['CandidateID'],
+                'CandidateName' => $row['CandidateName'],
+                'Photo' => $row['Photo'],
+                'PartyName' => $row['PartyName'],
+                'vote_count' => $row['vote_count'],
+                'vote_percentage' => $row['vote_percentage']
+            ];
+        }
+    }
     
     if (!$election) {
         $_SESSION['error_message'] = "Verkiezing niet gevonden.";
@@ -49,25 +93,6 @@ try {
         header("Location: " . BASE_URL);
         exit;
     }
-    
-    // Get results per candidate
-    $stmt = $pdo->prepare("
-        SELECT 
-            c.CandidateID,
-            c.Name as CandidateName,
-            c.Photo,
-            p.PartyName,
-            COUNT(v.VoteID) as vote_count,
-            (COUNT(v.VoteID) * 100.0 / NULLIF((SELECT COUNT(*) FROM votes WHERE ElectionID = ?), 0)) as vote_percentage
-        FROM candidates c
-        LEFT JOIN parties p ON c.PartyID = p.PartyID
-        LEFT JOIN votes v ON c.CandidateID = v.CandidateID AND v.ElectionID = ?
-        WHERE c.ElectionID = ?
-        GROUP BY c.CandidateID, c.Name, c.Photo, p.PartyName
-        ORDER BY vote_count DESC
-    ");
-    $stmt->execute([$election_id, $election_id, $election_id]);
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Get results per district
     $stmt = $pdo->prepare("

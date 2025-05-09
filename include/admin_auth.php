@@ -1,6 +1,6 @@
 <?php
 // Development mode - bypass authentication
-define('DEVELOPMENT_MODE', true);
+define('DEVELOPMENT_MODE', false);
 
 function isAdminLoggedIn() {
     if (DEVELOPMENT_MODE) {

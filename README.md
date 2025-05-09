@@ -43,4 +43,3 @@ Follow these steps to set up the project locally:
 For questions or suggestions, reach out via lranoesendjojo@gmail.com or open an issue on GitHub.
 
 Enjoy and thanks for contributing! 🚀
-

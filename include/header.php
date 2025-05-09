@@ -15,28 +15,62 @@ require_once __DIR__ . '/config.php';
                 extend: {
                     colors: {
                         'suriname': {
-                            'green': '#377E3F', // Primary actions, key elements
-                            'red': '#B40A2D',   // Secondary actions, warnings
-                            'yellow': '#FFD700', // Accents, highlights
+                            'green': '#007749',
+                            'dark-green': '#006241',
+                            'red': '#C8102E',
+                            'dark-red': '#a50d26',
                         },
                     },
                     animation: {
-                        'slide-down': 'slideDown 0.3s ease-out',
-                        'fade-in': 'fadeIn 0.3s ease-out',
+                        'fade-in': 'fadeIn 0.5s ease-out',
+                        'slide-in': 'slideIn 0.3s ease-out',
                     },
                     keyframes: {
-                        slideDown: {
-                            '0%': { transform: 'translateY(-10px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
                         fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
+                            from: { opacity: 0, transform: 'translateY(-10px)' },
+                            to: { opacity: 1, transform: 'translateY(0)' }
                         },
+                        slideIn: {
+                            from: { transform: 'translateX(-20px)', opacity: 0 },
+                            to: { transform: 'translateX(0)', opacity: 1 }
+                        }
                     },
                 },
             },
         }
     </script>
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #007749;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #006241;
+        }
+
+        /* Table Hover Effect */
+        .hover-row:hover td {
+            background-color: #f8f8f8;
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }
+
+        /* Button Hover Effect */
+        .btn-hover {
+            transition: all 0.3s ease;
+        }
+        .btn-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
-<body> 
+<body class="bg-gray-100">

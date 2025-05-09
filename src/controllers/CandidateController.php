@@ -121,8 +121,8 @@ class CandidateController {
         $name = ($_POST['firstName'] ?? '') . ' ' . ($_POST['lastName'] ?? ''); // Combine names
         $party_id = intval($_POST['party_id'] ?? 0);
         $election_id = intval($_POST['election_id'] ?? 0);
-        $district_id = intval($_POST['district_id'] ?? 0); // Assuming district_id is needed
-        // $description = $_POST['description'] ?? ''; // Description seems missing in modal form
+        $district_id = intval($_POST['district_id'] ?? 0);
+        $candidate_type = $_POST['candidate_type'] ?? 'RR';
 
         if (empty(trim($name)) || empty($election_id) || empty($party_id) || empty($district_id)) {
             throw new Exception('Vul alle verplichte velden in (Naam, Partij, Verkiezing, District).');
@@ -131,11 +131,10 @@ class CandidateController {
         $image_path = $this->handleImageUpload();
 
         $stmt = $this->pdo->prepare("
-            INSERT INTO candidates (Name, PartyID, ElectionID, DistrictID, Photo, CreatedAt) -- Changed ImagePath to Photo
-            VALUES (?, ?, ?, ?, ?, NOW())
+            INSERT INTO candidates (Name, PartyID, ElectionID, DistrictID, CandidateType, Photo, CreatedAt)
+            VALUES (?, ?, ?, ?, ?, ?, NOW())
         ");
-        // Note: Added DistrictID, removed Description as it wasn't in the modal
-        $stmt->execute([trim($name), $party_id, $election_id, $district_id, $image_path]);
+        $stmt->execute([trim($name), $party_id, $election_id, $district_id, $candidate_type, $image_path]);
     }
 
     private function editCandidate() {
@@ -143,6 +142,7 @@ class CandidateController {
         $name = ($_POST['firstName'] ?? '') . ' ' . ($_POST['lastName'] ?? '');
         $party_id = intval($_POST['party_id'] ?? 0);
         $district_id = intval($_POST['district_id'] ?? 0);
+        $candidate_type = $_POST['candidate_type'] ?? 'RR';
 
         if (empty(trim($name)) || empty($party_id) || empty($district_id)) {
             throw new Exception('Vul alle verplichte velden in (Naam, Partij, District).');
@@ -152,11 +152,11 @@ class CandidateController {
 
         $stmt = $this->pdo->prepare("
             UPDATE candidates
-            SET Name = ?, PartyID = ?, DistrictID = ?, Photo = ?
+            SET Name = ?, PartyID = ?, DistrictID = ?, CandidateType = ?, Photo = ?
             WHERE CandidateID = ?
         ");
         error_log("Updating candidate with ID $candidate_id. New image path: " . ($image_path ?? 'null'));
-        $stmt->execute([trim($name), $party_id, $district_id, $image_path, $candidate_id]);
+        $stmt->execute([trim($name), $party_id, $district_id, $candidate_type, $image_path, $candidate_id]);
         
         // Verify update
         $stmt = $this->pdo->prepare("SELECT Photo FROM candidates WHERE CandidateID = ?");
@@ -183,9 +183,28 @@ class CandidateController {
         }
     }
 
-    public function getCandidates($page = 1, $per_page = 10) {
+    public function getCandidates($page = 1, $per_page = 10, $filters = []) {
         $offset = ($page - 1) * $per_page;
         try {
+            $where = [];
+            $params = [];
+            
+            // Build WHERE clauses based on filters
+            if (!empty($filters['district_id'])) {
+                $where[] = "c.DistrictID = ?";
+                $params[] = $filters['district_id'];
+            }
+            if (!empty($filters['party_id'])) {
+                $where[] = "c.PartyID = ?";
+                $params[] = $filters['party_id'];
+            }
+            if (!empty($filters['candidate_type'])) {
+                $where[] = "c.CandidateType = ?";
+                $params[] = $filters['candidate_type'];
+            }
+            
+            $whereClause = $where ? "WHERE " . implode(" AND ", $where) : "";
+            
             $stmt = $this->pdo->prepare("
                 SELECT c.*, p.PartyName, e.ElectionName, d.DistrictName,
                        COUNT(v.VoteID) as vote_count
@@ -194,13 +213,16 @@ class CandidateController {
                 LEFT JOIN elections e ON c.ElectionID = e.ElectionID
                 LEFT JOIN districten d ON c.DistrictID = d.DistrictID
                 LEFT JOIN votes v ON c.CandidateID = v.CandidateID
-                GROUP BY c.CandidateID, c.Name, c.PartyID, c.ElectionID, c.DistrictID, c.Photo, c.CreatedAt, p.PartyName, e.ElectionName, d.DistrictName
+                $whereClause
+                GROUP BY c.CandidateID, c.Name, c.PartyID, c.ElectionID, c.DistrictID, c.CandidateType, c.Photo, c.CreatedAt, p.PartyName, e.ElectionName, d.DistrictName
                 ORDER BY c.CreatedAt DESC
                 LIMIT ? OFFSET ?
             ");
-            $stmt->bindParam(1, $per_page, PDO::PARAM_INT);
-            $stmt->bindParam(2, $offset, PDO::PARAM_INT);
-            $stmt->execute();
+            
+            // Add pagination parameters
+            $params[] = $per_page;
+            $params[] = $offset;
+            $stmt->execute($params);
             
             $candidates = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
@@ -225,12 +247,32 @@ class CandidateController {
         }
     }
     
-    public function getTotalCandidatesCount() {
-         try {
-            $stmt = $this->pdo->query("SELECT COUNT(*) FROM candidates");
+    public function getTotalCandidatesCount($filters = []) {
+        try {
+            $where = [];
+            $params = [];
+            
+            if (!empty($filters['district_id'])) {
+                $where[] = "DistrictID = ?";
+                $params[] = $filters['district_id'];
+            }
+            if (!empty($filters['party_id'])) {
+                $where[] = "PartyID = ?";
+                $params[] = $filters['party_id'];
+            }
+            if (!empty($filters['candidate_type'])) {
+                $where[] = "CandidateType = ?";
+                $params[] = $filters['candidate_type'];
+            }
+            
+            $whereClause = $where ? "WHERE " . implode(" AND ", $where) : "";
+            $sql = "SELECT COUNT(*) FROM candidates $whereClause";
+            
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute($params);
             return $stmt->fetchColumn();
         } catch (PDOException $e) {
-             error_log("Database error fetching total candidates: " . $e->getMessage());
+            error_log("Database error fetching total candidates: " . $e->getMessage());
             return 0;
         }
     }

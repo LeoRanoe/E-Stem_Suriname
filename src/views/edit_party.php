@@ -19,6 +19,7 @@ if ($party_id === 0) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $party_name = $_POST['partyName'] ?? '';
+        $description = $_POST['description'] ?? null; // Added
 
         if (empty($party_name)) {
             throw new Exception('Vul alle verplichte velden in.');
@@ -58,27 +59,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $old_logo = $stmt->fetchColumn();
 
         // Update party
-        if ($logo_path) {
-            $stmt = $pdo->prepare("
-                UPDATE parties 
-                SET PartyName = ?, Logo = ?
-                WHERE PartyID = ?
-            ");
-            $stmt->execute([$party_name, $logo_path, $party_id]);
+        // Update party
+        $sql = "UPDATE parties SET PartyName = ?, Description = ?";
+        $params = [$party_name, $description];
 
+        if ($logo_path) {
+            $sql .= ", Logo = ?";
+            $params[] = $logo_path;
+            
             // Delete old logo if exists (use absolute path based on __DIR__)
             $old_logo_absolute_path = __DIR__ . '/../../' . $old_logo;
             if ($old_logo && file_exists($old_logo_absolute_path)) {
                 unlink($old_logo_absolute_path);
             }
-        } else {
-            $stmt = $pdo->prepare("
-                UPDATE parties 
-                SET PartyName = ?
-                WHERE PartyID = ?
-            ");
-            $stmt->execute([$party_name, $party_id]);
         }
+        
+        $sql .= " WHERE PartyID = ?";
+        $params[] = $party_id;
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
 
         $_SESSION['success_message'] = "Partij is succesvol bijgewerkt.";
         header('Location: parties.php');
@@ -122,11 +122,19 @@ ob_start();
                 <input type="text" name="partyName" id="partyName" required
                        value="<?php echo htmlspecialchars($party['PartyName']); ?>"
                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green">
-            </div>
+           </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700" for="logo">
-                    Logo
+           <div>
+               <label class="block text-sm font-medium text-gray-700" for="description">
+                   Beschrijving
+               </label>
+               <textarea name="description" id="description" rows="4"
+                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green"><?php echo htmlspecialchars($party['Description'] ?? ''); ?></textarea>
+           </div>
+
+           <div>
+               <label class="block text-sm font-medium text-gray-700" for="logo">
+                   Logo
                 </label>
                 <?php if ($party['Logo']): ?>
                     <div class="mt-2 mb-4">

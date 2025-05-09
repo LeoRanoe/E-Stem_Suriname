@@ -16,7 +16,7 @@ if (!isAdminLoggedIn()) {
     <title>Admin Dashboard - <?= SITE_NAME ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
     <style>
         /* Custom Animations */
         @keyframes fadeIn {
@@ -97,11 +97,10 @@ if (!isAdminLoggedIn()) {
 </head>
 <body class="bg-gray-100">
     <div class="flex h-screen">
-        <?php require_once __DIR__ . '/nav.php'; // Updated path to new nav component ?>
+        <?php include 'nav.php'; ?>
 
-        <!-- Main Content -->
-        <!-- Main Content: Added id="main-content" and updated margin for collapsible sidebar -->
-        <div id="main-content" class="flex-1 ml-16 lg:ml-64 p-6 overflow-y-auto transition-all duration-300 ease-in-out">
+        <!-- Main Content - Updated for responsive sidebar -->
+        <div id="main-content" class="flex-1 transition-all duration-300 ease-in-out ml-16 p-6 overflow-y-auto" style="transition-property: margin; transition-duration: 300ms;">
             <?php if (isset($_SESSION['success_message'])): ?>
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 animate-fade-in" role="alert">
                     <span class="block sm:inline"><?= $_SESSION['success_message'] ?></span>
@@ -157,5 +156,9 @@ if (!isAdminLoggedIn()) {
             button.classList.add('btn-hover');
         });
     </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+<script src="<?php echo BASE_URL; ?>/assets/js/sidebar.js"></script>
+<script src="<?php echo BASE_URL; ?>/assets/js/candidates.js"></script>
+<script src="../assets/js/admin-dashboard.js" defer></script>
 </body>
 </html> 

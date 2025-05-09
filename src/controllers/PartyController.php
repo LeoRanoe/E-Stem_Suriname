@@ -25,6 +25,7 @@ class PartyController {
     private function handlePostRequest() {
         try {
             $party_name = $_POST['party_name'] ?? '';
+            $party_description = $_POST['description'] ?? null; // Added
             $party_id = isset($_POST['party_id']) ? intval($_POST['party_id']) : 0;
 
             if (empty($party_name)) {
@@ -36,11 +37,11 @@ class PartyController {
 
             if ($party_id > 0) {
                 // Update existing party
-                $this->updateParty($party_id, $party_name, $logo_path);
+                $this->updateParty($party_id, $party_name, $logo_path, $party_description);
                 $_SESSION['success_message'] = "Partij is succesvol bijgewerkt.";
             } else {
                 // Create new party
-                $this->createParty($party_name, $logo_path);
+                $this->createParty($party_name, $logo_path, $party_description);
                 $_SESSION['success_message'] = "Partij is succesvol toegevoegd.";
             }
 
@@ -193,9 +194,9 @@ class PartyController {
         return $logo_path;
     }
 
-    private function updateParty($party_id, $party_name, $logo_path) {
-         $sql = "UPDATE parties SET PartyName = ?";
-         $params = [$party_name];
+    private function updateParty($party_id, $party_name, $logo_path, $description) {
+         $sql = "UPDATE parties SET PartyName = ?, Description = ?";
+         $params = [$party_name, $description];
          
          if ($logo_path !== null) { // Only update logo if a new one was uploaded or explicitly set
              $sql .= ", Logo = ?";
@@ -209,24 +210,25 @@ class PartyController {
          $stmt->execute($params);
     }
 
-    private function createParty($party_name, $logo_path) {
+    private function createParty($party_name, $logo_path, $description) {
         $stmt = $this->pdo->prepare("
-            INSERT INTO parties (PartyName, Logo, CreatedAt)
-            VALUES (?, ?, NOW())
+            INSERT INTO parties (PartyName, Logo, Description, CreatedAt)
+            VALUES (?, ?, ?, NOW())
         ");
-        $stmt->execute([$party_name, $logo_path]);
+        $stmt->execute([$party_name, $logo_path, $description]);
     }
 
     public function getPartiesData() {
         try {
+            // Added Description to SELECT
             $stmt = $this->pdo->query("
-                SELECT p.*, 
+                SELECT p.*,
                        COUNT(c.CandidateID) as candidate_count,
                        GROUP_CONCAT(DISTINCT e.ElectionName) as elections
                 FROM parties p
                 LEFT JOIN candidates c ON p.PartyID = c.PartyID
                 LEFT JOIN elections e ON c.ElectionID = e.ElectionID
-                GROUP BY p.PartyID
+                GROUP BY p.PartyID, p.Description -- Added p.Description to GROUP BY
                 ORDER BY p.PartyName ASC
             ");
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
