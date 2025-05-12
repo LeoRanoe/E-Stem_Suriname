@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/../include/config.php';
 require_once __DIR__ . '/../include/admin_auth.php';
+require_once __DIR__ . '/../include/db_connect.php'; // Include database connection
 
 // Check if admin is already logged in
 if (isAdminLoggedIn()) {
