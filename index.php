@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'include/db_connect.php';
-
+//test
 // Fetch latest news
 try {
     $news_stmt = $pdo->query("SELECT * FROM news WHERE Status = 'published' ORDER BY DatePosted DESC LIMIT 3");
