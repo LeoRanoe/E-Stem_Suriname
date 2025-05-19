@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../include/db_connect.php';
+require_once __DIR__ . '/../../include/db_connect.php';
 require_once __DIR__ . '/../../include/admin_auth.php';
 
 // Check if user is logged in and is admin
@@ -71,7 +71,7 @@ ob_start();
 <div class="max-w-3xl mx-auto">
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold text-gray-900">Verkiezing Bewerken</h1>
-        <a href="elections.php" 
+        <a href="elections.php"
            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-600 hover:bg-gray-700">
             <i class="fas fa-arrow-left mr-2"></i>
             Terug naar overzicht
@@ -94,7 +94,7 @@ ob_start();
                 <input type="text" 
                        name="name" 
                        id="name" 
-                       value="<?= htmlspecialchars($election['ElectionName']) ?>"
+                       value="<?= htmlspecialchars($election['ElectionName'] ?? '') ?>"
                        required
                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm">
             </div>
@@ -106,7 +106,7 @@ ob_start();
                 <textarea name="description" 
                           id="description" 
                           rows="3"
-                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm"><?= htmlspecialchars($election['Description']) ?></textarea>
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-suriname-green focus:ring-suriname-green sm:text-sm"><?= htmlspecialchars($election['Description'] ?? '') ?></textarea>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -151,5 +151,5 @@ ob_start();
 $content = ob_get_clean();
 
 // Include the layout template
-require_once 'components/layout.php';
-?> 
+require_once __DIR__ . '/../../admin/components/layout.php';
+?>

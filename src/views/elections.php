@@ -199,7 +199,7 @@ try {
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
                                             <?php if ($status_type === 'active' || $status_type === 'upcoming'): ?>
-                                                <a href="<?= $base_url ?>/admin/edit_election.php?id=<?= $election['ElectionID'] ?>" 
+                                                <a href="edit_election.php?id=<?= $election['ElectionID'] ?>" 
                                                    class="text-blue-600 hover:text-blue-800 transition-colors duration-150" title="Bewerk Verkiezing">
                                                     <i class="fas fa-edit fa-fw"></i>
                                                 </a>
