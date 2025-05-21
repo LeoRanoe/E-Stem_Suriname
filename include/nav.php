@@ -62,7 +62,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <div class="hidden sm:ml-6 sm:flex sm:items-center">
                 <?php if (isset($_SESSION['User ID'])): ?>
                     <?php if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin']): ?>
-                        <a href="<?= BASE_URL ?>/admin/dashboard.php" 
+                        <a href="<?= BASE_URL ?>/admin/controllers/LoginController.php"
                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-green hover:bg-suriname-dark-green shadow-md">
                             <i class="fas fa-cog mr-2"></i>
                             Admin Dashboard
@@ -125,7 +125,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <?php endif; ?>
             <?php if (isset($_SESSION['User ID'])): ?>
                 <?php if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin']): ?>
-                    <a href="<?= BASE_URL ?>/admin/dashboard.php" 
+                    <a href="<?= BASE_URL ?>/admin/controllers/LoginController.php"
                        class="text-gray-500 hover:bg-suriname-green hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                         <i class="fas fa-cog mr-2"></i>
                         Admin Dashboard

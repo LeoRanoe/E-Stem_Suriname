@@ -3,6 +3,8 @@ session_start();
 require_once '../include/db_connect.php';
 require_once '../include/auth.php';
 require_once '../include/config.php';
+require_once '../controller/QrCodeController.php';
+use App\Controller\QrCodeController;
 
 // Check if user is logged in
 if (!isLoggedIn()) {
@@ -13,43 +15,23 @@ if (!isLoggedIn()) {
 // Get current user's data
 $currentUser = getCurrentUser();
 
+// Initialize QR Code Controller
+$qrController = new QrCodeController($pdo);
+
 // Handle QR code verification
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qr_token'])) {
     $qrToken = filter_input(INPUT_POST, 'qr_token', FILTER_SANITIZE_STRING);
     
     try {
-        // Check if QR code exists and is valid
-        $stmt = $pdo->prepare("
-            SELECT q.*, u.Username, e.ElectionName, e.ElectionID
-            FROM qrcodes q
-            JOIN users u ON q.UserID = u.UserID
-            JOIN elections e ON q.ElectionID = e.ElectionID
-            WHERE q.Token = ? AND q.Status = 'active'
-        ");
-        $stmt->execute([$qrToken]);
-        $qrCode = $stmt->fetch(PDO::FETCH_ASSOC);
+        $qrCode = $qrController->validateQrCode($qrToken);
         
         if ($qrCode) {
-            // Check if user has already voted in this election
-            $stmt = $pdo->prepare("
-                SELECT COUNT(*) FROM votes 
-                WHERE UserID = ? AND ElectionID = ?
-            ");
-            $stmt->execute([$currentUser['UserID'], $qrCode['ElectionID']]);
-            $hasVoted = $stmt->fetchColumn() > 0;
+            $hasVoted = $qrController->hasUserVoted($currentUser['UserID'], $qrCode['ElectionID']);
             
             if ($hasVoted) {
                 $_SESSION['error'] = "You have already voted in this election.";
             } else {
-                // Mark QR code as used
-                $stmt = $pdo->prepare("
-                    UPDATE qrcodes 
-                    SET Status = 'used', UsedAt = NOW() 
-                    WHERE QRCodeID = ?
-                ");
-                $stmt->execute([$qrCode['QRCodeID']]);
-                
-                // Redirect to voting page
+                $qrController->markQrCodeAsUsed($qrCode['QRCodeID']);
                 $_SESSION['election_id'] = $qrCode['ElectionID'];
                 header("Location: vote.php");
                 exit();
