@@ -1,3 +1,65 @@
+<?php
+session_start();
+require_once __DIR__ . '/../include/db_connect.php';
+require_once __DIR__ . '/../include/auth.php'; // Assuming this handles user authentication
+
+// Check if user is logged in and has voted
+$user_id = $_SESSION['user_id'] ?? null;
+if (!$user_id) {
+    // Redirect to login or show message
+    header("Location: login.php");
+    exit;
+}
+
+// Check if user has voted
+$stmt_vote_check = $pdo->prepare("SELECT COUNT(*) FROM votes WHERE UserID = ?");
+$stmt_vote_check->execute([$user_id]);
+$has_voted = $stmt_vote_check->fetchColumn() > 0;
+
+if (!$has_voted) {
+    $message = "U kunt de resultaten pas zien nadat u heeft gestemd.";
+}
+
+function fetchElectionResults($pdo, $election_type) {
+    // Fetch candidates and votes for the given election type (e.g., 'DNA' or 'RR')
+    $sql = "
+        SELECT c.CandidateID, c.Name, c.PartyID, p.PartyName, c.DistrictID, d.DistrictName, c.Photo,
+               COUNT(v.VoteID) AS vote_count
+        FROM candidates c
+        LEFT JOIN parties p ON c.PartyID = p.PartyID
+        LEFT JOIN districten d ON c.DistrictID = d.DistrictID
+        LEFT JOIN votes v ON c.CandidateID = v.CandidateID
+        WHERE c.CandidateType = ?
+        GROUP BY c.CandidateID, c.Name, c.PartyID, p.PartyName, c.DistrictID, d.DistrictName, c.Photo
+        ORDER BY vote_count DESC
+    ";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$election_type]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+$dna_results = [];
+$resorts_results = [];
+if ($has_voted) {
+    $dna_results = fetchElectionResults($pdo, 'DNA');
+    $resorts_results = fetchElectionResults($pdo, 'RR');
+}
+
+// Prepare data for charts
+function prepareChartData($results) {
+    $labels = [];
+    $votes = [];
+    foreach ($results as $candidate) {
+        $labels[] = htmlspecialchars($candidate['Name']);
+        $votes[] = (int)$candidate['vote_count'];
+    }
+    return ['labels' => $labels, 'votes' => $votes];
+}
+
+$dna_chart_data = prepareChartData($dna_results);
+$resorts_chart_data = prepareChartData($resorts_results);
+
+?>
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -15,25 +77,28 @@
     </nav>
 
     <header>
-        <h1 class="text-2xl mb-1">Hello, <span id="username" class="font-semibold">[Gebruikersnaam]</span>.</h1>
-        <p class="text-gray-600 mb-5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt</p>
+        <h1 class="text-2xl mb-1">Hello, <span id="username" class="font-semibold"><?= htmlspecialchars($_SESSION['username'] ?? 'Gebruiker') ?></span>.</h1>
+        <p class="text-gray-600 mb-5">Hier ziet u de resultaten van de verkiezingen.</p>
     </header>
+
+    <?php if (!$has_voted): ?>
+        <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative mb-10" role="alert">
+            <strong class="font-bold">Info:</strong>
+            <span class="block sm:inline"><?= $message ?></span>
+        </div>
+    <?php else: ?>
 
     <div class="flex justify-between bg-white p-5 rounded-lg shadow mb-10">
         <div class="flex-1 mx-3 text-center">
             <h3 class="text-lg font-semibold text-green-700 mb-3">Jouw stem</h3>
-            <div>
-                <img src="https://via.placeholder.com/80" alt="Kandidaat 1" class="mx-auto rounded-full mb-2" />
-                <div><strong>Naam</strong></div>
-                <div>Politieke partij</div>
-                <div>District</div>
-            </div>
-            <div class="mt-4">
-                <img src="https://via.placeholder.com/80" alt="Kandidaat 2" class="mx-auto rounded-full mb-2" />
-                <div><strong>Naam</strong></div>
-                <div>Politieke partij</div>
-                <div>District</div>
-            </div>
+            <?php foreach ($dna_results as $candidate): ?>
+                <div>
+                    <img src="<?= htmlspecialchars($candidate['Photo'] ?: 'https://via.placeholder.com/80') ?>" alt="<?= htmlspecialchars($candidate['Name']) ?>" class="mx-auto rounded-full mb-2" />
+                    <div><strong><?= htmlspecialchars($candidate['Name']) ?></strong></div>
+                    <div><?= htmlspecialchars($candidate['PartyName']) ?></div>
+                    <div><?= htmlspecialchars($candidate['DistrictName']) ?></div>
+                </div>
+            <?php endforeach; ?>
         </div>
         <div class="flex-1 mx-3">
             <h3 class="text-lg font-semibold text-green-700 mb-3 text-center">Kleine nieuws sectie</h3>
@@ -58,6 +123,12 @@
             <label for="dna-filter" class="mr-2 font-semibold">Filter:</label>
             <select id="dna-filter" class="border border-gray-300 rounded px-3 py-1 text-sm">
                 <option value="all">Alle Politieke Partijen</option>
+                <?php
+                $dna_parties = array_unique(array_map(function($c) { return $c['PartyName']; }, $dna_results));
+                foreach ($dna_parties as $party) {
+                    echo '<option value="' . htmlspecialchars($party) . '">' . htmlspecialchars($party) . '</option>';
+                }
+                ?>
             </select>
         </div>
         <div class="max-w-3xl mx-auto">
@@ -71,6 +142,12 @@
             <label for="resorts-filter" class="mr-2 font-semibold">Filter:</label>
             <select id="resorts-filter" class="border border-gray-300 rounded px-3 py-1 text-sm">
                 <option value="all">Alle Resortsraden</option>
+                <?php
+                $resorts_parties = array_unique(array_map(function($c) { return $c['PartyName']; }, $resorts_results));
+                foreach ($resorts_parties as $party) {
+                    echo '<option value="' . htmlspecialchars($party) . '">' . htmlspecialchars($party) . '</option>';
+                }
+                ?>
             </select>
         </div>
         <div class="max-w-3xl mx-auto">
@@ -83,51 +160,37 @@
     <div class="flex max-w-3xl mx-auto justify-between">
         <div class="flex-1 bg-white p-5 rounded-lg shadow mx-2" id="dna-top-candidates">
             <h3 class="text-lg font-semibold mb-4">De Nationale Assemblée</h3>
+            <?php foreach ($dna_results as $candidate): ?>
+                <div class="candidate-item flex items-center mb-3">
+                    <img src="<?= htmlspecialchars($candidate['Photo'] ?: 'https://via.placeholder.com/50') ?>" alt="<?= htmlspecialchars($candidate['Name']) ?>" class="mr-3 rounded-full" />
+                    <div>
+                        <div class="candidate-name font-semibold"><?= htmlspecialchars($candidate['Name']) ?></div>
+                        <div class="candidate-party text-sm text-gray-600"><?= htmlspecialchars($candidate['PartyName']) ?></div>
+                        <div class="progress-bar-container bg-gray-200 rounded h-2 mt-1 w-48">
+                            <div class="progress-bar bg-green-600 h-2 rounded" style="width: <?= $candidate['vote_count'] > 0 ? min(100, ($candidate['vote_count'] / max(array_column($dna_results, 'vote_count'))) * 100) : 0 ?>%;"></div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
         <div class="flex-1 bg-white p-5 rounded-lg shadow mx-2" id="resorts-top-candidates">
             <h3 class="text-lg font-semibold mb-4">Resortsraden</h3>
+            <?php foreach ($resorts_results as $candidate): ?>
+                <div class="candidate-item flex items-center mb-3">
+                    <img src="<?= htmlspecialchars($candidate['Photo'] ?: 'https://via.placeholder.com/50') ?>" alt="<?= htmlspecialchars($candidate['Name']) ?>" class="mr-3 rounded-full" />
+                    <div>
+                        <div class="candidate-name font-semibold"><?= htmlspecialchars($candidate['Name']) ?></div>
+                        <div class="candidate-party text-sm text-gray-600"><?= htmlspecialchars($candidate['PartyName']) ?></div>
+                        <div class="progress-bar-container bg-gray-200 rounded h-2 mt-1 w-48">
+                            <div class="progress-bar bg-green-600 h-2 rounded" style="width: <?= $candidate['vote_count'] > 0 ? min(100, ($candidate['vote_count'] / max(array_column($resorts_results, 'vote_count'))) * 100) : 0 ?>%;"></div>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
 
     <script>
-        // Mock data for DNA candidates
-        const dnaCandidates = [
-            { id: 1, name: "Naam 1", party: "Partij A", district: "District 1", votes: 120, img: "https://via.placeholder.com/50" },
-            { id: 2, name: "Naam 2", party: "Partij B", district: "District 2", votes: 200, img: "https://via.placeholder.com/50" },
-            { id: 3, name: "Naam 3", party: "Partij A", district: "District 3", votes: 150, img: "https://via.placeholder.com/50" },
-            { id: 4, name: "Naam 4", party: "Partij C", district: "District 4", votes: 90, img: "https://via.placeholder.com/50" }
-        ];
-
-        // Mock data for Resortsraden candidates
-        const resortsCandidates = [
-            { id: 1, name: "Naam A", party: "Resort 1", votes: 180, img: "https://via.placeholder.com/50" },
-            { id: 2, name: "Naam B", party: "Resort 2", votes: 220, img: "https://via.placeholder.com/50" },
-            { id: 3, name: "Naam C", party: "Resort 1", votes: 130, img: "https://via.placeholder.com/50" },
-            { id: 4, name: "Naam D", party: "Resort 3", votes: 160, img: "https://via.placeholder.com/50" }
-        ];
-
-        // Populate filter dropdowns
-        function populateFilterOptions() {
-            const dnaFilter = document.getElementById('dna-filter');
-            const resortsFilter = document.getElementById('resorts-filter');
-
-            const dnaParties = [...new Set(dnaCandidates.map(c => c.party))];
-            dnaParties.forEach(party => {
-                const option = document.createElement('option');
-                option.value = party;
-                option.textContent = party;
-                dnaFilter.appendChild(option);
-            });
-
-            const resortsParties = [...new Set(resortsCandidates.map(c => c.party))];
-            resortsParties.forEach(party => {
-                const option = document.createElement('option');
-                option.value = party;
-                option.textContent = party;
-                resortsFilter.appendChild(option);
-            });
-        }
-
         // Filter candidates by party
         function filterCandidates(candidates, party) {
             if (party === 'all') return candidates;
@@ -227,7 +290,13 @@
 
         // Initialize page
         window.onload = function() {
-            populateFilterOptions();
+            const dnaCandidates = <?= json_encode(array_map(function($c) {
+                return ['name' => $c['Name'], 'party' => $c['PartyName'], 'votes' => (int)$c['vote_count'], 'img' => $c['Photo'] ?: 'https://via.placeholder.com/50'];
+            }, $dna_results)) ?>;
+
+            const resortsCandidates = <?= json_encode(array_map(function($c) {
+                return ['name' => $c['Name'], 'party' => $c['PartyName'], 'votes' => (int)$c['vote_count'], 'img' => $c['Photo'] ?: 'https://via.placeholder.com/50'];
+            }, $resorts_results)) ?>;
 
             const dnaCtx = document.getElementById('dnaChart').getContext('2d');
             const resortsCtx = document.getElementById('resortsChart').getContext('2d');
