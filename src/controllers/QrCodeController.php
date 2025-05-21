@@ -357,69 +357,63 @@ class QrCodeController {
         }
     }
     
-    public function getDistrictStats() {
+     public function getDistrictStats() {
         $districtStats = [];
         $total_qr_codes = 0;
         $active_qr_codes = 0;
         $used_qr_codes = 0;
-        
-        try {
-            $districts = $this->getDistricts(); // Reuse existing method
 
+        try {
+            $districts = $this->getDistricts();
             foreach ($districts as $district) {
-                 // Corrected query to avoid joining elections unnecessarily for stats
-                 $stmt = $this->pdo->prepare("
+                // Fixed query with unique placeholders
+                $stmt = $this->pdo->prepare("
                     SELECT 
-                        COALESCE(COUNT(q.QRCodeID), 0) as total_qr_codes,
+                        COALESCE(COUNT(DISTINCT q.QRCodeID), 0) as total_qr_codes,
                         COALESCE(SUM(CASE WHEN q.Status = 'active' THEN 1 ELSE 0 END), 0) as active_qr_codes,
                         COALESCE(SUM(CASE WHEN q.Status = 'used' THEN 1 ELSE 0 END), 0) as used_qr_codes,
                         (
-                            SELECT COUNT(u2.UserID)
+                            SELECT COUNT(DISTINCT u2.UserID)
                             FROM users u2
-                            LEFT JOIN qrcodes q2 ON u2.UserID = q2.UserID 
-                                AND q2.ElectionID = (SELECT MAX(ElectionID) FROM elections WHERE Status = 'active') -- Assuming stats are for the latest active election? Or needs election context.
-                            WHERE u2.DistrictID = :district_id
+                            LEFT JOIN qrcodes q2 ON u2.UserID = q2.UserID AND q2.ElectionID = e.ElectionID
+                            WHERE u2.DistrictID = :district_id_subquery
                             AND u2.Role = 'voter'
                             AND u2.Status = 'active'
                             AND q2.QRCodeID IS NULL
-                        ) as new_users_count -- Renamed to avoid conflict
+                        ) as new_users
                     FROM users u
-                    LEFT JOIN qrcodes q ON u.UserID = q.UserID 
+                    LEFT JOIN qrcodes q ON u.UserID = q.UserID
+                    LEFT JOIN elections e ON q.ElectionID = e.ElectionID
                     WHERE u.DistrictID = :district_id_main
-                    AND u.Role = 'voter' 
+                    AND u.Role = 'voter'
                     AND u.Status = 'active'
-                    -- Removed GROUP BY u.DistrictID as we query per district
+                    GROUP BY u.DistrictID
                 ");
-                
-                // Bind parameters carefully
                 $stmt->execute([
-                    ':district_id' => $district['DistrictID'], 
-                    ':district_id_main' => $district['DistrictID']
+                    'district_id_main' => $district['DistrictID'],
+                    'district_id_subquery' => $district['DistrictID']
                 ]);
                 $stats = $stmt->fetch(PDO::FETCH_ASSOC);
-                
+
                 if (!$stats) {
-                    $stats = ['total_qr_codes' => 0, 'active_qr_codes' => 0, 'used_qr_codes' => 0, 'new_users_count' => 0];
+                    $stats = [
+                        'total_qr_codes' => 0,
+                        'active_qr_codes' => 0,
+                        'used_qr_codes' => 0,
+                        'new_users' => 0
+                    ];
                 }
-                
-                // Ensure integers
-                $stats['total_qr_codes'] = (int)$stats['total_qr_codes'];
-                $stats['active_qr_codes'] = (int)$stats['active_qr_codes'];
-                $stats['used_qr_codes'] = (int)$stats['used_qr_codes'];
-                $stats['new_users'] = (int)$stats['new_users_count']; // Use the renamed alias
-                unset($stats['new_users_count']); // Clean up
-                
+
                 $districtStats[] = array_merge($district, $stats);
-                
                 $total_qr_codes += $stats['total_qr_codes'];
                 $active_qr_codes += $stats['active_qr_codes'];
                 $used_qr_codes += $stats['used_qr_codes'];
             }
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             error_log("Error fetching district statistics: " . $e->getMessage());
             $_SESSION['error'] = "Er is een fout opgetreden bij het ophalen van de district statistieken: " . $e->getMessage();
         }
-        
+
         return [
             'districtStats' => $districtStats,
             'total_qr_codes' => $total_qr_codes,
@@ -432,5 +426,4 @@ class QrCodeController {
 // Instantiate and handle request if accessed directly
 $controller = new QrCodeController();
 $controller->handleRequest();
-
 ?>

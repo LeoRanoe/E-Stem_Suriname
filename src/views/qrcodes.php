@@ -12,6 +12,85 @@ $districts = $controller->getDistricts();
 $qr_codes = $controller->getQrCodesWithDetails(); // Corrected method name
 $elections = $controller->getActiveElections(); // Corrected method name
 
+// ✅ CSV Import Logic - Add it here
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
+    $uploadFile = $_FILES['csv_file'];
+
+    // Check for upload errors
+    if ($uploadFile['error'] !== UPLOAD_ERR_OK) {
+        $_SESSION['error'] = "Fout bij het uploaden van het bestand.";
+        header("Location: qrcodes.php");
+        exit;
+    }
+
+    // Validate MIME type
+    $fileType = mime_content_type($uploadFile['tmp_name']);
+    if ($fileType !== 'text/csv' && $fileType !== 'application/vnd.ms-excel') {
+        $_SESSION['error'] = "Alleen CSV-bestanden zijn toegestaan.";
+        header("Location: qrcodes.php");
+        exit;
+    }
+
+    // Open CSV file
+    if (($handle = fopen($uploadFile['tmp_name'], "r")) !== FALSE) {
+        $headers = fgetcsv($handle); // Skip headers
+
+        // Optional: validate column names
+        $expectedHeaders = ['Voornaam', 'Achternaam', 'Email', 'IDNumber', 'DistrictID'];
+        if ($headers !== $expectedHeaders) {
+            $_SESSION['error'] = "CSV-kolommen komen niet overeen met de verwachte indeling.";
+            header("Location: qrcodes.php");
+            exit;
+        }
+
+        $successCount = 0;
+
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            list($Voornaam, $Achternaam, $Email, $IDNumber, $DistrictID) = $data;
+
+            // Trim whitespace
+            $Voornaam = trim($Voornaam);
+            $Achternaam = trim($Achternaam);
+            $Email = trim($Email);
+            $IDNumber = trim($IDNumber);
+            $DistrictID = (int)$DistrictID;
+
+            // Basic validation
+            if (empty($Voornaam) || empty($Achternaam) || empty($Email) || empty($IDNumber) || empty($DistrictID)) {
+                continue; // skip invalid rows
+            }
+
+            // Check if email already exists
+            $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE Email = ?");
+            $stmt->execute([$Email]);
+            if ($stmt->fetchColumn() > 0) {
+                continue; // skip duplicates
+            }
+
+            // Insert new user
+            $stmt = $pdo->prepare("
+                INSERT INTO users (Voornaam, Achternaam, Email, IDNumber, DistrictID, Role, Status)
+                VALUES (?, ?, ?, ?, ?, 'voter', 'active')
+            ");
+            if ($stmt->execute([$Voornaam, $Achternaam, $Email, $IDNumber, $DistrictID])) {
+                $successCount++;
+            }
+        }
+        fclose($handle);
+
+        if ($successCount > 0) {
+            $_SESSION['success'] = "$successCount gebruiker(s) succesvol geïmporteerd.";
+        } else {
+            $_SESSION['error'] = "Geen gebruikers geïmporteerd. Mogelijk geen geldige data in het bestand.";
+        }
+    } else {
+        $_SESSION['error'] = "Kon het CSV-bestand niet openen.";
+    }
+
+    header("Location: qrcodes.php");
+    exit;
+}
+
 // Add this function at the top of the file
 function generateVoucher($qrCode, $userName) {
     $voucherHtml = '
@@ -84,12 +163,12 @@ function generateVoucher($qrCode, $userName) {
                 <p class="code">Voor: ' . htmlspecialchars($userName) . '</p>
             </div>
             <div class="voucher-right">
-                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?data=' . urlencode($qrCode) . '&size=200x200" alt="QR Code">
+                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?data= ' . urlencode($qrCode) . '&size=200x200" alt="QR Code">
             </div>
         </div>
     </body>
     </html>';
-    
+
     return $voucherHtml;
 }
 
@@ -133,10 +212,10 @@ try {
             AND u.Status = 'active'
             GROUP BY u.DistrictID
         ");
-        
+
         $stmt->execute(['district_id' => $district['DistrictID']]);
         $stats = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         if (!$stats) {
             $stats = [
                 'total_qr_codes' => 0,
@@ -145,14 +224,14 @@ try {
                 'new_users' => 0
             ];
         }
-        
+
         $stats['total_qr_codes'] = (int)$stats['total_qr_codes'];
         $stats['active_qr_codes'] = (int)$stats['active_qr_codes'];
         $stats['used_qr_codes'] = (int)$stats['used_qr_codes'];
         $stats['new_users'] = (int)$stats['new_users'];
-        
+
         $districtStats[] = array_merge($district, $stats);
-        
+
         $total_qr_codes += $stats['total_qr_codes'];
         $active_qr_codes += $stats['active_qr_codes'];
         $used_qr_codes += $stats['used_qr_codes'];
@@ -206,11 +285,11 @@ try {
 if (isset($_GET['bulk_download']) && isset($_GET['district_id'])) {
     try {
         require_once '../vendor/autoload.php';
-        
+
         // Create ZIP archive
         $zip = new ZipArchive();
         $tempFile = tempnam(sys_get_temp_dir(), 'qrcodes_');
-        
+
         if ($zip->open($tempFile, ZipArchive::CREATE) === TRUE) {
             // Get QR codes for the district
             $stmt = $pdo->prepare("
@@ -227,29 +306,29 @@ if (isset($_GET['bulk_download']) && isset($_GET['district_id'])) {
                 WHERE u.DistrictID = :district_id
                 AND q.Status = 'active'
             ");
-            
+
             $stmt->execute(['district_id' => $_GET['district_id']]);
             $qrCodes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
+
             // Generate QR codes and add to ZIP
             $writer = new \BaconQrCode\Writer(new \BaconQrCode\Renderer\ImageRenderer(
                 new \BaconQrCode\Renderer\RendererStyle\RendererStyle(400),
                 new \BaconQrCode\Renderer\Image\SvgImageBackEnd()
             ));
-            
+
             foreach ($qrCodes as $qr) {
                 $fileName = sprintf('qr_code_%s_%s_%s.svg',
                     $qr['Voornaam'],
                     $qr['Achternaam'],
                     date('Ymd')
                 );
-                
+
                 // Generate QR code
                 $qrContent = $writer->writeString($qr['QRCode']);
-                
+
                 // Add to ZIP
                 $zip->addFromString($fileName, $qrContent);
-                
+
                 // Generate and add voucher
                 $voucherFileName = sprintf('voucher_%s_%s_%s.html',
                     $qr['Voornaam'],
@@ -259,9 +338,9 @@ if (isset($_GET['bulk_download']) && isset($_GET['district_id'])) {
                 $voucherHtml = generateVoucher($qr['QRCode'], $qr['Voornaam'] . ' ' . $qr['Achternaam']);
                 $zip->addFromString($voucherFileName, $voucherHtml);
             }
-            
+
             $zip->close();
-            
+
             // Send ZIP file
             header('Content-Type: application/zip');
             header('Content-Disposition: attachment; filename="qrcodes_' . date('Ymd_His') . '.zip"');
@@ -277,7 +356,15 @@ if (isset($_GET['bulk_download']) && isset($_GET['district_id'])) {
     }
 }
 ?>
-
+<?php if (isset($_SESSION['success'])): ?>
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded shadow-sm">
+        <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+    </div>
+<?php elseif (isset($_SESSION['error'])): ?>
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded shadow-sm">
+        <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+    </div>
+<?php endif; ?>
 <!-- Search and Filters Section -->
 <div class="mb-8">
     <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">
@@ -343,7 +430,7 @@ if (isset($_GET['bulk_download']) && isset($_GET['district_id'])) {
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form method="POST" action="import_users.php" enctype="multipart/form-data">
+            <form method="POST" action="" enctype="multipart/form-data">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">
