@@ -1,62 +1,129 @@
-// QR Codes Page JavaScript
 document.addEventListener('DOMContentLoaded', function() {
-    // Search functionality
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            filterTableRows(searchTerm);
+    // QR Code Generation Modal Handling
+    const generateBtn = document.getElementById('generateQrBtn');
+    const qrModal = document.getElementById('qrModal');
+    const cancelQrBtn = document.getElementById('cancelQrModalBtn');
+    const confirmGenerateBtn = document.getElementById('confirmGenerateBtn');
+    const electionSelect = document.getElementById('electionId');
+    const userCountInput = document.getElementById('userCount');
+
+    if (generateBtn && qrModal) {
+        // Show modal when generate button clicked
+        generateBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            qrModal.classList.remove('hidden');
         });
-    }
 
-    // Filter functionality
-    const districtFilter = document.getElementById('districtFilter');
-    const statusFilter = document.getElementById('statusFilter');
-    
-    if (districtFilter) {
-        districtFilter.addEventListener('change', applyFilters);
-    }
-    
-    if (statusFilter) {
-        statusFilter.addEventListener('change', applyFilters);
-    }
+        // Hide modal when cancel button clicked
+        cancelQrBtn.addEventListener('click', function() {
+            qrModal.classList.add('hidden');
+        });
 
-    // Filter table rows based on search and filters
-    function filterTableRows(searchTerm = '') {
-        const rows = document.querySelectorAll('tbody tr');
-        
-        rows.forEach(row => {
-            const textContent = row.textContent.toLowerCase();
-            if (textContent.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
+        // Handle QR code generation
+        confirmGenerateBtn.addEventListener('click', async function() {
+            const electionId = electionSelect.value;
+            const userCount = userCountInput.value;
+            
+            if (!electionId) {
+                alert('Please select an election first');
+                return;
+            }
+
+            try {
+                // Show loading state
+                confirmGenerateBtn.disabled = true;
+                confirmGenerateBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Generating...';
+
+                const response = await fetch('../src/controllers/QrCodeController.php?action=generateQrCodes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        election_id: electionId,
+                        user_count: userCount
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert(`Successfully generated ${result.count} QR codes`);
+                    location.reload();
+                } else {
+                    throw new Error(result.message || 'Generation failed');
+                }
+            } catch (error) {
+                console.error('Generation error:', error);
+                alert('Error: ' + error.message);
+            } finally {
+                // Reset button state
+                confirmGenerateBtn.disabled = false;
+                confirmGenerateBtn.innerHTML = 'Generate';
+                qrModal.classList.add('hidden');
             }
         });
     }
 
-    // Apply all active filters
-    function applyFilters() {
-        const districtValue = districtFilter ? districtFilter.value : '';
-        const statusValue = statusFilter ? statusFilter.value : '';
-        const searchValue = searchInput ? searchInput.value.toLowerCase() : '';
-        
-        const rows = document.querySelectorAll('tbody tr');
-        
-        rows.forEach(row => {
-            const districtMatch = !districtValue || 
-                row.querySelector('td[data-district]').dataset.district === districtValue;
+    // Import Users Modal Handling
+    const importBtn = document.getElementById('importUsersBtn');
+    const importModal = document.getElementById('importModal');
+    const cancelImportBtn = document.getElementById('cancelImportBtn');
+    const confirmImportBtn = document.getElementById('confirmImportBtn');
+    const csvFileInput = document.getElementById('csvFile');
+
+    if (importBtn && importModal) {
+        // Show modal when import button clicked
+        importBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            importModal.classList.remove('hidden');
+        });
+
+        // Hide modal when cancel button clicked
+        cancelImportBtn.addEventListener('click', function() {
+            importModal.classList.add('hidden');
+            csvFileInput.value = '';
+        });
+
+        // Handle import submission
+        confirmImportBtn.addEventListener('click', async function() {
+            const file = csvFileInput.files[0];
             
-            const statusMatch = !statusValue || 
-                row.querySelector('td[data-status]').dataset.status === statusValue;
-            
-            const searchMatch = !searchValue || 
-                row.textContent.toLowerCase().includes(searchValue);
-            
-            if (districtMatch && statusMatch && searchMatch) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
+            if (!file) {
+                alert('Please select a CSV file first');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                // Show loading state
+                confirmImportBtn.disabled = true;
+                confirmImportBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Importing...';
+
+                const response = await fetch('../src/controllers/QrCodeController.php?action=importUsers', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert(`Successfully imported ${result.count} users`);
+                    location.reload();
+                } else {
+                    throw new Error(result.message || 'Import failed');
+                }
+            } catch (error) {
+                console.error('Import error:', error);
+                alert('Error: ' + error.message);
+            } finally {
+                // Reset button state
+                confirmImportBtn.disabled = false;
+                confirmImportBtn.innerHTML = '<i class="fas fa-file-import mr-2"></i> Import';
+                importModal.classList.add('hidden');
+                csvFileInput.value = '';
             }
         });
     }

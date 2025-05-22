@@ -1,0 +1,9 @@
+RewriteEngine On
+RewriteBase /
+
+# Allow direct access to files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Route all other requests to appropriate controllers
+RewriteRule ^src/controllers/(.*)$ src/controllers/$1 [L]
