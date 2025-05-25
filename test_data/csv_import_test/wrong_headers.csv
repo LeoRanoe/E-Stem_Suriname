@@ -1,0 +1,4 @@
+Firstname,Lastname,Email,IDNumber,DistrictID,Status
+John,Doe,john@example.com,ID12345,1,active
+Jane,Smith,jane@example.com,ID67890,2,active
+Bob,Johnson,bob@example.com,ID98765,3,active

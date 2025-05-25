@@ -1,0 +1,4 @@
+first_name,last_name,id_number,district_id,election_id,resort_id
+John,Doe,INVALID_ID,1,1,ABC
+Jane,Smith,ID67890,NOT_A_NUMBER,1,131
+Bob,Johnson,ID98765,2,INVALID_ELECTION,106

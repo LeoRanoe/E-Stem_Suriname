@@ -95,6 +95,21 @@ class ElectionController {
             }
         }
     
+        public function getActiveElections() {
+            try {
+                $stmt = $this->pdo->prepare("
+                    SELECT ElectionID, ElectionName
+                    FROM elections
+                    WHERE StartDate <= NOW() AND EndDate >= NOW()
+                ");
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                error_log("Error getting active elections: " . $e->getMessage());
+                return [];
+            }
+        }
+    
         public function getCompletedElectionsCount() {
             try {
                 $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM elections WHERE Status = 'completed'");

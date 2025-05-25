@@ -21,15 +21,37 @@ if (!defined('BASE_PATH')) {
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Import Users</h3>
                 <div class="mt-2">
-                    <p class="text-sm text-gray-500">Select a CSV file containing user data to import.</p>
-                    <input type="file" id="csvFile" name="csvFile" accept=".csv" class="mt-4 block w-full text-sm text-gray-500
+                    <p class="text-sm text-gray-500">Select a CSV file containing voter data to import.</p>
+                    <div class="mt-4">
+                        <label for="importElectionSelect" class="block text-sm font-medium text-gray-700 mb-2">Select Election (Optional)</label>
+                        <select id="importElectionSelect" name="election_id" class="w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            <option value="">No Election Selected</option>
+                            <?php
+                            // Fetch active elections
+                            $stmt = $pdo->query("SELECT ElectionID, ElectionName FROM elections WHERE Status = 'active' ORDER BY ElectionName");
+                            while ($row = $stmt->fetch()) {
+                                echo '<option value="' . htmlspecialchars($row['ElectionID']) . '">' . htmlspecialchars($row['ElectionName']) . '</option>';
+                            }
+                            ?>
+                        </select>
+                        <p class="mt-1 text-sm text-gray-500">If an election is selected, QR codes will be generated for imported users.</p>
+                    </div>
+                    <input type="file" id="csvFile" name="import_file" accept=".csv" class="mt-4 block w-full text-sm text-gray-500
                         file:mr-4 file:py-2 file:px-4
                         file:rounded-md file:border-0
                         file:text-sm file:font-semibold
                         file:bg-blue-50 file:text-blue-700
                         hover:file:bg-blue-100">
+                    <p class="mt-2 text-sm text-gray-500">CSV must contain these columns: Voornaam,Achternaam,Email,IDNumber,DistrictID</p>
+                    <div class="bg-gray-50 p-4 rounded-md mt-4">
+                        <h4 class="text-sm font-medium text-gray-900 mb-2">Example CSV format:</h4>
+                        <code class="text-xs text-gray-600 block whitespace-pre">Voornaam,Achternaam,Email,IDNumber,DistrictID
+John,Doe,john@example.com,12345,1
+Jane,Smith,jane@example.com,67890,2</code>
+                    </div>
                 </div>
             </div>
+            <div id="importError" class="hidden px-4 py-3 bg-red-50 text-red-700 text-sm rounded-md"></div>
             <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button type="button" id="confirmImportBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm">
                     <i class="fas fa-file-import mr-2"></i> Import
@@ -37,20 +59,6 @@ if (!defined('BASE_PATH')) {
                 <button type="button" id="cancelImportBtn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                     Cancel
                 </button>
-            </div>
-            <div class="modal-header">
-                <h5 class="modal-title" id="qrModalLabel">QR Code Actions</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Modal content will be loaded dynamically -->
-                <div id="modalContent"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="modalSubmit">Submit</button>
             </div>
         </div>
     </div>

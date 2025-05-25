@@ -5,5 +5,8 @@ RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Route all other requests to appropriate controllers
+# Route API requests to controllers
+RewriteRule ^api/(.*)$ src/controllers/$1Controller.php [L]
+
+# Route direct controller access
 RewriteRule ^src/controllers/(.*)$ src/controllers/$1 [L]

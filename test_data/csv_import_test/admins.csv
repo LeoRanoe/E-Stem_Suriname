@@ -1,0 +1,4 @@
+FirstName,LastName,Email,Password,Status,CreatedAt,UpdatedAt
+"John","Doe","john.doe@example.com","$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi","active","2025-05-25 18:20:00","2025-05-25 18:20:00"
+"Jane","Smith","jane.smith@example.com","$2y$12$6adH94daWhe3tvQn6zgRBu3Ah2D6WG/3a0VrVRBIEeQnkytlAj0Ye","active","2025-05-25 18:20:00","2025-05-25 18:20:00"
+"Admin","User","admin@estem.sr","$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi","active","2025-05-25 18:20:00","2025-05-25 18:20:00"

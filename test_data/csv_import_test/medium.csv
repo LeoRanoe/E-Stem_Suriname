@@ -1,0 +1,16 @@
+Voornaam,Achternaam,Email,IDNumber,DistrictID,Status
+John,Doe,john@example.com,ID12345,1,active
+Jane,Smith,jane@example.com,ID67890,2,active
+Bob,Johnson,bob@example.com,ID98765,3,active
+Mary,Williams,mary@example.com,ID12346,1,active
+Tom,Brown,tom@example.com,ID67891,2,active
+Sue,Johnson,sue@example.com,ID98766,3,active
+Alice,Green,alice@example.com,ID12347,1,active
+David,Wilson,david@example.com,ID67892,2,active
+Emily,Davis,emily@example.com,ID98767,3,active
+Michael,Taylor,michael@example.com,ID12348,1,active
+Sarah,Anderson,sarah@example.com,ID67893,2,active
+James,Thomas,james@example.com,ID98768,3,active
+Patricia,Jackson,patricia@example.com,ID12349,1,active
+Robert,White,robert@example.com,ID67894,2,active
+Jennifer,Harris,jennifer@example.com,ID98769,3,active

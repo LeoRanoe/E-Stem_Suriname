@@ -1,0 +1,4 @@
+CandidateTypeID,Name,PartyID,DistrictID,CandidateType,ElectionID,Photo,CreatedAt,UpdatedAt
+,"Sheila Ro",2,8,"RR",1,"uploads/candidates/Sheila_Ro_68195163dbb83.png","2025-05-25 18:20:00","2025-05-25 18:20:00"
+,"John Smith",2,1,"RR",1,"uploads/candidates/john_smith.jpg","2025-05-25 18:20:00","2025-05-25 18:20:00"
+,"Maria Garcia",2,3,"DNA",1,"uploads/candidates/maria_garcia.jpg","2025-05-25 18:20:00","2025-05-25 18:20:00"
