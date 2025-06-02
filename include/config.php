@@ -6,8 +6,8 @@ if (session_status() !== PHP_SESSION_NONE) {
 }
 
 // Base configuration
-define('BASE_PATH', '/E-Stem_Suriname');
-define('BASE_URL', 'http://localhost/E-Stem_Suriname');
+define('BASE_PATH', '/E-Stem_Suriname/E-Stem_Suriname');
+define('BASE_URL', 'http://localhost/E-Stem_Suriname/E-Stem_Suriname');
 
 // Database configuration
 define('DB_HOST', 'localhost');

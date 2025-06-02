@@ -140,6 +140,14 @@ ob_start();
                             <option value="RR" <?= isset($_GET['candidate_type']) && $_GET['candidate_type'] == 'RR' ? 'selected' : '' ?>>RR</option>
                         </select>
                     </div>
+                    <div class="col-span-1 md:col-span-3 flex justify-end mt-4">
+                        <a href="candidates.php" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                            <i class="fas fa-times mr-2"></i>Reset Filters
+                        </a>
+                        <button type="submit" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-suriname-green hover:bg-suriname-dark-green">
+                            <i class="fas fa-filter mr-2"></i>Toepassen
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -158,6 +166,7 @@ ob_start();
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partij</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verkiezing</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">District</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Resort</th>
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                             <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Stemmen</th>
                             <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acties</th>
@@ -217,7 +226,10 @@ ob_start();
                                         <p class="text-sm text-gray-700"><?= htmlspecialchars($candidate['DistrictName'] ?? 'N/A') ?></p>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <p class="inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium <?= ($candidate['CandidateType'] ?? '') === 'DNA' ? 'bg-blue-500 text-blue-500' : 'bg-suriname-red text-suriname-red' ?>">
+                                        <p class="text-sm text-gray-700"><?= (isset($candidate['CandidateType']) && $candidate['CandidateType'] === 'RR') ? htmlspecialchars($candidate['ResortName'] ?? 'N/A') : '-' ?></p>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <p class="inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium <?= (isset($candidate['CandidateType']) && $candidate['CandidateType'] === 'DNA') ? 'bg-blue-500 text-blue-500' : 'bg-suriname-red text-suriname-red' ?>">
                                             <?= htmlspecialchars($candidate['CandidateType'] ?? 'N/A') ?>
                                         </p>
                                     </td>
@@ -364,6 +376,15 @@ ob_start();
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
+                                
+                                <!-- Resort selection for RR candidates - initially hidden -->
+                                <div id="resort_selection_container" style="display: none;">
+                                    <label for="new_resort_id" class="mb-2.5 block text-gray-700">Resort</label>
+                                    <select name="resort_id" id="new_resort_id"
+                                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green dark:border-form-strokedark dark:bg-form-input dark:focus:border-suriname-green">
+                                        <option value="">Selecteer eerst een district</option>
+                                    </select>
+                                </div>
                                 <div class="sm:col-span-2">
                                     <label for="new_image" class="mb-2.5 block text-gray-700">Foto</label>
                                     <input type="file" name="image" id="new_image" accept="image/*"
@@ -383,12 +404,121 @@ ob_start();
                             class="mt-3 w-full inline-flex justify-center rounded-md border border-stroke shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-150">
                         Annuleren
                     </button>
+                    <button type="button" id="closeNewCandidateModalBtn"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-stroke shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-150">
+                        Sluiten
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 <!-- New Candidate Modal End -->
+
+<!-- JavaScript for handling resort selection -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Modal handling
+    const modal = document.getElementById('newCandidateModal');
+    const openModalBtn = document.getElementById('openNewCandidateModalBtn');
+    const openModalBtnEmptyState = document.getElementById('openNewCandidateModalBtnEmptyState');
+    const closeModalBtn = document.getElementById('closeNewCandidateModalBtn');
+    
+    // Function to open modal
+    function openModal() {
+        modal.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+    }
+    
+    // Function to close modal
+    function closeModal() {
+        modal.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+    }
+    
+    // Event listeners for modal buttons
+    if (openModalBtn) openModalBtn.addEventListener('click', openModal);
+    if (openModalBtnEmptyState) openModalBtnEmptyState.addEventListener('click', openModal);
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+    
+    // Get DOM elements for resort selection
+    const candidateTypeSelect = document.getElementById('new_candidate_type');
+    const resortContainer = document.getElementById('resort_selection_container');
+    const districtSelect = document.getElementById('new_district_id');
+    const resortSelect = document.getElementById('new_resort_id');
+    
+    // Show/hide resort selection based on candidate type
+    function toggleResortSelection() {
+        if (candidateTypeSelect && candidateTypeSelect.value === 'RR') {
+            if (resortContainer) resortContainer.style.display = 'block';
+            if (resortSelect) resortSelect.setAttribute('required', 'required');
+        } else {
+            if (resortContainer) resortContainer.style.display = 'none';
+            if (resortSelect) resortSelect.removeAttribute('required');
+        }
+    }
+    
+    // Initialize on page load
+    if (candidateTypeSelect) {
+        toggleResortSelection();
+        
+        // Add event listener for candidate type change
+        candidateTypeSelect.addEventListener('change', toggleResortSelection);
+    }
+    
+    // Load resorts when district changes
+    if (districtSelect && resortSelect) {
+        districtSelect.addEventListener('change', function() {
+            const districtId = this.value;
+            if (districtId) {
+                // Clear current options
+                resortSelect.innerHTML = '<option value="">Laden...</option>';
+                
+                // Fetch resorts for the selected district
+                fetch(`${BASE_URL}/src/api/get_resorts.php?district_id=${districtId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success && data.resorts && data.resorts.length > 0) {
+                            resortSelect.innerHTML = '<option value="">Selecteer een resort</option>';
+                            
+                            data.resorts.forEach(resort => {
+                                const option = document.createElement('option');
+                                option.value = resort.ResortID;
+                                option.textContent = resort.ResortName;
+                                resortSelect.appendChild(option);
+                            });
+                        } else {
+                            resortSelect.innerHTML = '<option value="">Geen resorts gevonden</option>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        resortSelect.innerHTML = '<option value="">Fout bij het laden van resorts</option>';
+                    });
+            } else {
+                resortSelect.innerHTML = '<option value="">Selecteer eerst een district</option>';
+            }
+        });
+    }
+    
+    // Filter form auto-submit
+    const filterForm = document.getElementById('filterForm');
+    const filterSelects = filterForm ? filterForm.querySelectorAll('select') : [];
+    
+    filterSelects.forEach(select => {
+        select.addEventListener('change', function() {
+            filterForm.submit();
+        });
+    });
+});
+</script>
 
 <?php
 $content = ob_get_clean();

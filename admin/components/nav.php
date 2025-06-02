@@ -48,13 +48,19 @@ if (!defined('BASE_URL')) {
                     </a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>/src/views/qr-codes.php" class="flex items-center p-2 text-white rounded-lg hover:bg-suriname-green/20 transition-all duration-200">
+                    <a href="<?= BASE_URL ?>/admin/voters.php" class="flex items-center p-2 text-white rounded-lg hover:bg-suriname-green/20 transition-all duration-200">
+                        <i class="fas fa-user-check w-5 h-5 text-white transition duration-200"></i>
+                        <span class="flex-1 ms-3 whitespace-nowrap hidden md:group-hover:inline">Kiezers</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= BASE_URL ?>/admin/qrcodes.php" class="flex items-center p-2 text-white rounded-lg hover:bg-suriname-green/20 transition-all duration-200">
                         <i class="fas fa-qrcode w-5 h-5 text-white transition duration-200"></i>
                         <span class="flex-1 ms-3 whitespace-nowrap hidden md:group-hover:inline">QR Codes</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= BASE_URL ?>/src/results.php" class="flex items-center p-2 text-white rounded-lg hover:bg-suriname-green/20 transition-all duration-200">
+                    <a href="<?= BASE_URL ?>/admin/results.php" class="flex items-center p-2 text-white rounded-lg hover:bg-suriname-green/20 transition-all duration-200">
                         <i class="fas fa-chart-pie w-5 h-5 text-white transition duration-200"></i>
                         <span class="flex-1 ms-3 whitespace-nowrap hidden md:group-hover:inline">Resultaten</span>
                     </a>

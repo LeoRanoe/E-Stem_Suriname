@@ -5,18 +5,40 @@ require_once __DIR__ . '/db_connect.php';
 // Fetch user details if logged in
 $userName = '';
 $isAdmin = false;
-if (isset($_SESSION['User ID'])) {
+$isVoter = false;
+
+// Check for admin session
+if (isset($_SESSION['AdminID'])) {
     try {
         $stmt = $pdo->prepare("
-            SELECT * FROM users 
-            WHERE UserID = :userID
+            SELECT * FROM admins 
+            WHERE AdminID = :adminID AND Status = 'active'
         ");
-        $stmt->execute(['userID' => $_SESSION['User ID']]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        $userName = $user ? htmlspecialchars($user['Voornaam']) : 'User';
-        $isAdmin = $user && $user['Role'] === 'admin';
+        $stmt->execute(['adminID' => $_SESSION['AdminID']]);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($admin) {
+            $userName = $admin['FirstName'] . ' ' . $admin['LastName'];
+            $isAdmin = true;
+        }
     } catch (PDOException $e) {
-        error_log("Database error: " . $e->getMessage());
+        error_log("Admin session error: " . $e->getMessage());
+    }
+}
+// Check for voter session
+else if (isset($_SESSION['VoterID'])) {
+    try {
+        $stmt = $pdo->prepare("
+            SELECT * FROM voters 
+            WHERE id = :voterID AND status = 'active'
+        ");
+        $stmt->execute(['voterID' => $_SESSION['VoterID']]);
+        $voter = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($voter) {
+            $userName = $voter['first_name'] . ' ' . $voter['last_name'];
+            $isVoter = true;
+        }
+    } catch (PDOException $e) {
+        error_log("Voter session error: " . $e->getMessage());
     }
 }
 
@@ -43,48 +65,48 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <i class="fas fa-home mr-1"></i>
                         Home
                     </a>
-                    <?php if (isset($_SESSION['User ID'])): ?>
-                        <a href="<?= BASE_URL ?>/src/views/scan.php"
-                                                   class="<?= $current_page === 'scan.php' ? 'border-suriname-green text-suriname-green' : 'border-transparent text-gray-500 hover:border-suriname-green hover:text-suriname-green' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                                                    <i class="fas fa-vote-yea mr-1"></i>
-                                                    Stemmen
-                                                </a>
-                        <a href="<?= BASE_URL ?>/src/views/voters.php"
-                                                   class="<?= $current_page === 'voters.php' ? 'border-suriname-green text-suriname-green' : 'border-transparent text-gray-500 hover:border-suriname-green hover:text-suriname-green' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                                                    <i class="fas fa-user mr-1"></i>
-                                                    Mijn Profiel
-                                                </a>
+                    <?php if ($isVoter): ?>
+                        <a href="<?= BASE_URL ?>/voter/vote.php"
+                           class="<?= $current_page === 'vote.php' ? 'border-suriname-green text-suriname-green' : 'border-transparent text-gray-500 hover:border-suriname-green hover:text-suriname-green' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            <i class="fas fa-vote-yea mr-1"></i>
+                            Stemmen
+                        </a>
+                        <a href="<?= BASE_URL ?>/voter/profile.php"
+                           class="<?= $current_page === 'profile.php' ? 'border-suriname-green text-suriname-green' : 'border-transparent text-gray-500 hover:border-suriname-green hover:text-suriname-green' ?> inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            <i class="fas fa-user mr-1"></i>
+                            Mijn Profiel
+                        </a>
                     <?php endif; ?>
                 </div>
             </div>
 
             <!-- Right side -->
             <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                <?php if (isset($_SESSION['User ID'])): ?>
-                    <?php if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin']): ?>
-                        <a href="<?= BASE_URL ?>/admin/controllers/LoginController.php"
+                <?php if ($isAdmin || $isVoter): ?>
+                    <?php if ($isAdmin): ?>
+                        <a href="<?= BASE_URL ?>/admin/index.php"
                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-green hover:bg-suriname-dark-green shadow-md">
                             <i class="fas fa-cog mr-2"></i>
                             Admin Dashboard
                         </a>
                     <?php endif; ?>
-                    <a href="<?= BASE_URL ?>/pages/logout.php" 
+                    <a href="<?= BASE_URL ?>/logout.php" 
                        class="ml-3 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-red hover:bg-suriname-dark-red shadow-md">
                         <i class="fas fa-sign-out-alt mr-2"></i>
                         Uitloggen
                     </a>
                 <?php else: ?>
                     <div class="flex space-x-2">
-                        <a href="<?= BASE_URL ?>/src/views/login.php"
-                                               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-green hover:bg-suriname-dark-green shadow-md">
-                                                <i class="fas fa-sign-in-alt mr-2"></i>
-                                                Inloggen
-                                            </a>
-                        <a href="<?= BASE_URL ?>/src/views/qrcodes.php"
-                                               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-blue hover:bg-suriname-dark-blue shadow-md">
-                                                <i class="fas fa-qrcode mr-2"></i>
-                                                QR Login
-                                            </a>
+                        <a href="<?= BASE_URL ?>/voter/login.php"
+                           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-green hover:bg-suriname-dark-green shadow-md">
+                            <i class="fas fa-sign-in-alt mr-2"></i>
+                            Inloggen
+                        </a>
+                        <a href="<?= BASE_URL ?>/voter/qr-login.php"
+                           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-suriname-blue hover:bg-suriname-dark-blue shadow-md">
+                            <i class="fas fa-qrcode mr-2"></i>
+                            QR Login
+                        </a>
                     </div>
                 <?php endif; ?>
             </div>
@@ -95,7 +117,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-suriname-green hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-suriname-green"
                         aria-controls="mobile-menu" 
                         aria-expanded="false"
-                        onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        onclick="toggleMobileMenu()">
                     <span class="sr-only">Open main menu</span>
                     <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -116,44 +138,43 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <i class="fas fa-home mr-2"></i>
                 Home
             </a>
-            <?php if (isset($_SESSION['User ID'])): ?>
-                <a href="<?= BASE_URL ?>/src/views/scan.php"
-                                   class="<?= $current_page === 'scan.php' ? 'bg-suriname-green text-white' : 'text-gray-500 hover:bg-suriname-green hover:text-white' ?> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                                    <i class="fas fa-vote-yea mr-2"></i>
-                                    Stemmen
-                                </a>
+            <?php if ($isVoter): ?>
+                <a href="<?= BASE_URL ?>/voter/vote.php"
+                   class="<?= $current_page === 'vote.php' ? 'bg-suriname-green text-white' : 'text-gray-500 hover:bg-suriname-green hover:text-white' ?> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                    <i class="fas fa-vote-yea mr-2"></i>
+                    Stemmen
+                </a>
+                <a href="<?= BASE_URL ?>/voter/profile.php"
+                   class="<?= $current_page === 'profile.php' ? 'bg-suriname-green text-white' : 'text-gray-500 hover:bg-suriname-green hover:text-white' ?> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                    <i class="fas fa-user mr-2"></i>
+                    Mijn Profiel
+                </a>
             <?php endif; ?>
-            <?php if (isset($_SESSION['User ID'])): ?>
-                <?php if (isset($_SESSION['IsAdmin']) && $_SESSION['IsAdmin']): ?>
-                    <a href="<?= BASE_URL ?>/admin/controllers/LoginController.php"
+            
+            <?php if ($isAdmin || $isVoter): ?>
+                <?php if ($isAdmin): ?>
+                    <a href="<?= BASE_URL ?>/admin/index.php"
                        class="text-gray-500 hover:bg-suriname-green hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                         <i class="fas fa-cog mr-2"></i>
                         Admin Dashboard
                     </a>
                 <?php endif; ?>
-                <a href="<?= BASE_URL ?>/pages/logout.php" 
+                <a href="<?= BASE_URL ?>/logout.php" 
                    class="text-gray-500 hover:bg-suriname-red hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                     <i class="fas fa-sign-out-alt mr-2"></i>
                     Uitloggen
                 </a>
             <?php else: ?>
-                <a href="<?= BASE_URL ?>/src/views/login.php"
-                                   class="text-gray-500 hover:bg-suriname-green hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                                     <i class="fas fa-sign-in-alt mr-2"></i>
-                                     Inloggen
-                                 </a>
-                <a href="<?= BASE_URL ?>/src/views/qrcodes.php"
-                                   class="text-gray-500 hover:bg-suriname-blue hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                                     <i class="fas fa-qrcode mr-2"></i>
-                                     QR Login
-                                 </a>
-                <?php if (isset($_SESSION['User ID'])): ?>
-                    <a href="<?= BASE_URL ?>/src/views/voters.php"
-                                       class="<?= $current_page === 'voters.php' ? 'bg-suriname-green text-white' : 'text-gray-500 hover:bg-suriname-green hover:text-white' ?> block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                                         <i class="fas fa-user mr-2"></i>
-                                         Mijn Profiel
-                                     </a>
-                <?php endif; ?>
+                <a href="<?= BASE_URL ?>/voter/login.php"
+                   class="text-gray-500 hover:bg-suriname-green hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    Inloggen
+                </a>
+                <a href="<?= BASE_URL ?>/voter/qr-login.php"
+                   class="text-gray-500 hover:bg-suriname-blue hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                    <i class="fas fa-qrcode mr-2"></i>
+                    QR Login
+                </a>
             <?php endif; ?>
         </div>
     </div>

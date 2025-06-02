@@ -1,4 +1,0 @@
-ElectionID,ElectionName,ElectionDate,Status,StartDate,EndDate,CreatedAt,UpdatedAt
-1,"District Council Elections","2025-05-15","active","2025-05-10 00:00:00","2025-05-20 23:59:59","2025-05-25 18:20:00","2025-05-25 18:20:00"
-2,"School Board Elections","2025-04-01","completed","2025-04-01 08:00:00","2025-04-01 18:00:00","2025-05-25 18:20:00","2025-05-25 18:20:00"
-3,"National Elections","2025-06-01","upcoming","2025-06-01 06:00:00","2025-06-01 20:00:00","2025-05-25 18:20:00","2025-05-25 18:20:00"

@@ -17,6 +17,8 @@ if (!isAdminLoggedIn()) {
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <!-- Add QR Scanner library -->
+    <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
         /* Custom Animations */
         @keyframes fadeIn {
@@ -77,6 +79,59 @@ if (!isAdminLoggedIn()) {
             transform: translateY(-2px);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
+        /* QR Scanner Styles */
+        #qr-reader {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        #qr-reader__scan_region {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Debug Console Styles */
+        #debug-console {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 300px;
+            max-height: 200px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        #debug-console.visible {
+            display: block;
+        }
+
+        #debug-console .debug-entry {
+            margin-bottom: 5px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
+        }
+
+        #debug-console .debug-time {
+            color: #888;
+            font-size: 10px;
+        }
+
+        #debug-console .debug-error {
+            color: #ff4444;
+        }
+
+        #debug-console .debug-success {
+            color: #44ff44;
+        }
     </style>
     <script>
         tailwind.config = {
@@ -93,6 +148,83 @@ if (!isAdminLoggedIn()) {
                 },
             },
         }
+
+        // Debug Console
+        const DebugConsole = {
+            console: document.createElement('div'),
+            init() {
+                this.console.id = 'debug-console';
+                document.body.appendChild(this.console);
+                
+                // Add debug toggle button
+                const toggleBtn = document.createElement('button');
+                toggleBtn.innerHTML = '<i class="fas fa-bug"></i>';
+                toggleBtn.className = 'fixed bottom-4 right-4 bg-gray-800 text-white rounded-full p-3 z-1000';
+                toggleBtn.onclick = () => this.toggle();
+                document.body.appendChild(toggleBtn);
+            },
+            log(message, type = 'info') {
+                const entry = document.createElement('div');
+                entry.className = `debug-entry debug-${type}`;
+                const time = new Date().toLocaleTimeString();
+                entry.innerHTML = `<span class="debug-time">[${time}]</span> ${message}`;
+                this.console.appendChild(entry);
+                this.console.scrollTop = this.console.scrollHeight;
+                
+                // Also log to browser console
+                console.log(`[${type.toUpperCase()}] ${message}`);
+            },
+            toggle() {
+                this.console.classList.toggle('visible');
+            }
+        };
+
+        // Initialize debug console
+        document.addEventListener('DOMContentLoaded', () => {
+            DebugConsole.init();
+            DebugConsole.log('Debug console initialized', 'success');
+        });
+
+        // QR Code Scanner
+        const QRScanner = {
+            scanner: null,
+            init(elementId) {
+                this.scanner = new Html5Qrcode(elementId);
+                DebugConsole.log('QR Scanner initialized', 'success');
+            },
+            start(onSuccess, onError) {
+                const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+                this.scanner.start(
+                    { facingMode: "environment" },
+                    config,
+                    (decodedText) => {
+                        DebugConsole.log(`QR Code detected: ${decodedText}`, 'success');
+                        onSuccess(decodedText);
+                    },
+                    (error) => {
+                        DebugConsole.log(`QR Scan error: ${error}`, 'error');
+                        onError(error);
+                    }
+                );
+            },
+            stop() {
+                if (this.scanner) {
+                    this.scanner.stop();
+                    DebugConsole.log('QR Scanner stopped', 'info');
+                }
+            }
+        };
+
+        // Error handling
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            DebugConsole.log(`Error: ${msg} at ${url}:${lineNo}:${columnNo}`, 'error');
+            return false;
+        };
+
+        // AJAX error handling
+        document.addEventListener('ajaxError', function(e) {
+            DebugConsole.log(`AJAX Error: ${e.detail.message}`, 'error');
+        });
     </script>
 </head>
 <body class="bg-gray-100">
