@@ -117,7 +117,7 @@ class VoucherController {
                 'voter_name' => $voter['first_name'] . ' ' . $voter['last_name'],
                 'code' => $code,
                 'password' => $password,
-                'qr_url' => BASE_URL . '/vote/login.php?code=' . $code
+                'qr_url' => BASE_URL . '/voter/index.php?code=' . $code
             ];
         } catch (PDOException $e) {
             error_log("Error creating voucher: " . $e->getMessage());
@@ -193,15 +193,13 @@ class VoucherController {
     }
     
     /**
-     * Generate QR code data URL for a voucher
+     * Get QR code URL
      * 
      * @param string $code The voucher code
-     * @return string The QR code data URL
+     * @return string The URL for the QR code
      */
-    public function generateQRCode($code) {
-        // This would typically use a QR code library
-        // For now, we'll return a URL that can be used with a QR code generator
-        return BASE_URL . '/vote/login.php?code=' . urlencode($code);
+    public function getQRCodeUrl($code) {
+        return BASE_URL . '/voter/index.php?code=' . urlencode($code);
     }
     
     /**

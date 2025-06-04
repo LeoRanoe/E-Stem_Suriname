@@ -399,11 +399,47 @@ class VoterAuth {
      */
     private function logVoterCreation($voterId) {
         try {
-            $stmt = $this->db->prepare("INSERT INTO voter_logs (voter_id, action, ip_address) VALUES (?, 'created', ?)");
-            $stmt->execute([$voterId, $_SERVER['REMOTE_ADDR'] ?? 'unknown']);
+            $stmt = $this->db->prepare("
+                INSERT INTO voter_logs (voter_id, action, created_at)
+                VALUES (?, 'created', NOW())
+            ");
+            $stmt->execute([$voterId]);
         } catch (PDOException $e) {
-            error_log("Error logging voter creation: " . $e->getMessage());
-            // Don't throw exception as this is not critical
+            $this->log("Error logging voter creation: " . $e->getMessage(), 'error');
+        }
+    }
+
+    /**
+     * Check if a voter has already voted in the current election
+     * 
+     * @param int $voterId The voter ID to check
+     * @param int $electionId Optional election ID, defaults to current active election
+     * @return bool True if voter has already voted, false otherwise
+     */
+    public function hasVoted($voterId, $electionId = null) {
+        try {
+            // If no election ID provided, get the current active election
+            if (!$electionId) {
+                $stmt = $this->db->query("SELECT election_id FROM elections WHERE status = 'active' LIMIT 1");
+                $election = $stmt->fetch(PDO::FETCH_ASSOC);
+                if (!$election) {
+                    $this->log("No active election found when checking if voter has voted", 'error');
+                    return false;
+                }
+                $electionId = $election['election_id'];
+            }
+            
+            // Check if voter has already cast a vote in this election
+            $stmt = $this->db->prepare("
+                SELECT COUNT(*) FROM votes 
+                WHERE user_id = ? AND election_id = ?
+            ");
+            $stmt->execute([$voterId, $electionId]);
+            
+            return ($stmt->fetchColumn() > 0);
+        } catch (PDOException $e) {
+            $this->log("Error checking if voter has voted: " . $e->getMessage(), 'error');
+            return false;
         }
     }
 } 

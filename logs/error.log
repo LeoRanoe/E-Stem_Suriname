@@ -11497,3 +11497,852 @@ Stack trace:
 [02-Jun-2025 08:29:07 America/Paramaribo] Development mode active - bypassing authentication
 [04-Jun-2025 06:27:30 America/Paramaribo] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\voter\login.php on line 5
 [04-Jun-2025 06:27:30 America/Paramaribo] PHP Warning:  Undefined variable $db in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\voter\login.php on line 8
+[04-Jun-2025 09:18:41 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:18:41 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:18:41 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:18:47 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:18:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:18:47 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:18:48 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:18:48 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:18:48 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:18:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:18:50 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:18:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:18:50 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:18:51 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:18:51 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:18:51 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:18:51 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:18:53 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:18:53 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:18:53 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:18:53 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:18:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:18:55 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:18:58 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:18:58 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:18:58 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [success_message] => QR code successfully generated.
+    [generated_voucher] => Array
+        (
+            [id] => 2
+            [voter_id] => 2
+            [voter_name] => Jane Smith
+            [voucher_id] => VC1F12837C
+            [password] => JOYPLX
+        )
+
+    [redirect] => admin/qrcodes.php
+)
+
+[04-Jun-2025 09:18:58 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:20:45 America/Paramaribo] Logout - Starting logout process
+[04-Jun-2025 09:20:45 America/Paramaribo] Logout - Session ID: runpg8ig5kiceuhgvr3s3d4d7h
+[04-Jun-2025 09:20:45 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [generated_voucher] => Array
+        (
+            [id] => 2
+            [voter_id] => 2
+            [voter_name] => Jane Smith
+            [voucher_id] => VC1F12837C
+            [password] => JOYPLX
+        )
+
+    [redirect] => admin/qrcodes.php
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+)
+
+[04-Jun-2025 09:20:45 America/Paramaribo] Logout - Clearing admin session
+[04-Jun-2025 09:20:45 America/Paramaribo] Logout - Clearing voter session
+[04-Jun-2025 09:20:45 America/Paramaribo] Logout - Session destroyed
+[04-Jun-2025 09:20:45 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 09:20:45 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 09:21:16 America/Paramaribo] Logout - Starting logout process
+[04-Jun-2025 09:21:16 America/Paramaribo] Logout - Session ID: runpg8ig5kiceuhgvr3s3d4d7h
+[04-Jun-2025 09:21:16 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+)
+
+[04-Jun-2025 09:21:16 America/Paramaribo] Logout - Clearing voter session
+[04-Jun-2025 09:21:16 America/Paramaribo] Logout - Session destroyed
+[04-Jun-2025 09:21:16 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 09:21:16 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 09:37:34 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:37:34 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:34 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:38 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:37:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:38 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:42 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:37:42 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:42 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:43 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:37:43 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:43 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:45 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:37:45 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:45 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:46 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:46 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:49 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:49 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:49 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:37:50 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[04-Jun-2025 09:37:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:50 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:51 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:37:51 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[04-Jun-2025 09:37:51 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:51 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:56 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:56 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:56 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:56 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:58 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:37:58 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:58 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:37:59 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:37:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:37:59 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 09:38:01 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 09:38:01 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 09:38:01 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 10:40:22 America/Paramaribo] Logout - Starting logout process
+[04-Jun-2025 10:40:22 America/Paramaribo] Logout - Session ID: runpg8ig5kiceuhgvr3s3d4d7h
+[04-Jun-2025 10:40:22 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+)
+
+[04-Jun-2025 10:40:22 America/Paramaribo] Logout - Clearing admin session
+[04-Jun-2025 10:40:22 America/Paramaribo] Logout - Clearing voter session
+[04-Jun-2025 10:40:22 America/Paramaribo] Logout - Session destroyed
+[04-Jun-2025 10:40:22 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 10:40:22 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 10:51:56 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 10:51:56 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:01:00 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:01:17 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:01:18 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:01:18 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:01:20 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:08:20 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:08:21 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:08:39 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:08:39 America/Paramaribo] Error recording vote: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'VoteType' in 'field list'
+[04-Jun-2025 11:11:44 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:11:48 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:11:48 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:11:49 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:11:49 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:11:51 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:11:53 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:11:53 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:11:54 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:11:56 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:11:58 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:12:00 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:12:02 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:12:06 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:12:09 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:12:09 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:12:19 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:12:37 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:21:13 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:21:15 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:21:18 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:21:20 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:21:20 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:21:26 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:21:27 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:21:29 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:21:30 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:21:30 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:23:19 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:24:03 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:24:05 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:24:07 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:24:07 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 138
+[04-Jun-2025 11:24:08 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:24:10 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:24:10 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:25:13 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:25:13 America/Paramaribo] Error recording vote: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'VoteType' in 'field list'
+[04-Jun-2025 11:36:14 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:41:05 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:56:41 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 11:56:55 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 11:56:55 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 12:13:52 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 12:13:52 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 12:14:23 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 12:15:18 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 12:16:25 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+)
+
+[04-Jun-2025 12:16:25 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:16:25 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:16:25 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:17:00 America/Paramaribo] Logout - Starting logout process
+[04-Jun-2025 12:17:00 America/Paramaribo] Logout - Session ID: runpg8ig5kiceuhgvr3s3d4d7h
+[04-Jun-2025 12:17:00 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:17:00 America/Paramaribo] Logout - Clearing admin session
+[04-Jun-2025 12:17:00 America/Paramaribo] Logout - Clearing voter session
+[04-Jun-2025 12:17:00 America/Paramaribo] Logout - Session destroyed
+[04-Jun-2025 12:17:00 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 12:17:00 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 12:17:15 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 12:25:34 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 12:25:34 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:25:34 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:25:42 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 12:25:42 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:25:42 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:25:46 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 12:25:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:25:46 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:25:48 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 12:25:48 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:25:48 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:25:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:25:54 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:25:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:25:54 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:25:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:25:59 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:25:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:25:59 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:26:01 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:26:01 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:26:01 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:26:01 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:27:25 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 12:27:25 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:27:25 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:28:19 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 12:28:19 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:28:19 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:28:25 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 12:28:25 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:28:25 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:28:35 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:28:35 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:28:35 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:28:35 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 12:28:39 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 12:28:39 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 12:28:39 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 17:12:01 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 17:12:02 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 17:12:02 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 17:12:13 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 17:12:13 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 17:12:21 America/Paramaribo] Logout - Starting logout process
+[04-Jun-2025 17:12:21 America/Paramaribo] Logout - Session ID: kbr34gulb18tvmq9tihb8alqhg
+[04-Jun-2025 17:12:21 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 17:12:21 America/Paramaribo] Logout - Clearing admin session
+[04-Jun-2025 17:12:21 America/Paramaribo] Logout - Session destroyed
+[04-Jun-2025 17:12:21 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 17:12:21 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 17:12:49 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 17:19:47 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 17:19:57 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 17:20:01 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 17:20:02 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 17:22:12 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 17:22:22 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 17:22:22 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 17:22:24 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 17:22:26 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 17:22:28 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 17:22:28 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 167
+[04-Jun-2025 18:16:28 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 144
+[04-Jun-2025 18:16:28 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\index.php on line 144
+[04-Jun-2025 18:16:33 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 18:16:38 America/Paramaribo] [VoterAuth] [error] Error checking if voter has voted: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'field list'
+[04-Jun-2025 18:16:55 America/Paramaribo] Login page - Session ID: kbr34gulb18tvmq9tihb8alqhg
+[04-Jun-2025 18:16:55 America/Paramaribo] Login page - Current session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+)
+
+[04-Jun-2025 18:16:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+)
+
+[04-Jun-2025 18:16:55 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 18:16:55 America/Paramaribo] Login page - Admin already logged in, redirecting to index
+[04-Jun-2025 18:16:55 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 18:16:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 18:16:55 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 18:16:58 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 18:16:58 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 18:16:58 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 18:17:00 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 18:17:00 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 18:17:00 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 18:17:01 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 18:17:01 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 18:17:01 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 18:17:02 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 18:17:02 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 18:17:02 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 18:17:02 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 18:17:03 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 18:17:03 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 18:17:03 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 18:17:03 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 18:17:04 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 18:17:04 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[04-Jun-2025 18:17:04 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 18:17:04 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 19:11:17 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 19:11:17 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 2
+    [voter_name] => Jane Smith
+    [voucher_id] => VC1F12837C
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 19:11:17 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 19:16:35 America/Paramaribo] Bypassing admin login check for development
+[04-Jun-2025 19:16:35 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[04-Jun-2025 19:16:35 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[04-Jun-2025 19:16:35 America/Paramaribo] Development mode active - bypassing authentication

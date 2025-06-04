@@ -1,6 +1,6 @@
 <?php
-require_once 'include/config.php';
-require_once 'include/db_connect.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/db_connect.php';
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
@@ -21,7 +21,7 @@ if (isset($_SESSION['AdminID'])) {
 }
 
 // Clear voter session
-if (isset($_SESSION['VoterID'])) {
+if (isset($_SESSION['VoterID']) || isset($_SESSION['voter_id'])) {
     error_log("Logout - Clearing voter session");
     
     // Update voter session in database if exists
@@ -34,16 +34,22 @@ if (isset($_SESSION['VoterID'])) {
             ");
             $stmt->execute([
                 'session_id' => $_SESSION['VoterSessionID'],
-                'voter_id' => $_SESSION['VoterID']
+                'voter_id' => $_SESSION['VoterID'] ?? $_SESSION['voter_id']
             ]);
         } catch (PDOException $e) {
             error_log("Logout - Error updating voter session: " . $e->getMessage());
         }
     }
     
+    // Clear old format session variables
     unset($_SESSION['VoterID']);
     unset($_SESSION['VoterName']);
     unset($_SESSION['VoterSessionID']);
+    
+    // Clear new format session variables
+    unset($_SESSION['voter_id']);
+    unset($_SESSION['voter_name']);
+    unset($_SESSION['voucher_id']);
 }
 
 // Clear any other session data
@@ -54,4 +60,4 @@ error_log("Logout - Session destroyed");
 
 // Redirect to home page
 header("Location: " . BASE_URL . "/index.php");
-exit(); 
+exit();

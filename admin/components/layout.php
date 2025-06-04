@@ -291,6 +291,6 @@ if (!isAdminLoggedIn()) {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 <script src="<?php echo BASE_URL; ?>/assets/js/sidebar.js"></script>
 <script src="<?php echo BASE_URL; ?>/assets/js/candidates.js"></script>
-<script src="../assets/js/admin-dashboard.js" defer></script>
+<script src="<?php echo BASE_URL; ?>/assets/js/admin-dashboard.js" defer></script>
 </body>
 </html> 
