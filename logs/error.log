@@ -278,3 +278,14 @@ Stack trace:
 [25-May-2025 18:27:42 America/Paramaribo] PHP Deprecated:  str_getcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/E-Stem_Suriname/src/controllers/ImportController.php on line 46
 [25-May-2025 18:27:42 America/Paramaribo] PHP Deprecated:  str_getcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/E-Stem_Suriname/src/controllers/ImportController.php on line 46
 [25-May-2025 18:27:42 America/Paramaribo] PHP Deprecated:  str_getcsv(): the $escape parameter must be provided as its default value will change in /var/www/html/E-Stem_Suriname/src/controllers/ImportController.php on line 46
+[27-May-2025 07:17:56 America/Paramaribo] Bypassing admin login check for development
+[27-May-2025 07:17:56 America/Paramaribo] Bypassing admin login check for development
+[27-May-2025 07:17:56 America/Paramaribo] Database error fetching candidates: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e_stem_suriname.votes' doesn't exist
+[27-May-2025 07:18:03 America/Paramaribo] Bypassing admin login check for development
+[27-May-2025 07:18:03 America/Paramaribo] Database error fetching candidates: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e_stem_suriname.votes' doesn't exist
+[28-May-2025 06:29:29 America/Paramaribo] Bypassing admin login check for development
+[28-May-2025 06:29:30 America/Paramaribo] Bypassing admin login check for development
+[28-May-2025 06:29:30 America/Paramaribo] Database error fetching candidates: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e_stem_suriname.votes' doesn't exist
+[28-May-2025 06:30:04 America/Paramaribo] Bypassing admin login check for development
+[28-May-2025 06:30:04 America/Paramaribo] Database error fetching candidates: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e_stem_suriname.votes' doesn't exist
+[28-May-2025 08:55:23 America/Paramaribo] Database error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e_stem_suriname.users' doesn't exist

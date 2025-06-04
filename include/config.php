@@ -11,7 +11,7 @@ define('BASE_URL', 'http://localhost/E-Stem_Suriname');
 
 // Database configuration
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'e-stem_suriname');
+define('DB_NAME', 'e_stem_suriname');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 

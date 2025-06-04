@@ -70,33 +70,28 @@ try {
   <!-- Tailwind CSS CDN -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    body { 
-      background-color: #f8fafc; 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; 
-    }
-    
-    .candidate-card { 
-      transition: all 0.2s ease-in-out;
-      border: 2px solid transparent;
-      background: white;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    
-    .candidate-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      border-color: #e5e7eb;
-    }
-    
-    .candidate-card.selected { 
-      border: 2px solid #059669; 
-      background-color: #ecfdf5;
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
-    }
-    
-    .submit-button { 
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
-      color: white; 
+   <style>
+  .candidate-card { 
+    transition: all 0.2s ease-in-out;
+    border: 2px solid #e5e7eb; /* Light gray border */
+    background: white;
+    border-radius: 12px; /* Rounded corners */
+    padding: 16px; /* Increased padding for better spacing */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  .candidate-card:hover {
+    transform: translateY(-2px); /* Slightly more pronounced hover effect */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  }
+  
+  .candidate-card.selected {
+    border: 2px solid #10b981; /* Green border for selected state */
+    background-color: #ecfdf5; /* Light green background for selected state */
+  }
+    .submit-button {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
       padding: 12px 32px; 
       border-radius: 8px; 
       font-weight: 600;
@@ -108,7 +103,7 @@ try {
     
     .submit-button:hover:not(:disabled) {
       transform: translateY(-1px);
-      box-shadow: 0 8px 25px rgba(5, 150, 105, 0.3);
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
     }
     
     .submit-button:disabled {
@@ -116,132 +111,6 @@ try {
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
-    }
-    
-    .section-divider { 
-      border-bottom: 2px solid #e5e7eb; 
-      margin: 32px 0; 
-    }
-    
-    .nav-pill { 
-      border-radius: 24px; 
-      padding: 8px 16px; 
-      font-size: 14px; 
-      font-weight: 500;
-      background-color: #f3f4f6;
-      color: #6b7280;
-      text-decoration: none;
-      transition: all 0.2s ease-in-out;
-    }
-    
-    .nav-pill:hover {
-      background-color: #e5e7eb;
-    }
-    
-    .nav-pill.active { 
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
-      color: white;
-      box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
-    }
-    
-    .filter-container {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    
-    .filter-select {
-      border: 2px solid #e5e7eb;
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 14px;
-      background: white;
-      transition: border-color 0.2s ease-in-out;
-    }
-    
-    .filter-select:focus {
-      outline: none;
-      border-color: #059669;
-      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
-    }
-    
-    .reset-filters {
-      color: #059669;
-      text-decoration: underline;
-      font-size: 14px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: color 0.2s ease-in-out;
-    }
-    
-    .reset-filters:hover {
-      color: #047857;
-    }
-    
-    .section-title {
-      color: #047857;
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-    
-    .welcome-section {
-      background: white;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 32px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      border: 1px solid #e5e7eb;
-    }
-    
-    .candidate-photo {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #e5e7eb;
-      transition: border-color 0.2s ease-in-out;
-    }
-    
-    .candidate-card.selected .candidate-photo {
-      border-color: #059669;
-    }
-    
-    .login-button {
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-    }
-    
-    .login-button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
-    }
-    
-    .logout-button {
-      background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-      color: white;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s ease-in-out;
-    }
-    
-    .logout-button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
     }
     
     .modal-overlay {
@@ -257,7 +126,7 @@ try {
     }
     
     .confirm-button {
-      background: linear-gradient(135deg, #059669 0%, #047857 100%);
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: white;
       padding: 12px 24px;
       border-radius: 8px;
@@ -269,7 +138,7 @@ try {
     
     .confirm-button:hover {
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(5, 150, 105, 0.3);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
     }
     
     .cancel-button {
@@ -287,152 +156,248 @@ try {
       transform: translateY(-1px);
       box-shadow: 0 6px 20px rgba(107, 114, 128, 0.3);
     }
+
+
+    /* Remove the default hover border effect */
+select {
+  border-color: #d1d5db; /* Set the default border color */
+}
+/* On hover, set the border color to transparent */
+select:hover {
+  border-color: transparent; /* Remove the gray hover border */
+}
+/* On focus, apply the green border */
+select:focus {
+  border-color: #10b981; /* Green border on focus */
+  outline: none; /* Remove the default outline */
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3); /* Optional: Add a shadow effect */
+}
+
+.Filter-break-line {
+  width: 100%; /* Make the line take the full width of the parent */
+  height: 2px; /* Height of the line */
+  background-color: #10b981; /* Green color */
+  margin-top: 4px; /* Space between the text and the line */
+  border-radius: 1px; /* Slightly rounded edges */
+}
+
+.filter-container {
+  background-color: #f7f7f7; /* Light gray background */
+  padding: 16px; /* Increased padding for better spacing */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
   </style>
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen">
+
 <!-- Header -->
-<header class="bg-white shadow-sm py-4 mb-6">
-  <div class="container mx-auto px-4 flex justify-between items-center max-w-6xl">
-    <div class="flex space-x-2">
-      <a href="#" class="nav-pill">Overzicht</a>
-      <a href="#" class="nav-pill">Resultaten</a>
-      <a href="#" class="nav-pill active">Stemmen</a>
+<header class="bg-white border-b border-gray-200">
+  <div class="max-w-4xl mx-auto px-4 py-4">
+    <div class="flex justify-between items-center">
+      <!-- Navigation -->
+      <nav class="flex space-x-1">
+        <a href="#" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-100">Overzicht</a>
+        <a href="#" class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-lg hover:bg-gray-100">Resultaten</a>
+        <a href="#" class="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-lg">Stemmen</a>
+      </nav>
+      
+      <!-- Login/Logout Button -->
+      <?php if (!isset($_SESSION['UserID'])): ?>
+      <button class="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 transition-colors">
+        Log in
+      </button>
+      <?php else: ?>
+      <button class="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition-colors">
+        Log uit
+      </button>
+      <?php endif; ?>
     </div>
-    <?php if (!isset($_SESSION['UserID'])): ?>
-    <button class="login-button">Log in</button>
-    <?php else: ?>
-    <button class="logout-button">Log uit</button>
-    <?php endif; ?>
   </div>
 </header>
 
-<main class="container mx-auto px-4 py-2 max-w-6xl">
+<main class="max-w-4xl mx-auto px-4 py-6">
   <!-- Welcome Message -->
-  <section class="welcome-section text-center">
-    <h1 class="text-2xl font-bold text-gray-800 mb-2">Welkom, <?= htmlspecialchars($userFullName) ?>.</h1>
-    <p class="text-gray-600">U heeft nog niet gestemd. Vergeet niet dat u slechts één keer kunt stemmen.</p>
-  </section>
+  <div class="text-center mb-8">
+    <h1 class="text-2xl font-bold text-gray-900 mb-2">
+      Welkom, <span class="text-green-600"><?= htmlspecialchars($userFullName) ?></span>.
+    </h1>
+    <p class="text-gray-600">
+      U heeft nog niet gestemd. Vergeet niet dat u slechts één keer kunt stemmen.
+    </p>
+  </div>
 
   <!-- DNA Section -->
   <section class="mb-12">
-    <h2 class="section-title">De Nationale Assemblée</h2>
-    <div class="filter-container mb-6">
-      <div class="text-base mb-4 font-semibold text-gray-700">Filter Opties</div>
-      <div class="flex flex-wrap gap-6 items-end">
-        <div class="flex flex-col">
-          <label class="text-sm mb-2 font-medium text-gray-700">Politieke partijen</label>
-          <select id="dna-party-filter" class="filter-select min-w-48">
-            <option value="">Alle partijen</option>
-            <?php foreach ($parties as $party): ?>
-              <option value="<?= htmlspecialchars($party['PartyID']) ?>">
-                <?= htmlspecialchars($party['PartyName']) ?>
-              </option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <div class="flex flex-col">
-          <label class="text-sm mb-2 font-medium text-gray-700">Districten</label>
-          <select id="dna-district-filter" class="filter-select min-w-48">
-            <option value="">Alle districten</option>
-            <?php foreach ($districts as $district): ?>
-              <option value="<?= htmlspecialchars($district['DistrictID']) ?>">
-                <?= htmlspecialchars($district['DistrictName']) ?>
-              </option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <button onclick="resetFilters()" type="button" class="reset-filters">Herstel filters</button>
+    <div class="bg-white rounded-lg border border-gray-200 p-6">
+      <h2 class="text-xl font-bold text-green-600 mb-6">De Nationale Assemblée</h2>
+      
+
+    
+<!-- Filter Options -->
+<div class="filter-container mb-6">
+  <h3 class="text-sm font-semibold text-gray-700 mb-4">Filter Opties</h3>
+  <div class="Filter-break-line"></div>
+  
+  <!-- New container for filter dropdowns -->
+  <div class="border border-gray-300 rounded-lg p-4 mt-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Politieke partijen</label>
+        <select id="dna-party-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+          <option value="">Alle partijen</option>
+          <?php foreach ($parties as $party): ?>
+            <option value="<?= htmlspecialchars($party['PartyID']) ?>">
+              <?= htmlspecialchars($party['PartyName']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Districten</label>
+        <select id="dna-district-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+          <option value="">Alle districten</option>
+          <?php foreach ($districts as $district): ?>
+            <option value="<?= htmlspecialchars($district['DistrictID']) ?>">
+              <?= htmlspecialchars($district['DistrictName']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+      <div>
+        <button onclick="resetFilters()" type="button" class="text-sm text-green-600 hover:text-green-700 font-medium underline">
+          Herstel filters
+        </button>
       </div>
     </div>
-    <h3 class="font-semibold mb-4 text-lg text-gray-800">Kandidaten</h3>
-    <div id="dna-candidates" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <?php if (!empty($dnaCandidates)): ?>
-        <?php foreach ($dnaCandidates as $candidate): ?>
-          <div class="candidate-card p-4 flex items-center gap-4 rounded-xl cursor-pointer dna-card"
-               data-party="<?= htmlspecialchars($candidate['PartyID']) ?>"
-               data-district="<?= htmlspecialchars($candidate['DistrictID']) ?>"
-               data-candidate-id="<?= htmlspecialchars($candidate['CandidateID']) ?>"
-               onclick="selectCandidate(this, 'dna')">
-            <img src="<?= !empty($candidate['Photo']) ? htmlspecialchars($candidate['Photo']) : 'https://via.placeholder.com/60' ?>" alt="<?= htmlspecialchars($candidate['Name']) ?>" class="candidate-photo">
-            <div class="flex-1">
-              <h3 class="font-bold text-gray-800 text-base"><?= htmlspecialchars($candidate['Name']) ?></h3>
-              <p class="text-sm text-gray-600 mb-1"><?= htmlspecialchars($candidate['PartyName']) ?></p>
-              <p class="text-sm text-gray-500"><?= htmlspecialchars($candidate['DistrictName']) ?></p>
-            </div>
-          </div>
-        <?php endforeach; ?>
-      <?php else: ?>
-        <p>Geen DNA-kandidaten beschikbaar voor deze verkiezing.</p>
-      <?php endif; ?>
+  </div>
+</div>
+
+
+
+      <!-- Candidates -->
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Kandidaten</h3>
+        <div id="dna-candidates" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <?php if (!empty($dnaCandidates)): ?>
+            <?php foreach ($dnaCandidates as $candidate): ?>
+              <div class="candidate-card border border-gray-200 rounded-lg p-4 cursor-pointer dna-card hover:shadow-md"
+                   data-party="<?= htmlspecialchars($candidate['PartyID']) ?>"
+                   data-district="<?= htmlspecialchars($candidate['DistrictID']) ?>"
+                   data-candidate-id="<?= htmlspecialchars($candidate['CandidateID']) ?>"
+                   onclick="selectCandidate(this, 'dna')">
+                <div class="flex items-start space-x-4">
+                  <img src="<?= !empty($candidate['Photo']) ? htmlspecialchars($candidate['Photo']) : 'https://via.placeholder.com/80' ?>" 
+                       alt="<?= htmlspecialchars($candidate['Name']) ?>" 
+                       class="w-20 h-20 rounded-lg object-cover border-2 border-gray-300 flex-shrink-0">
+                  <div class="flex-1">
+                    <h4 class="font-semibold text-gray-900 leading-tight mb-1"><?= htmlspecialchars($candidate['Name']) ?></h4>
+                    <p class="text-sm text-gray-600 mb-1"><?= htmlspecialchars($candidate['PartyName']) ?></p>
+                    <p class="text-sm text-gray-500"><?= htmlspecialchars($candidate['DistrictName']) ?></p>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <p class="text-gray-500 col-span-full text-center py-8">Geen DNA-kandidaten beschikbaar voor deze verkiezing.</p>
+          <?php endif; ?>
+        </div>
+      </div>
     </div>
-    <div class="section-divider"></div>
   </section>
 
   <!-- RR Section -->
   <section class="mb-12">
-    <h2 class="section-title">Resortsraden</h2>
-    <div class="filter-container mb-6">
-      <div class="text-base mb-4 font-semibold text-gray-700">Filter Opties</div>
-      <div class="flex flex-wrap gap-6 items-end">
-        <div class="flex flex-col">
-          <label class="text-sm mb-2 font-medium text-gray-700">Politieke partijen</label>
-          <select id="rr-party-filter" class="filter-select min-w-48">
-            <option value="">Alle partijen</option>
-            <?php foreach ($parties as $party): ?>
-              <option value="<?= htmlspecialchars($party['PartyID']) ?>">
-                <?= htmlspecialchars($party['PartyName']) ?>
-              </option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <div class="flex flex-col">
-          <label class="text-sm mb-2 font-medium text-gray-700">Districten</label>
-          <select id="rr-district-filter" class="filter-select min-w-48">
-            <option value="">Alle districten</option>
-            <?php foreach ($districts as $district): ?>
-              <option value="<?= htmlspecialchars($district['DistrictID']) ?>">
-                <?= htmlspecialchars($district['DistrictName']) ?>
-              </option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <button onclick="resetFilters()" type="button" class="reset-filters">Herstel filters</button>
+    <div class="bg-white rounded-lg border border-gray-200 p-6">
+      <h2 class="text-xl font-bold text-green-600 mb-6">Resortsraden</h2>
+      
+    <!-- Filter Options -->
+<div class="filter-container mb-6">
+  <h3 class="text-sm font-semibold text-gray-700 mb-4">Filter Opties</h3>
+  <div class="Filter-break-line"></div>
+  
+  <!-- New container for filter dropdowns -->
+  <div class="border border-gray-300 rounded-lg p-4 mt-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Politieke partijen</label>
+        <select id="dna-party-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+          <option value="">Alle partijen</option>
+          <?php foreach ($parties as $party): ?>
+            <option value="<?= htmlspecialchars($party['PartyID']) ?>">
+              <?= htmlspecialchars($party['PartyName']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Districten</label>
+        <select id="dna-district-filter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+          <option value="">Alle districten</option>
+          <?php foreach ($districts as $district): ?>
+            <option value="<?= htmlspecialchars($district['DistrictID']) ?>">
+              <?= htmlspecialchars($district['DistrictName']) ?>
+            </option>
+          <?php endforeach; ?>
+        </select>
+      </div>
+      <div>
+        <button onclick="resetFilters()" type="button" class="text-sm text-green-600 hover:text-green-700 font-medium underline">
+          Herstel filters
+        </button>
       </div>
     </div>
-    <h3 class="font-semibold mb-4 text-lg text-gray-800">Kandidaten</h3>
-    <div id="rr-candidates" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <?php if (!empty($rrCandidates)): ?>
-        <?php foreach ($rrCandidates as $candidate): ?>
-          <div class="candidate-card p-4 flex items-center gap-4 rounded-xl cursor-pointer rr-card"
-               data-party="<?= htmlspecialchars($candidate['PartyID']) ?>"
-               data-district="<?= htmlspecialchars($candidate['DistrictID']) ?>"
-               data-candidate-id="<?= htmlspecialchars($candidate['CandidateID']) ?>"
-               onclick="selectCandidate(this, 'rr')">
-            <img src="<?= !empty($candidate['Photo']) ? htmlspecialchars($candidate['Photo']) : 'https://via.placeholder.com/60' ?>" alt="<?= htmlspecialchars($candidate['Name']) ?>" class="candidate-photo">
-            <div class="flex-1">
-              <h3 class="font-bold text-gray-800 text-base"><?= htmlspecialchars($candidate['Name']) ?></h3>
-              <p class="text-sm text-gray-600 mb-1"><?= htmlspecialchars($candidate['PartyName']) ?></p>
-              <p class="text-sm text-gray-500"><?= htmlspecialchars($candidate['DistrictName']) ?></p>
-            </div>
-          </div>
-        <?php endforeach; ?>
-      <?php else: ?>
-        <p>Geen RR-kandidaten beschikbaar voor deze verkiezing.</p>
-      <?php endif; ?>
+  </div>
+</div>
+
+
+
+      <!-- Candidates -->
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Kandidaten</h3>
+        <div id="rr-candidates" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <?php if (!empty($rrCandidates)): ?>
+            <?php foreach ($rrCandidates as $candidate): ?>
+              <div class="candidate-card border border-gray-200 rounded-lg p-4 cursor-pointer rr-card hover:shadow-md"
+                   data-party="<?= htmlspecialchars($candidate['PartyID']) ?>"
+                   data-district="<?= htmlspecialchars($candidate['DistrictID']) ?>"
+                   data-candidate-id="<?= htmlspecialchars($candidate['CandidateID']) ?>"
+                   onclick="selectCandidate(this, 'rr')">
+                <div class="flex items-start space-x-4">
+                  <img src="<?= !empty($candidate['Photo']) ? htmlspecialchars($candidate['Photo']) : 'https://via.placeholder.com/80' ?>" 
+                       alt="<?= htmlspecialchars($candidate['Name']) ?>" 
+                       class="w-20 h-20 rounded-lg object-cover border-2 border-gray-300 flex-shrink-0">
+                  <div class="flex-1">
+                    <h4 class="font-semibold text-gray-900 leading-tight mb-1"><?= htmlspecialchars($candidate['Name']) ?></h4>
+                    <p class="text-sm text-gray-600 mb-1"><?= htmlspecialchars($candidate['PartyName']) ?></p>
+                    <p class="text-sm text-gray-500"><?= htmlspecialchars($candidate['DistrictName']) ?></p>
+                  </div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <p class="text-gray-500 col-span-full text-center py-8">Geen RR-kandidaten beschikbaar voor deze verkiezing.</p>
+          <?php endif; ?>
+        </div>
+      </div>
     </div>
-    <div class="section-divider"></div>
   </section>
 
-  <!-- Submit Button -->
-  <section class="text-center mb-12">
-    <p class="mb-2 text-base text-gray-700">Bent u <span class="text-green-700 font-bold">zeker</span> van uw keuze? <span class="text-green-700 font-semibold">Dien dan uw stem in</span>.</p>
-    <p class="text-red-600 mb-6 text-sm font-medium">Let op: u kunt slechts één keer stemmen.</p>
-    <div class="flex justify-center">
-      <button id="submitBtn" onclick="submitVote()" class="submit-button" disabled>
-        Indienen
-      </button>
-    </div>
-  </section>
+  <!-- Submit Section -->
+  <div class="text-center">
+    <p class="text-gray-700 mb-2">
+      Bent u <span class="font-bold text-green-600">zeker</span> van uw keuze? 
+      <span class="font-semibold text-green-600">Dien dan uw stem in</span>.
+    </p>
+    <p class="text-red-600 mb-6 text-sm">
+      <span class="font-semibold">Let op:</span> u kunt slechts <span class="font-bold">één keer</span> stemmen.
+    </p>
+    
+    <button id="submitBtn" onclick="submitVote()" class="submit-button" disabled>
+      Indienen
+    </button>
+  </div>
 </main>
 
 <!-- Modal Popup -->
@@ -516,38 +481,68 @@ try {
     document.getElementById('submitBtn').disabled = true;
   }
 
-  function filterDNACandidates() {
+function filterDNACandidates() {
     const partyFilter = document.getElementById('dna-party-filter').value;
     const districtFilter = document.getElementById('dna-district-filter').value;
+    
+    console.log('DNA Filters - Party:', partyFilter, 'District:', districtFilter); // Debug log
+    
     document.querySelectorAll('.dna-card').forEach(card => {
-      const partyId = card.getAttribute('data-party') || '';
-      const districtId = card.getAttribute('data-district') || '';
-      const matchesParty = partyFilter === '' || partyId === partyFilter;
-      const matchesDistrict = districtFilter === '' || districtId === districtFilter;
-      card.style.display = (matchesParty && matchesDistrict) ? '' : 'none';
+        const partyId = card.getAttribute('data-party') || '';
+        const districtId = card.getAttribute('data-district') || '';
+        
+        console.log('Card - Party:', partyId, 'District:', districtId); // Debug log
+        
+        const matchesParty = partyFilter === '' || partyId === partyFilter;
+        const matchesDistrict = districtFilter === '' || districtId === districtFilter;
+        
+        if (matchesParty && matchesDistrict) {
+            card.style.display = '';
+            card.classList.remove('hidden');
+        } else {
+            card.style.display = 'none';
+            card.classList.add('hidden');
+        }
     });
-  }
+}
 
-  function filterRRCandidates() {
+function filterRRCandidates() {
     const partyFilter = document.getElementById('rr-party-filter').value;
     const districtFilter = document.getElementById('rr-district-filter').value;
+    
+    console.log('RR Filters - Party:', partyFilter, 'District:', districtFilter); // Debug log
+    
     document.querySelectorAll('.rr-card').forEach(card => {
-      const partyId = card.getAttribute('data-party') || '';
-      const districtId = card.getAttribute('data-district') || '';
-      const matchesParty = partyFilter === '' || partyId === partyFilter;
-      const matchesDistrict = districtFilter === '' || districtId === districtFilter;
-      card.style.display = (matchesParty && matchesDistrict) ? '' : 'none';
+        const partyId = card.getAttribute('data-party') || '';
+        const districtId = card.getAttribute('data-district') || '';
+        
+        console.log('Card - Party:', partyId, 'District:', districtId); // Debug log
+        
+        const matchesParty = partyFilter === '' || partyId === partyFilter;
+        const matchesDistrict = districtFilter === '' || districtId === districtFilter;
+        
+        if (matchesParty && matchesDistrict) {
+            card.style.display = '';
+            card.classList.remove('hidden');
+        } else {
+            card.style.display = 'none';
+            card.classList.add('hidden');
+        }
     });
-  }
+}
 
-  function resetFilters() {
+function resetFilters() {
     document.getElementById('dna-party-filter').value = '';
     document.getElementById('dna-district-filter').value = '';
     document.getElementById('rr-party-filter').value = '';
     document.getElementById('rr-district-filter').value = '';
-    filterDNACandidates();
-    filterRRCandidates();
-  }
+    
+    // Toon alle kandidaten weer
+    document.querySelectorAll('.dna-card, .rr-card').forEach(card => {
+        card.style.display = '';
+        card.classList.remove('hidden');
+    });
+}
 
   // Attach event listeners
   document.getElementById('dna-party-filter').addEventListener('change', filterDNACandidates);
