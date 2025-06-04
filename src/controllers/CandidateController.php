@@ -123,18 +123,24 @@ class CandidateController {
         $election_id = intval($_POST['election_id'] ?? 0);
         $district_id = intval($_POST['district_id'] ?? 0);
         $candidate_type = $_POST['candidate_type'] ?? 'RR';
+        $resort_id = ($candidate_type === 'RR') ? intval($_POST['resort_id'] ?? 0) : null;
 
         if (empty(trim($name)) || empty($election_id) || empty($party_id) || empty($district_id)) {
             throw new Exception('Vul alle verplichte velden in (Naam, Partij, Verkiezing, District).');
         }
 
+        // For RR candidates, resort is required
+        if ($candidate_type === 'RR' && empty($resort_id)) {
+            throw new Exception('Voor RR kandidaten is een resort verplicht.');
+        }
+
         $image_path = $this->handleImageUpload();
 
         $stmt = $this->pdo->prepare("
-            INSERT INTO candidates (Name, PartyID, ElectionID, DistrictID, CandidateType, Photo, CreatedAt)
-            VALUES (?, ?, ?, ?, ?, ?, NOW())
+            INSERT INTO candidates (Name, PartyID, ElectionID, DistrictID, ResortID, CandidateType, Photo, CreatedAt)
+            VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
         ");
-        $stmt->execute([trim($name), $party_id, $election_id, $district_id, $candidate_type, $image_path]);
+        $stmt->execute([trim($name), $party_id, $election_id, $district_id, $resort_id, $candidate_type, $image_path]);
     }
 
     private function editCandidate() {
@@ -143,20 +149,26 @@ class CandidateController {
         $party_id = intval($_POST['party_id'] ?? 0);
         $district_id = intval($_POST['district_id'] ?? 0);
         $candidate_type = $_POST['candidate_type'] ?? 'RR';
+        $resort_id = ($candidate_type === 'RR') ? intval($_POST['resort_id'] ?? 0) : null;
 
         if (empty(trim($name)) || empty($party_id) || empty($district_id)) {
             throw new Exception('Vul alle verplichte velden in (Naam, Partij, District).');
+        }
+
+        // For RR candidates, resort is required
+        if ($candidate_type === 'RR' && empty($resort_id)) {
+            throw new Exception('Voor RR kandidaten is een resort verplicht.');
         }
 
         $image_path = $this->handleImageUploadForEdit($candidate_id);
 
         $stmt = $this->pdo->prepare("
             UPDATE candidates
-            SET Name = ?, PartyID = ?, DistrictID = ?, CandidateType = ?, Photo = ?
+            SET Name = ?, PartyID = ?, DistrictID = ?, ResortID = ?, CandidateType = ?, Photo = ?
             WHERE CandidateID = ?
         ");
         error_log("Updating candidate with ID $candidate_id. New image path: " . ($image_path ?? 'null'));
-        $stmt->execute([trim($name), $party_id, $district_id, $candidate_type, $image_path, $candidate_id]);
+        $stmt->execute([trim($name), $party_id, $district_id, $resort_id, $candidate_type, $image_path, $candidate_id]);
         
         // Verify update
         $stmt = $this->pdo->prepare("SELECT Photo FROM candidates WHERE CandidateID = ?");
@@ -206,12 +218,13 @@ class CandidateController {
             $whereClause = $where ? "WHERE " . implode(" AND ", $where) : "";
             
             $stmt = $this->pdo->prepare("
-                SELECT c.*, p.PartyName, e.ElectionName, d.DistrictName,
+                SELECT c.*, p.PartyName, e.ElectionName, d.DistrictName, r.name as ResortName,
                        COUNT(v.VoteID) as vote_count
                 FROM candidates c
                 LEFT JOIN parties p ON c.PartyID = p.PartyID
                 LEFT JOIN elections e ON c.ElectionID = e.ElectionID
                 LEFT JOIN districten d ON c.DistrictID = d.DistrictID
+                LEFT JOIN resorts r ON c.ResortID = r.id
                 LEFT JOIN votes v ON c.CandidateID = v.CandidateID
                 $whereClause
                 GROUP BY c.CandidateID, c.Name, c.PartyID, c.ElectionID, c.DistrictID, c.CandidateType, c.Photo, c.CreatedAt, p.PartyName, e.ElectionName, d.DistrictName

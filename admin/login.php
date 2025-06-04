@@ -1,36 +1,61 @@
 <?php
-session_start();
-require_once __DIR__ . '/../include/config.php';
-require_once __DIR__ . '/../include/admin_auth.php';
-require_once __DIR__ . '/../include/db_connect.php'; // Include database connection
+require_once '../include/config.php';
+require_once '../include/db_connect.php';
+require_once '../include/admin_auth.php';
 
-// Check if admin is already logged in
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    error_log("Login page - Starting new session");
+    session_start();
+}
+
+error_log("Login page - Session ID: " . session_id());
+error_log("Login page - Current session data: " . print_r($_SESSION, true));
+
+// Check if already logged in
 if (isAdminLoggedIn()) {
-    header('Location: ' . BASE_URL . '/admin/index.php');
+    error_log("Login page - Admin already logged in, redirecting to index");
+    header("Location: " . BASE_URL . "/admin/index.php");
     exit();
 }
 
+$error = '';
+
 // Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'] ?? '';
+    error_log("Login page - Processing login form submission");
+    
+    $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
-
+    
     if (empty($email) || empty($password)) {
-        $error = "Please fill in all fields";
+        $error = "Please enter both email and password";
+        error_log("Login page - Empty email or password");
     } else {
         try {
+            error_log("Login page - Attempting to authenticate admin: " . $email);
             $admin = authenticateAdmin($email, $password);
             
             if ($admin) {
+                error_log("Login page - Authentication successful for admin: " . $email);
                 loginAdmin($admin);
-                header('Location: ' . BASE_URL . '/admin/index.php');
-                exit();
+                
+                // Verify session was set correctly
+                if (isset($_SESSION['AdminID'])) {
+                    error_log("Login page - Session verified, redirecting to index");
+                    header("Location: " . BASE_URL . "/admin/index.php");
+                    exit();
+                } else {
+                    error_log("Login page - Session not set after login");
+                    $error = "Login successful but session not set. Please try again.";
+                }
             } else {
-                $error = "Invalid credentials";
+                error_log("Login page - Authentication failed for admin: " . $email);
+                $error = "Invalid email or password";
             }
-        } catch(PDOException $e) {
-            error_log("Admin Login Error: " . $e->getMessage());
-            $error = "An error occurred. Please try again later.";
+        } catch (Exception $e) {
+            error_log("Login page - Error during authentication: " . $e->getMessage());
+            $error = "An error occurred during login. Please try again.";
         }
     }
 }
@@ -110,22 +135,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
-<body class="min-h-screen bg-green-50">
+<body class="min-h-screen bg-gray-100">
     <div class="flex items-center justify-center min-h-screen login-container">
-        <div class="w-full max-w-md p-1 mx-4 bg-white bg-opacity-10 rounded-xl">
-            <div class="p-8 bg-white rounded-lg form-container">
+        <div class="w-full max-w-md p-1 mx-4 bg-white bg-opacity-10 rounded-xl shadow-lg">
+            <div class="p-8 bg-white rounded-xl shadow-lg border border-gray-200 form-container">
                 <div class="text-center logo-container">
-                    <div class="flex justify-center mb-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                        </svg>
+                    <div class="flex justify-center mb-4">
+                        <div class="p-4 rounded-full bg-suriname-green/10">
+                            <i class="fas fa-vote-yea text-suriname-green text-4xl"></i>
+                        </div>
                     </div>
-                    <h2 class="text-3xl font-bold text-green-700">
-                        Admin Portal
-                    </h2>
-                    <p class="mt-2 text-sm text-gray-600">
-                        E-Stem Suriname Management System
-                    </p>
+                    <h2 class="mt-2 text-3xl font-bold text-gray-800">Admin Login</h2>
+                    <p class="mt-2 text-sm text-gray-600">Inloggen bij het E-Stem Suriname beheerderspaneel</p>
                 </div>
 
                 <?php if (isset($error)): ?>
@@ -140,31 +161,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <form class="mt-8 space-y-6" method="POST">
                     <div class="space-y-5">
                         <div class="input-group">
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mailadres</label>
                             <div class="relative">
-                                <span class="input-icon">
-                                    <i class="fas fa-envelope"></i>
-                                </span>
-                                <input id="email" name="email" type="email" required
-                                    class="input-field block w-full px-4 py-3 placeholder-gray-400 border border-gray-300 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
-                                    placeholder="admin@example.com">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-envelope text-gray-400"></i>
+                                </div>
+                                <input id="email" name="email" type="email" required class="w-full px-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-suriname-green focus:border-transparent" placeholder="admin@example.com">
                             </div>
                         </div>
 
                         <div class="input-group">
-                            <div class="flex items-center justify-between">
-                                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                                <a href="#" class="text-xs font-medium text-blue-900 hover:text-blue-700">
-                                    Forgot password?
-                                </a>
-                            </div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Wachtwoord</label>
                             <div class="relative">
-                                <span class="input-icon">
-                                    <i class="fas fa-lock"></i>
-                                </span>
-                                <input id="password" name="password" type="password" required
-                                    class="input-field block w-full px-4 py-3 placeholder-gray-400 border border-gray-300 rounded-lg shadow-sm appearance-none focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
-                                    placeholder="••••••••">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <i class="fas fa-lock text-gray-400"></i>
+                                </div>
+                                <input id="password" name="password" type="password" required class="w-full px-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-suriname-green focus:border-transparent" placeholder="••••••••">
                             </div>
                         </div>
                     </div>
@@ -172,22 +184,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
                             <input id="remember-me" name="remember-me" type="checkbox" 
-                                class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                                class="w-4 h-4 text-suriname-green border-gray-300 rounded focus:ring-suriname-green">
                             <label for="remember-me" class="block ml-2 text-sm text-gray-700">
                                 Remember me
                             </label>
                         </div>
                     </div>
 
+                    <?php if (!empty($error)): ?>
+                        <div class="p-3 text-sm text-suriname-red bg-suriname-red/10 rounded-lg">
+                            <p><?= htmlspecialchars($error) ?></p>
+                        </div>
+                    <?php endif; ?>
+
                     <div>
-                        <button type="submit"
-                            class="submit-btn relative flex justify-center w-full px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-blue-900 border border-transparent rounded-lg group hover:from-green-700 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
-                                <svg class="w-5 h-5 text-green-300 group-hover:text-green-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-                                </svg>
-                            </span>
-                            Sign in to Dashboard
+                        <button type="submit" class="w-full px-4 py-2 text-sm font-medium text-white bg-suriname-green rounded-lg hover:bg-suriname-dark-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green transition-all duration-200">
+                            Inloggen
                         </button>
                     </div>
                 </form>

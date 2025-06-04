@@ -1,5 +1,5 @@
 RewriteEngine On
-RewriteBase /
+RewriteBase /E-Stem_Suriname/E-Stem_Suriname/
 
 # Allow direct access to files and directories
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -10,3 +10,10 @@ RewriteRule ^api/(.*)$ src/controllers/$1Controller.php [L]
 
 # Route direct controller access
 RewriteRule ^src/controllers/(.*)$ src/controllers/$1 [L]
+
+# Ensure PHP files are accessible
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(.+)\.php$ $1.php [L]
+
+# Handle 404 errors
+ErrorDocument 404 /E-Stem_Suriname/E-Stem_Suriname/404.php

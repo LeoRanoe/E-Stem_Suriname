@@ -1,9 +1,14 @@
 <?php
 // Development mode - bypass authentication
-define('DEVELOPMENT_MODE', false);
+if (!defined('DEVELOPMENT_MODE')) {
+    define('DEVELOPMENT_MODE', true);
+}
 
 function isAdminLoggedIn() {
+    error_log("Checking admin login status. Session data: " . print_r($_SESSION, true));
+    
     if (DEVELOPMENT_MODE) {
+        error_log("Development mode active - bypassing authentication");
         // Auto-login for development
         $_SESSION['AdminID'] = 1;
         $_SESSION['AdminName'] = 'Developer';
@@ -12,7 +17,9 @@ function isAdminLoggedIn() {
         return true;
     }
     
-    return isset($_SESSION['AdminID']);
+    $isLoggedIn = isset($_SESSION['AdminID']);
+    error_log("Admin login status: " . ($isLoggedIn ? "Logged in" : "Not logged in"));
+    return $isLoggedIn;
 }
 
 // Authenticate admin credentials
@@ -39,12 +46,17 @@ function authenticateAdmin($email, $password) {
 
 // Login admin and set session variables
 function loginAdmin($admin) {
+    error_log("LoginAdmin - Starting login process for admin: " . $admin['Email']);
     error_log("LoginAdmin - Previous session ID: " . session_id());
-    error_log("LoginAdmin - Session status: " . print_r($_SESSION, true));
+    error_log("LoginAdmin - Previous session data: " . print_r($_SESSION, true));
+    
     $_SESSION['AdminID'] = $admin['AdminID'];
     $_SESSION['AdminName'] = $admin['FirstName'] . ' ' . $admin['LastName'];
     $_SESSION['AdminEmail'] = $admin['Email'];
     $_SESSION['AdminStatus'] = $admin['Status'];
+    
+    error_log("LoginAdmin - New session data: " . print_r($_SESSION, true));
+    error_log("LoginAdmin - New session ID: " . session_id());
 }
 
 // Logout admin
