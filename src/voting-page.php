@@ -1,7 +1,7 @@
 <?php
 session_start();
 $host = 'localhost';
-$db   = 'e_stem_suriname';
+$db   = 'e-stem_suriname';
 $user = 'root';
 $pass = '';
 $charset = 'utf8mb4';

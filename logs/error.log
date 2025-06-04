@@ -11352,3 +11352,148 @@ Stack trace:
 )
 
 [29-May-2025 09:48:26 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:27:19 America/Paramaribo] Bypassing admin login check for development
+[02-Jun-2025 08:27:19 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:27:19 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:27:41 America/Paramaribo] Bypassing admin login check for development
+[02-Jun-2025 08:27:41 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:27:41 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:27:46 America/Paramaribo] Bypassing admin login check for development
+[02-Jun-2025 08:27:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:27:46 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:27:50 America/Paramaribo] Bypassing admin login check for development
+[02-Jun-2025 08:27:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:27:50 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:27:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:27:55 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:27:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:27:55 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:27:59 America/Paramaribo] Bypassing admin login check for development
+[02-Jun-2025 08:27:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:27:59 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:28:03 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:28:03 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:28:03 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:28:03 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:28:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:28:07 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:28:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:28:07 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:28:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:28:18 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:28:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:28:18 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:28:47 America/Paramaribo] Bypassing admin login check for development
+[02-Jun-2025 08:28:47 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[02-Jun-2025 08:28:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:28:47 America/Paramaribo] Development mode active - bypassing authentication
+[02-Jun-2025 08:29:07 America/Paramaribo] Bypassing admin login check for development
+[02-Jun-2025 08:29:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[02-Jun-2025 08:29:07 America/Paramaribo] Development mode active - bypassing authentication
+[04-Jun-2025 06:27:30 America/Paramaribo] PHP Notice:  session_start(): Ignoring session_start() because a session is already active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\voter\login.php on line 5
+[04-Jun-2025 06:27:30 America/Paramaribo] PHP Warning:  Undefined variable $db in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\voter\login.php on line 8
