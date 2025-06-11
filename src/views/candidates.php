@@ -13,6 +13,7 @@ $per_page = 10;
 
 $filters = [
     'district_id' => $_GET['district_id'] ?? null,
+    'resort_id' => $_GET['resort_id'] ?? null,
     'party_id' => $_GET['party_id'] ?? null,
     'candidate_type' => $_GET['candidate_type'] ?? null
 ];
@@ -40,6 +41,21 @@ $candidateCountsByDistrictIdData = $pdo->query("
 $candidateCountsMap = [];
 foreach ($candidateCountsByDistrictIdData as $row) {
     $candidateCountsMap[$row['DistrictID']] = $row['CandidateCount'];
+}
+
+// Get selected resort ID for the filter
+$selectedResortId = $_GET['resort_id'] ?? null;
+$selectedDistrictId = $_GET['district_id'] ?? null;
+
+// If resort is selected but no district is selected, find the district for the resort
+if ($selectedResortId && !$selectedDistrictId) {
+    $stmt = $pdo->prepare("SELECT district_id FROM resorts WHERE id = ?");
+    $stmt->execute([$selectedResortId]);
+    $resortData = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($resortData) {
+        $selectedDistrictId = $resortData['district_id'];
+        $filters['district_id'] = $selectedDistrictId;
+    }
 }
 
 ob_start();
@@ -117,6 +133,13 @@ ob_start();
                                     </option>
                                 <?php endforeach; ?>
                             <?php endif; ?>
+                        </select>
+                    </div>
+                    <div id="resort_filter_container" style="display: none;">
+                        <label for="resort_id_filter" class="block text-sm font-medium text-gray-700 mb-2">Resort</label>
+                        <select id="resort_id_filter" name="resort_id"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
+                            <option value="">Selecteer een district eerst</option>
                         </select>
                     </div>
                     <div>
@@ -417,6 +440,9 @@ ob_start();
 
 <!-- JavaScript for handling resort selection -->
 <script>
+// Define BASE_URL for JavaScript
+const BASE_URL = '<?= addslashes(BASE_URL) ?>';
+
 document.addEventListener('DOMContentLoaded', function() {
     // Modal handling
     const modal = document.getElementById('newCandidateModal');
@@ -477,40 +503,155 @@ document.addEventListener('DOMContentLoaded', function() {
     if (districtSelect && resortSelect) {
         districtSelect.addEventListener('change', function() {
             const districtId = this.value;
+            console.log('District changed to:', districtId);
+            
             if (districtId) {
-                // Clear current options
+                // Show loading state
+                resortSelect.disabled = true;
                 resortSelect.innerHTML = '<option value="">Laden...</option>';
                 
                 // Fetch resorts for the selected district
-                fetch(`${BASE_URL}/src/api/get_resorts.php?district_id=${districtId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success && data.resorts && data.resorts.length > 0) {
-                            resortSelect.innerHTML = '<option value="">Selecteer een resort</option>';
-                            
-                            data.resorts.forEach(resort => {
-                                const option = document.createElement('option');
-                                option.value = resort.ResortID;
-                                option.textContent = resort.ResortName;
-                                resortSelect.appendChild(option);
-                            });
-                        } else {
-                            resortSelect.innerHTML = '<option value="">Geen resorts gevonden</option>';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        resortSelect.innerHTML = '<option value="">Fout bij het laden van resorts</option>';
-                    });
+                fetch(`${BASE_URL}/src/api/get_resorts.php?district_id=${districtId}`, {
+                    headers: {
+                        'Cache-Control': 'no-cache',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('API Response:', data);
+                    
+                    // Clear current options
+                    resortSelect.innerHTML = '';
+                    
+                    // Add default option
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = 'Selecteer een resort';
+                    resortSelect.appendChild(defaultOption);
+                    
+                    if (data.success && data.resorts && data.resorts.length > 0) {
+                        // Add resort options
+                        data.resorts.forEach(resort => {
+                            const option = document.createElement('option');
+                            option.value = resort.ResortID;
+                            option.textContent = resort.ResortName || `Resort ${resort.ResortID}`;
+                            resortSelect.appendChild(option);
+                        });
+                        console.log(`Loaded ${data.resorts.length} resorts`);
+                    } else {
+                        const noResortOption = document.createElement('option');
+                        noResortOption.value = '';
+                        noResortOption.textContent = 'Geen resorts gevonden';
+                        resortSelect.appendChild(noResortOption);
+                        console.warn('No resorts found for district:', districtId);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading resorts:', error);
+                    resortSelect.innerHTML = '';
+                    const errorOption = document.createElement('option');
+                    errorOption.value = '';
+                    errorOption.textContent = 'Fout bij het laden van resorts';
+                    resortSelect.appendChild(errorOption);
+                })
+                .finally(() => {
+                    resortSelect.disabled = false;
+                });
             } else {
-                resortSelect.innerHTML = '<option value="">Selecteer eerst een district</option>';
+                // No district selected
+                resortSelect.innerHTML = '';
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Selecteer eerst een district';
+                resortSelect.appendChild(defaultOption);
             }
         });
     }
     
+    // Load resorts when district changes in filter form
+    const districtFilter = document.getElementById('district_id_filter');
+    const resortFilterContainer = document.getElementById('resort_filter_container');
+    const resortFilter = document.getElementById('resort_id_filter');
+    const candidateTypeFilter = document.getElementById('candidate_type_filter');
+
+    // Function to toggle resort filter based on candidate type
+    function toggleResortFilter() {
+        if (candidateTypeFilter && candidateTypeFilter.value === 'RR') {
+            resortFilterContainer.style.display = 'block';
+            if (districtFilter.value) {
+                loadResorts(districtFilter.value, resortFilter);
+            }
+        } else {
+            resortFilterContainer.style.display = 'none';
+            resortFilter.innerHTML = '<option value="">Selecteer een district eerst</option>';
+        }
+    }
+
+    // Initialize resort filter on page load
+    if (candidateTypeFilter) {
+        toggleResortFilter();
+        candidateTypeFilter.addEventListener('change', toggleResortFilter);
+    }
+
+    // Function to load resorts
+    function loadResorts(districtId, targetSelect) {
+        if (!districtId) {
+            targetSelect.innerHTML = '<option value="">Selecteer een district eerst</option>';
+            return;
+        }
+
+        targetSelect.innerHTML = '<option value="">Laden...</option>';
+
+        fetch(`${BASE_URL}/src/api/get_resorts.php?district_id=${districtId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.resorts && data.resorts.length > 0) {
+                    let options = '<option value="">Alle Resorts</option>';
+                    data.resorts.forEach(resort => {
+                        const selected = resort.ResortID == "<?= $_GET['resort_id'] ?? '' ?>" ? 'selected' : '';
+                        options += `<option value="${resort.ResortID}" ${selected}>${resort.ResortName}</option>`;
+                    });
+                    targetSelect.innerHTML = options;
+                } else {
+                    targetSelect.innerHTML = '<option value="">Geen resorts gevonden</option>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                targetSelect.innerHTML = '<option value="">Fout bij het laden van resorts</option>';
+            });
+    }
+
+    // Handle district filter change
+    if (districtFilter) {
+        districtFilter.addEventListener('change', function() {
+            if (candidateTypeFilter && candidateTypeFilter.value === 'RR') {
+                loadResorts(this.value, resortFilter);
+            } else {
+                filterForm.submit();
+            }
+        });
+    }
+
+    // Handle resort filter change
+    if (resortFilter) {
+        resortFilter.addEventListener('change', function() {
+            filterForm.submit();
+        });
+    }
+
     // Filter form auto-submit
     const filterForm = document.getElementById('filterForm');
-    const filterSelects = filterForm ? filterForm.querySelectorAll('select') : [];
+    const filterSelects = filterForm ? Array.from(filterForm.querySelectorAll('select')).filter(select => 
+        select.id !== 'district_id_filter' && select.id !== 'resort_id_filter' && select.id !== 'candidate_type_filter'
+    ) : [];
     
     filterSelects.forEach(select => {
         select.addEventListener('change', function() {

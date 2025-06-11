@@ -206,6 +206,14 @@ class CandidateController {
                 $where[] = "c.DistrictID = ?";
                 $params[] = $filters['district_id'];
             }
+            if (!empty($filters['resort_id'])) {
+                $where[] = "c.ResortID = ?";
+                $params[] = $filters['resort_id'];
+            } else if (!empty($filters['district_id']) && (!isset($filters['candidate_type']) || $filters['candidate_type'] === 'RR')) {
+                // For RR candidates, if a district is selected but no resort, include all resorts from the district
+                $where[] = "(c.CandidateType = 'DNA' OR (c.CandidateType = 'RR' AND c.DistrictID = ?))";
+                $params[] = $filters['district_id'];
+            }
             if (!empty($filters['party_id'])) {
                 $where[] = "c.PartyID = ?";
                 $params[] = $filters['party_id'];
@@ -267,6 +275,14 @@ class CandidateController {
             
             if (!empty($filters['district_id'])) {
                 $where[] = "DistrictID = ?";
+                $params[] = $filters['district_id'];
+            }
+            if (!empty($filters['resort_id'])) {
+                $where[] = "ResortID = ?";
+                $params[] = $filters['resort_id'];
+            } else if (!empty($filters['district_id']) && (!isset($filters['candidate_type']) || $filters['candidate_type'] === 'RR')) {
+                // For RR candidates, if a district is selected but no resort, include all resorts from the district
+                $where[] = "(CandidateType = 'DNA' OR (CandidateType = 'RR' AND DistrictID = ?))";
                 $params[] = $filters['district_id'];
             }
             if (!empty($filters['party_id'])) {
