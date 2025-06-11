@@ -321,7 +321,7 @@ console.log('QR Code variables initialized:', {
 </script>
 
 <!-- Include the external QR code JavaScript file -->
-<script src="<?= BASE_URL ?>/admin/qrcodes.js"></script>
+<script src="<?= BASE_URL ?>/assets/js/qrcodes.js"></script>
 
 <?php
 // Get the buffered content

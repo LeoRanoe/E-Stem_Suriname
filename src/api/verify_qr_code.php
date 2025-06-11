@@ -34,7 +34,7 @@ if ($voter) {
     echo json_encode([
         'success' => true, 
         'message' => 'QR code verified successfully',
-        'redirect' => BASE_URL . '/vote/ballot.php'
+        'redirect' => BASE_URL . '/pages/voting/index.php'
     ]);
 } else {
     header('Content-Type: application/json');
