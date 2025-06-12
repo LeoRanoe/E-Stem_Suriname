@@ -16,7 +16,11 @@ class PartyController {
         // session_start(); // Removed: Session should be started by the view or entry script
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->handlePostRequest();
+            if (isset($_POST['action']) && $_POST['action'] === 'delete') {
+                $this->handleDeleteRequest();
+            } else {
+                $this->handlePostRequest();
+            }
         } elseif (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
             $this->handleDeleteRequest();
         }
@@ -45,19 +49,33 @@ class PartyController {
                 $_SESSION['success_message'] = "Partij is succesvol toegevoegd.";
             }
 
+            if ($this->isAjaxRequest()) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => true, 'message' => $_SESSION['success_message']]);
+                unset($_SESSION['success_message']);
+                exit;
+            }
             header("Location: " . BASE_URL . "/src/views/parties.php"); // Redirect to the view
             exit;
         } catch (Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
-            // Redirect back to the form (or the view) to display the error
-            header("Location: " . BASE_URL . "/src/views/parties.php" . ($party_id > 0 ? "?edit=" . $party_id : "")); 
+            if ($this->isAjaxRequest()) {
+                header('Content-Type: application/json');
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+                exit;
+            }
+            header("Location: " . BASE_URL . "/src/views/parties.php"); // Redirect back to the form (or the view) to display the error
             exit;
         }
     }
 
     private function handleDeleteRequest() {
         try {
-            $party_id = intval($_GET['delete']);
+            $party_id = isset($_POST['party_id']) ? intval($_POST['party_id']) : 0;
+            if ($party_id === 0) {
+                throw new Exception('Ongeldig partij ID.');
+            }
 
             // Check if party has candidates
             $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM candidates WHERE PartyID = ?");
@@ -86,6 +104,14 @@ class PartyController {
         } catch (Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
         }
+
+        if ($this->isAjaxRequest()) {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => $_SESSION['success_message']]);
+            unset($_SESSION['success_message']);
+            exit;
+        }
+
         header("Location: " . BASE_URL . "/src/views/parties.php"); // Redirect to the view
         exit;
     }
@@ -192,6 +218,10 @@ class PartyController {
             $logo_path = 'uploads/parties/' . $file_name; // Relative path for DB
         }
         return $logo_path;
+    }
+
+    private function isAjaxRequest() {
+        return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
     }
 
     private function updateParty($party_id, $party_name, $logo_path, $description) {

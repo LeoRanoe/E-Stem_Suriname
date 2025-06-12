@@ -102,8 +102,8 @@ ob_start();
 
         <!-- Add New Candidate Button -->
         <div class="mb-6 flex justify-end">
-            <button id="openNewCandidateModalBtn"
-                    class="bg-suriname-green hover:bg-suriname-dark-green text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center">
+            <button data-action="create"
+                    class="open-candidate-modal-btn bg-suriname-green hover:bg-suriname-dark-green text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center">
                 <i class="fas fa-plus mr-2"></i>Nieuwe Kandidaat Toevoegen
             </button>
         </div>
@@ -164,9 +164,7 @@ ob_start();
                         </select>
                     </div>
                     <div class="col-span-1 md:col-span-3 flex justify-end mt-4">
-                        <a href="candidates.php" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
-                            <i class="fas fa-times mr-2"></i>Reset Filters
-                        </a>
+                        <a href="candidates.php" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Reset</a>
                         <button type="submit" class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-suriname-green hover:bg-suriname-dark-green">
                             <i class="fas fa-filter mr-2"></i>Toepassen
                         </button>
@@ -263,10 +261,10 @@ ob_start();
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex items-center justify-end space-x-3.5">
-                                                <a href="<?= BASE_URL ?>/src/views/edit_candidate.php?id=<?= $candidate['CandidateID'] ?? '' ?>"
-                                                   class="hover:text-suriname-green" title="Bewerken">
-                                                    <i class="fas fa-edit fa-fw"></i>
-                                                </a>
+                                                 <button data-action="edit" data-id="<?= $candidate['CandidateID'] ?? '' ?>"
+                                                         class="open-candidate-modal-btn hover:text-suriname-green" title="Bewerken">
+                                                     <i class="fas fa-edit fa-fw"></i>
+                                                 </button>
                                                 <form action="<?= BASE_URL ?>/src/controllers/CandidateController.php" method="POST" class="inline-block">
                                                     <input type="hidden" name="action" value="delete">
                                                     <input type="hidden" name="candidate_id" value="<?= $candidate['CandidateID'] ?? '' ?>">
@@ -324,340 +322,292 @@ ob_start();
         <!-- Candidates Table End -->
 </div>
 
-<!-- New Candidate Modal Start -->
-<div id="newCandidateModal" class="hidden fixed z-[100] inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+<!-- Universal Candidate Modal Start -->
+<div id="candidateModal" class="hidden fixed z-[100] inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <!-- Background overlay -->
         <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" aria-hidden="true"></div>
-
-        <!-- Modal panel -->
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
         <div class="inline-block align-bottom bg-white dark:bg-boxdark rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form action="<?= BASE_URL ?>/src/controllers/CandidateController.php" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="action" value="create">
+            <form id="candidateForm" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="action" id="form_action">
+                <input type="hidden" name="candidate_id" id="form_candidate_id">
                 <div class="bg-white dark:bg-boxdark px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-suriname-green bg-opacity-10 sm:mx-0 sm:h-10 sm:w-10">
-                            <i class="fas fa-user-plus text-suriname-green text-xl"></i>
+                            <i id="modal_icon" class="fas fa-user-plus text-suriname-green text-xl"></i>
                         </div>
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-800" id="modal-title">
-                                Nieuwe Kandidaat Toevoegen
-                            </h3>
+                            <h3 class="text-lg leading-6 font-medium text-gray-800" id="modal_title">Nieuwe Kandidaat</h3>
                             <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                                 <div>
-                                    <label for="new_firstName" class="mb-2.5 block text-gray-700">Voornaam</label>
-                                    <input type="text" name="firstName" id="new_firstName" required placeholder="John"
-                                           class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-suriname-green">
+                                    <label for="form_firstName" class="mb-2.5 block text-gray-700">Voornaam</label>
+                                    <input type="text" name="firstName" id="form_firstName" required placeholder="John" class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green">
                                 </div>
                                 <div>
-                                    <label for="new_lastName" class="mb-2.5 block text-gray-700">Achternaam</label>
-                                    <input type="text" name="lastName" id="new_lastName" required placeholder="Doe"
-                                           class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-suriname-green">
+                                    <label for="form_lastName" class="mb-2.5 block text-gray-700">Achternaam</label>
+                                    <input type="text" name="lastName" id="form_lastName" required placeholder="Doe" class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green">
                                 </div>
                                 <div class="sm:col-span-2">
-                                    <label for="new_party_id" class="mb-2.5 block text-gray-700">Partij</label>
-                                    <select name="party_id" id="new_party_id" required
-                                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green dark:border-form-strokedark dark:bg-form-input dark:focus:border-suriname-green">
+                                    <label for="form_party_id" class="mb-2.5 block text-gray-700">Partij</label>
+                                    <select name="party_id" id="form_party_id" required class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green">
                                         <option value="">Selecteer een partij</option>
                                         <?php foreach ($parties as $party): ?>
-                                            <option value="<?= $party['PartyID'] ?>">
-                                                <?= htmlspecialchars($party['PartyName']) ?>
-                                            </option>
+                                            <option value="<?= $party['PartyID'] ?>"><?= htmlspecialchars($party['PartyName']) ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="sm:col-span-2">
-                                    <label for="new_election_id" class="mb-2.5 block text-gray-700">Verkiezing</label>
-                                    <select name="election_id" id="new_election_id" required
-                                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green dark:border-form-strokedark dark:bg-form-input dark:focus:border-suriname-green">
+                                    <label for="form_election_id" class="mb-2.5 block text-gray-700">Verkiezing</label>
+                                    <select name="election_id" id="form_election_id" required class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green">
                                         <option value="">Selecteer een verkiezing</option>
                                         <?php foreach ($elections as $election): ?>
-                                            <option value="<?= $election['ElectionID'] ?>">
-                                                <?= htmlspecialchars($election['ElectionName']) ?>
-                                            </option>
+                                            <option value="<?= $election['ElectionID'] ?>"><?= htmlspecialchars($election['ElectionName']) ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="new_candidate_type" class="mb-2.5 block text-gray-700">Kandidaat Type</label>
-                                    <select name="candidate_type" id="new_candidate_type" required
-                                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green dark:border-form-strokedark dark:bg-form-input dark:focus:border-suriname-green">
-                                        <option value="RR" selected>RR (Ressortraad)</option>
-                                        <option value="DNA">DNA (De Nationale Assemblée)</option>
+                                    <label for="form_candidate_type" class="mb-2.5 block text-gray-700">Type</label>
+                                    <select name="candidate_type" id="form_candidate_type" required class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green">
+                                        <option value="RR">RR</option>
+                                        <option value="DNA">DNA</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="new_district_id" class="mb-2.5 block text-gray-700">District</label>
-                                    <select name="district_id" id="new_district_id" required
-                                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green dark:border-form-strokedark dark:bg-form-input dark:focus:border-suriname-green">
+                                    <label for="form_district_id" class="mb-2.5 block text-gray-700">District</label>
+                                    <select name="district_id" id="form_district_id" required class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green">
                                         <option value="">Selecteer een district</option>
                                         <?php foreach ($districts as $district): ?>
-                                            <option value="<?= $district['DistrictID'] ?>">
-                                                <?= htmlspecialchars($district['DistrictName']) ?>
-                                            </option>
+                                            <option value="<?= $district['DistrictID'] ?>"><?= htmlspecialchars($district['DistrictName']) ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
-                                
-                                <!-- Resort selection for RR candidates - initially hidden -->
-                                <div id="resort_selection_container" style="display: none;">
-                                    <label for="new_resort_id" class="mb-2.5 block text-gray-700">Resort</label>
-                                    <select name="resort_id" id="new_resort_id"
-                                            class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green dark:border-form-strokedark dark:bg-form-input dark:focus:border-suriname-green">
+                                <div id="form_resort_container" class="sm:col-span-2" style="display: none;">
+                                    <label for="form_resort_id" class="mb-2.5 block text-gray-700">Resort</label>
+                                    <select name="resort_id" id="form_resort_id" class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green">
                                         <option value="">Selecteer eerst een district</option>
                                     </select>
                                 </div>
                                 <div class="sm:col-span-2">
-                                    <label for="new_image" class="mb-2.5 block text-gray-700">Foto</label>
-                                    <input type="file" name="image" id="new_image" accept="image/*"
-                                           class="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-suriname-green file:hover:bg-opacity-10 focus:border-suriname-green active:border-suriname-green disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-suriname-green">
-                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Optioneel. Maximaal 5MB. JPG, PNG of GIF.</p>
+                                    <label for="form_image" class="mb-2.5 block text-gray-700">Foto</label>
+                                    <input type="file" name="image" id="form_image" accept="image/*" class="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-suriname-green file:hover:bg-opacity-10 focus:border-suriname-green active:border-suriname-green">
+                                    <p class="mt-1 text-xs text-gray-500">Laat leeg om de huidige foto te behouden.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="bg-gray-50 dark:bg-boxdarkdark px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-stroke dark:border-strokedark">
-                    <button type="submit"
-                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-suriname-green text-base font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-boxdark focus:ring-suriname-green sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-150">
+                    <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-suriname-green text-base font-medium text-white hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">
                         Opslaan
                     </button>
-                    <button type="button" id="closeNewCandidateModalBtn"
-                            class="mt-3 w-full inline-flex justify-center rounded-md border border-stroke shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-150">
+                    <button type="button" class="close-candidate-modal-btn mt-3 w-full inline-flex justify-center rounded-md border border-stroke shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                         Annuleren
-                    </button>
-                    <button type="button" id="closeNewCandidateModalBtn"
-                            class="mt-3 w-full inline-flex justify-center rounded-md border border-stroke shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-150">
-                        Sluiten
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!-- New Candidate Modal End -->
+<!-- Universal Candidate Modal End -->
 
-<!-- JavaScript for handling resort selection -->
 <script>
-// Define BASE_URL for JavaScript
-const BASE_URL = '<?= addslashes(BASE_URL) ?>';
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Modal handling
-    const modal = document.getElementById('newCandidateModal');
-    const openModalBtn = document.getElementById('openNewCandidateModalBtn');
-    const openModalBtnEmptyState = document.getElementById('openNewCandidateModalBtnEmptyState');
-    const closeModalBtn = document.getElementById('closeNewCandidateModalBtn');
-    
-    // Function to open modal
+    const BASE_URL = '<?= addslashes(BASE_URL) ?>';
+    const modal = document.getElementById('candidateModal');
+    const form = document.getElementById('candidateForm');
+    const openModalButtons = document.querySelectorAll('.open-candidate-modal-btn');
+    const closeModalButtons = document.querySelectorAll('.close-candidate-modal-btn');
+
+    const modalUI = {
+        title: document.getElementById('modal_title'),
+        icon: document.getElementById('modal_icon'),
+        action: document.getElementById('form_action'),
+        candidateId: document.getElementById('form_candidate_id'),
+        firstName: document.getElementById('form_firstName'),
+        lastName: document.getElementById('form_lastName'),
+        partyId: document.getElementById('form_party_id'),
+        electionId: document.getElementById('form_election_id'),
+        candidateType: document.getElementById('form_candidate_type'),
+        districtId: document.getElementById('form_district_id'),
+        resortContainer: document.getElementById('form_resort_container'),
+        resortId: document.getElementById('form_resort_id'),
+        image: document.getElementById('form_image')
+    };
+
     function openModal() {
         modal.classList.remove('hidden');
         document.body.classList.add('overflow-hidden');
     }
-    
-    // Function to close modal
+
     function closeModal() {
         modal.classList.add('hidden');
         document.body.classList.remove('overflow-hidden');
+        form.reset();
+        modalUI.resortContainer.style.display = 'none';
     }
-    
-    // Event listeners for modal buttons
-    if (openModalBtn) openModalBtn.addEventListener('click', openModal);
-    if (openModalBtnEmptyState) openModalBtnEmptyState.addEventListener('click', openModal);
-    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-    
-    // Close modal when clicking outside
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
-    
-    // Get DOM elements for resort selection
-    const candidateTypeSelect = document.getElementById('new_candidate_type');
-    const resortContainer = document.getElementById('resort_selection_container');
-    const districtSelect = document.getElementById('new_district_id');
-    const resortSelect = document.getElementById('new_resort_id');
-    
-    // Show/hide resort selection based on candidate type
-    function toggleResortSelection() {
-        if (candidateTypeSelect && candidateTypeSelect.value === 'RR') {
-            if (resortContainer) resortContainer.style.display = 'block';
-            if (resortSelect) resortSelect.setAttribute('required', 'required');
-        } else {
-            if (resortContainer) resortContainer.style.display = 'none';
-            if (resortSelect) resortSelect.removeAttribute('required');
-        }
+
+    function setupModalForCreate() {
+        form.reset();
+        modalUI.title.textContent = 'Nieuwe Kandidaat Toevoegen';
+        modalUI.icon.className = 'fas fa-user-plus text-suriname-green text-xl';
+        modalUI.action.value = 'create';
+        modalUI.candidateId.value = '';
+        modalUI.electionId.disabled = false;
+        openModal();
     }
-    
-    // Initialize on page load
-    if (candidateTypeSelect) {
-        toggleResortSelection();
-        
-        // Add event listener for candidate type change
-        candidateTypeSelect.addEventListener('change', toggleResortSelection);
+
+    function setupModalForEdit(candidateId) {
+        form.reset();
+        modalUI.title.textContent = 'Kandidaat Bewerken';
+        modalUI.icon.className = 'fas fa-edit text-suriname-green text-xl';
+        modalUI.action.value = 'edit';
+        modalUI.candidateId.value = candidateId;
+
+        fetch(`${BASE_URL}/src/api/get_candidate_details.php?id=${candidateId}`)
+            .then(response => response.json())
+            .then(res => {
+                if (res.success) {
+                    const data = res.data;
+                    modalUI.firstName.value = data.firstName;
+                    modalUI.lastName.value = data.lastName;
+                    modalUI.partyId.value = data.PartyID;
+                    modalUI.electionId.value = data.ElectionID;
+                    modalUI.electionId.disabled = true; // Prevent changing election
+                    modalUI.candidateType.value = data.CandidateType;
+                    modalUI.districtId.value = data.DistrictID;
+                    
+                    toggleResortContainer(data.CandidateType);
+                    if (data.CandidateType === 'RR' && data.DistrictID) {
+                        loadResorts(modalUI.districtId, modalUI.resortId, data.ResortID);
+                    }
+                    openModal();
+                } else {
+                    alert('Fout: Kon kandidaat details niet laden.');
+                }
+            });
     }
-    
-    // Load resorts when district changes
-    if (districtSelect && resortSelect) {
-        districtSelect.addEventListener('change', function() {
-            const districtId = this.value;
-            console.log('District changed to:', districtId);
-            
-            if (districtId) {
-                // Show loading state
-                resortSelect.disabled = true;
-                resortSelect.innerHTML = '<option value="">Laden...</option>';
-                
-                // Fetch resorts for the selected district
-                fetch(`${BASE_URL}/src/api/get_resorts.php?district_id=${districtId}`, {
-                    headers: {
-                        'Cache-Control': 'no-cache',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => {
-                    console.log('Response status:', response.status);
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('API Response:', data);
-                    
-                    // Clear current options
-                    resortSelect.innerHTML = '';
-                    
-                    // Add default option
-                    const defaultOption = document.createElement('option');
-                    defaultOption.value = '';
-                    defaultOption.textContent = 'Selecteer een resort';
-                    resortSelect.appendChild(defaultOption);
-                    
-                    if (data.success && data.resorts && data.resorts.length > 0) {
-                        // Add resort options
-                        data.resorts.forEach(resort => {
-                            const option = document.createElement('option');
-                            option.value = resort.ResortID;
-                            option.textContent = resort.ResortName || `Resort ${resort.ResortID}`;
-                            resortSelect.appendChild(option);
-                        });
-                        console.log(`Loaded ${data.resorts.length} resorts`);
-                    } else {
-                        const noResortOption = document.createElement('option');
-                        noResortOption.value = '';
-                        noResortOption.textContent = 'Geen resorts gevonden';
-                        resortSelect.appendChild(noResortOption);
-                        console.warn('No resorts found for district:', districtId);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading resorts:', error);
-                    resortSelect.innerHTML = '';
-                    const errorOption = document.createElement('option');
-                    errorOption.value = '';
-                    errorOption.textContent = 'Fout bij het laden van resorts';
-                    resortSelect.appendChild(errorOption);
-                })
-                .finally(() => {
-                    resortSelect.disabled = false;
-                });
-            } else {
-                // No district selected
-                resortSelect.innerHTML = '';
-                const defaultOption = document.createElement('option');
-                defaultOption.value = '';
-                defaultOption.textContent = 'Selecteer eerst een district';
-                resortSelect.appendChild(defaultOption);
+
+    openModalButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const action = this.dataset.action;
+            if (action === 'create') {
+                setupModalForCreate();
+            } else if (action === 'edit') {
+                const candidateId = this.dataset.id;
+                setupModalForEdit(candidateId);
             }
         });
+    });
+
+    closeModalButtons.forEach(btn => btn.addEventListener('click', closeModal));
+    window.addEventListener('click', e => e.target === modal && closeModal());
+
+    function toggleResortContainer(type) {
+        if (type === 'RR') {
+            modalUI.resortContainer.style.display = 'block';
+            modalUI.resortId.required = true;
+        } else {
+            modalUI.resortContainer.style.display = 'none';
+            modalUI.resortId.required = false;
+        }
     }
-    
-    // Load resorts when district changes in filter form
+
+    modalUI.candidateType.addEventListener('change', e => toggleResortContainer(e.target.value));
+    modalUI.districtId.addEventListener('change', e => {
+        if (modalUI.candidateType.value === 'RR') {
+            loadResorts(e.target, modalUI.resortId);
+        }
+    });
+
+    function loadResorts(districtSelect, resortSelect, selectedResortId = null) {
+        const districtId = districtSelect.value;
+        resortSelect.innerHTML = '<option value="">Laden...</option>';
+        if (!districtId) {
+            resortSelect.innerHTML = '<option value="">Selecteer eerst district</option>';
+            return;
+        }
+
+        fetch(`${BASE_URL}/src/api/get_resorts.php?district_id=${districtId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.resorts.length > 0) {
+                    let options = '<option value="">Selecteer een resort</option>';
+                    data.resorts.forEach(resort => {
+                        const selected = selectedResortId && resort.ResortID == selectedResortId ? 'selected' : '';
+                        options += `<option value="${resort.ResortID}" ${selected}>${resort.ResortName}</option>`;
+                    });
+                    resortSelect.innerHTML = options;
+                } else {
+                    resortSelect.innerHTML = '<option value="">Geen resorts gevonden</option>';
+                }
+            });
+    }
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        
+        fetch('<?= BASE_URL ?>/src/controllers/CandidateController.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(text => {
+            try {
+                const data = JSON.parse(text);
+                 if(data.success) {
+                    closeModal();
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            } catch (error) {
+                // If not json, it's likely a redirect or raw error, just reload.
+                location.reload();
+            }
+        }).catch(error => {
+            console.error('Submission error:', error);
+            alert('Er is een fout opgetreden.');
+        });
+    });
+
+    // Filter logic
+    const filterForm = document.getElementById('filterForm');
     const districtFilter = document.getElementById('district_id_filter');
     const resortFilterContainer = document.getElementById('resort_filter_container');
     const resortFilter = document.getElementById('resort_id_filter');
     const candidateTypeFilter = document.getElementById('candidate_type_filter');
 
-    // Function to toggle resort filter based on candidate type
     function toggleResortFilter() {
-        if (candidateTypeFilter && candidateTypeFilter.value === 'RR') {
+        if (candidateTypeFilter.value === 'RR') {
             resortFilterContainer.style.display = 'block';
-            if (districtFilter.value) {
-                loadResorts(districtFilter.value, resortFilter);
-            }
         } else {
             resortFilterContainer.style.display = 'none';
-            resortFilter.innerHTML = '<option value="">Selecteer een district eerst</option>';
         }
     }
 
-    // Initialize resort filter on page load
-    if (candidateTypeFilter) {
-        toggleResortFilter();
-        candidateTypeFilter.addEventListener('change', toggleResortFilter);
-    }
-
-    // Function to load resorts
-    function loadResorts(districtId, targetSelect) {
+    function loadFilterResorts() {
+        const districtId = districtFilter.value;
         if (!districtId) {
-            targetSelect.innerHTML = '<option value="">Selecteer een district eerst</option>';
+            resortFilter.innerHTML = '<option value="">Selecteer district</option>';
             return;
         }
-
-        targetSelect.innerHTML = '<option value="">Laden...</option>';
-
-        fetch(`${BASE_URL}/src/api/get_resorts.php?district_id=${districtId}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.resorts && data.resorts.length > 0) {
-                    let options = '<option value="">Alle Resorts</option>';
-                    data.resorts.forEach(resort => {
-                        const selected = resort.ResortID == "<?= $_GET['resort_id'] ?? '' ?>" ? 'selected' : '';
-                        options += `<option value="${resort.ResortID}" ${selected}>${resort.ResortName}</option>`;
-                    });
-                    targetSelect.innerHTML = options;
-                } else {
-                    targetSelect.innerHTML = '<option value="">Geen resorts gevonden</option>';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                targetSelect.innerHTML = '<option value="">Fout bij het laden van resorts</option>';
-            });
+        loadResorts(districtFilter, resortFilter, '<?= $_GET['resort_id'] ?? '' ?>');
     }
 
-    // Handle district filter change
-    if (districtFilter) {
-        districtFilter.addEventListener('change', function() {
-            if (candidateTypeFilter && candidateTypeFilter.value === 'RR') {
-                loadResorts(this.value, resortFilter);
-            } else {
-                filterForm.submit();
-            }
+    if (filterForm) {
+        toggleResortFilter();
+        if (districtFilter.value) {
+             loadFilterResorts();
+        }
+        candidateTypeFilter.addEventListener('change', toggleResortFilter);
+        districtFilter.addEventListener('change', loadFilterResorts);
+        
+        // Auto-submit on change
+        [districtFilter, resortFilter, candidateTypeFilter, document.getElementById('party_id_filter')].forEach(el => {
+            el.addEventListener('change', () => filterForm.submit());
         });
     }
-
-    // Handle resort filter change
-    if (resortFilter) {
-        resortFilter.addEventListener('change', function() {
-            filterForm.submit();
-        });
-    }
-
-    // Filter form auto-submit
-    const filterForm = document.getElementById('filterForm');
-    const filterSelects = filterForm ? Array.from(filterForm.querySelectorAll('select')).filter(select => 
-        select.id !== 'district_id_filter' && select.id !== 'resort_id_filter' && select.id !== 'candidate_type_filter'
-    ) : [];
-    
-    filterSelects.forEach(select => {
-        select.addEventListener('change', function() {
-            filterForm.submit();
-        });
-    });
 });
 </script>
 

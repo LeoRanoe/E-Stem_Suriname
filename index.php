@@ -141,7 +141,7 @@ try {
                         </div>
                         <h3 class="text-xl font-semibold"><?= htmlspecialchars($election['ElectionName']) ?></h3>
                     </div>
-                    <p class="text-gray-600 mb-4"><?= htmlspecialchars($election['Description']) ?></p>
+                    <p class="text-gray-600 mb-4"><?= htmlspecialchars($election['Description'] ?? '') ?></p>
                     <div class="flex items-center text-sm text-gray-500 mb-4">
                         <i class="fas fa-calendar-alt mr-2 text-suriname-green"></i>
                         <span><?= date('d F Y', strtotime($election['ElectionDate'])) ?></span>

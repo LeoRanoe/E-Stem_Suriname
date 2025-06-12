@@ -1,19 +1,36 @@
+# E-Stem Suriname - Electronic Voting System
+# Apache configuration file
+
+# Enable rewriting
 RewriteEngine On
-RewriteBase /E-Stem_Suriname/E-Stem_Suriname/
 
-# Allow direct access to files and directories
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
+# Prevent directory listing
+Options -Indexes
 
-# Route API requests to controllers
-RewriteRule ^api/(.*)$ src/controllers/$1Controller.php [L]
+# Protect sensitive files
+<FilesMatch "^\.ht">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
 
-# Route direct controller access
-RewriteRule ^src/controllers/(.*)$ src/controllers/$1 [L]
+# Security headers
+<IfModule mod_headers.c>
+    # Security headers
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    
+    # HSTS (uncomment if using HTTPS)
+    # Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
 
-# Ensure PHP files are accessible
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^(.+)\.php$ $1.php [L]
+# PHP settings
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+    php_value error_log logs/error.log
+</IfModule>
 
-# Handle 404 errors
-ErrorDocument 404 /E-Stem_Suriname/E-Stem_Suriname/404.php
+# Custom error pages
+ErrorDocument 404 /E-Stem_Suriname/pages/errors/404.php
+ErrorDocument 500 /E-Stem_Suriname/pages/errors/500.php

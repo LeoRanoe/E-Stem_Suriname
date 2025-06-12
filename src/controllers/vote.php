@@ -77,12 +77,12 @@ $election_name = $_SESSION['voting_session']['election_name'];
 // Get candidates for the election
 try {
     $stmt = $pdo->prepare("
-        SELECT c.*, p.PartyName, ct.CandidateType 
+        SELECT c.*, p.PartyName, ct.TypeName AS CandidateType 
         FROM candidates c 
         JOIN parties p ON c.PartyID = p.PartyID 
         JOIN candidatetype ct ON c.CandidateTypeID = ct.CandidateTypeID 
         WHERE c.ElectionID = :election_id
-        ORDER BY ct.CandidateType, p.PartyName
+        ORDER BY ct.TypeName, p.PartyName
     ");
     $stmt->execute(['election_id' => $election_id]);
     $candidates = $stmt->fetchAll();
@@ -217,7 +217,7 @@ try {
                 </div>
             <?php endif; ?>
 
-            <?php if (isset($election) && !empty($candidates)): ?>
+            <?php if (isset($election_name) && !empty($candidates)): ?>
                 <div class="timer">
                     Resterende tijd: <span id="countdown">30:00</span>
                 </div>
@@ -239,7 +239,7 @@ try {
                                     <?php echo htmlspecialchars($candidate['PartyName']); ?>
                                 </div>
                                 <div class="candidate-type">
-                                    <?php echo htmlspecialchars($candidate['TypeName']); ?>
+                                    <?php echo htmlspecialchars($candidate['CandidateType']); ?>
                                 </div>
                             </div>
                         <?php endforeach; ?>

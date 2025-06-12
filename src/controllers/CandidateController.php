@@ -37,10 +37,24 @@ class CandidateController {
                     break;
             }
         } catch (Exception $e) {
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+                header('Content-Type: application/json');
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+                exit;
+            }
             $_SESSION['error_message'] = $e->getMessage();
         }
-        // Redirect back to the view after action
-        header("Location: " . BASE_URL . "/src/views/candidates.php"); 
+        // For AJAX requests, return JSON
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => $_SESSION['success_message']]);
+            unset($_SESSION['success_message']);
+            exit;
+        }
+
+        // Redirect back to the view for non-AJAX requests
+        header("Location: " . BASE_URL . "/src/views/candidates.php");
         exit;
     }
 
@@ -200,7 +214,7 @@ class CandidateController {
         try {
             $where = [];
             $params = [];
-            
+
             // Build WHERE clauses based on filters
             if (!empty($filters['district_id'])) {
                 $where[] = "c.DistrictID = ?";
@@ -209,10 +223,6 @@ class CandidateController {
             if (!empty($filters['resort_id'])) {
                 $where[] = "c.ResortID = ?";
                 $params[] = $filters['resort_id'];
-            } else if (!empty($filters['district_id']) && (!isset($filters['candidate_type']) || $filters['candidate_type'] === 'RR')) {
-                // For RR candidates, if a district is selected but no resort, include all resorts from the district
-                $where[] = "(c.CandidateType = 'DNA' OR (c.CandidateType = 'RR' AND c.DistrictID = ?))";
-                $params[] = $filters['district_id'];
             }
             if (!empty($filters['party_id'])) {
                 $where[] = "c.PartyID = ?";
@@ -222,29 +232,15 @@ class CandidateController {
                 $where[] = "c.CandidateType = ?";
                 $params[] = $filters['candidate_type'];
             }
-            
+
             $whereClause = $where ? "WHERE " . implode(" AND ", $where) : "";
-            
-            $stmt = $this->pdo->prepare("
-                SELECT c.*, p.PartyName, e.ElectionName, d.DistrictName, r.name as ResortName,
-                       COUNT(v.VoteID) as vote_count
-                FROM candidates c
-                LEFT JOIN parties p ON c.PartyID = p.PartyID
-                LEFT JOIN elections e ON c.ElectionID = e.ElectionID
-                LEFT JOIN districten d ON c.DistrictID = d.DistrictID
-                LEFT JOIN resorts r ON c.ResortID = r.id
-                LEFT JOIN votes v ON c.CandidateID = v.CandidateID
-                $whereClause
-                GROUP BY c.CandidateID, c.Name, c.PartyID, c.ElectionID, c.DistrictID, c.CandidateType, c.Photo, c.CreatedAt, p.PartyName, e.ElectionName, d.DistrictName
-                ORDER BY c.CreatedAt DESC
-                LIMIT ? OFFSET ?
-            ");
-            
+
+            $stmt = $this->pdo->prepare("\n                SELECT c.*, p.PartyName, e.ElectionName, d.DistrictName, r.name as ResortName,\n                       (SELECT COUNT(v.VoteID) FROM votes v WHERE v.CandidateID = c.CandidateID) as vote_count\n                FROM candidates c\n                LEFT JOIN parties p ON c.PartyID = p.PartyID\n                LEFT JOIN elections e ON c.ElectionID = e.ElectionID\n                LEFT JOIN districten d ON c.DistrictID = d.DistrictID\n                LEFT JOIN resorts r ON c.ResortID = r.id\n                $whereClause\n                GROUP BY c.CandidateID\n                ORDER BY c.CreatedAt DESC\n                LIMIT ? OFFSET ?\n            ");
+
             // Add pagination parameters
-            $params[] = $per_page;
-            $params[] = $offset;
-            $stmt->execute($params);
-            
+            $all_params = array_merge($params, [$per_page, $offset]);
+            $stmt->execute($all_params);
+
             $candidates = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
             if (empty($candidates)) {
@@ -272,7 +268,7 @@ class CandidateController {
         try {
             $where = [];
             $params = [];
-            
+
             if (!empty($filters['district_id'])) {
                 $where[] = "DistrictID = ?";
                 $params[] = $filters['district_id'];
@@ -280,10 +276,6 @@ class CandidateController {
             if (!empty($filters['resort_id'])) {
                 $where[] = "ResortID = ?";
                 $params[] = $filters['resort_id'];
-            } else if (!empty($filters['district_id']) && (!isset($filters['candidate_type']) || $filters['candidate_type'] === 'RR')) {
-                // For RR candidates, if a district is selected but no resort, include all resorts from the district
-                $where[] = "(CandidateType = 'DNA' OR (CandidateType = 'RR' AND DistrictID = ?))";
-                $params[] = $filters['district_id'];
             }
             if (!empty($filters['party_id'])) {
                 $where[] = "PartyID = ?";
@@ -293,10 +285,10 @@ class CandidateController {
                 $where[] = "CandidateType = ?";
                 $params[] = $filters['candidate_type'];
             }
-            
+
             $whereClause = $where ? "WHERE " . implode(" AND ", $where) : "";
             $sql = "SELECT COUNT(*) FROM candidates $whereClause";
-            
+
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($params);
             return $stmt->fetchColumn();
