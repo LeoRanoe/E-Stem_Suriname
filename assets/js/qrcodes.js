@@ -6,6 +6,18 @@ document.addEventListener('DOMContentLoaded', function() {
     var BASE_URL = window.BASE_URL || '';
     console.log('BASE_URL:', BASE_URL);
     
+    // Include JSZip for bulk download functionality
+    let script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    document.head.appendChild(script);
+    
+    // Include QRious library if not already included
+    if (typeof QRious === 'undefined') {
+        let qrScript = document.createElement('script');
+        qrScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js';
+        document.head.appendChild(qrScript);
+    }
+    
     // Get all DOM elements needed for QR code functionality
     var singleQrModal = document.getElementById('single-qr-modal');
     var bulkQrModal = document.getElementById('bulk-qr-modal');
@@ -358,7 +370,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (data.voters && data.voters.length > 0) {
                         data.voters.forEach(function(voter) {
                             var div = document.createElement('div');
-                            div.className = 'flex items-center';
+                            div.className = 'flex items-center mb-2';
+                            div.setAttribute('data-district-id', voter.district_id || '');
                             
                             var checkbox = document.createElement('input');
                             checkbox.type = 'checkbox';
@@ -398,4 +411,9 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Auto-opening single QR modal');
         generateSingleBtn.click();
     }
+    
+    // Load the bulk functionality
+    let bulkScript = document.createElement('script');
+    bulkScript.src = `${BASE_URL}/assets/js/qrcode-bulk.js`;
+    document.head.appendChild(bulkScript);
 });

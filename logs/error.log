@@ -19641,3 +19641,242 @@ Stack trace:
 [12-Jun-2025 07:57:04 America/Paramaribo] [DEBUG] Checking if voter ID 992 has already voted
 [12-Jun-2025 07:57:04 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 992 in election 1: 0
 [12-Jun-2025 07:57:04 America/Paramaribo] [DEBUG] Voter ID 992 has not voted yet, proceeding to voting page
+[12-Jun-2025 07:59:16 America/Paramaribo] Session open failed: SQLSTATE[HY000] [1049] Unknown database 'e_stem_suriname'
+[12-Jun-2025 07:59:16 America/Paramaribo] PHP Warning:  session_start(): Failed to initialize storage module: user (path: C:\Users\lrano\OneDrive\Documents\Xamp\tmp) in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 132
+[12-Jun-2025 07:59:16 America/Paramaribo] Database connection error: SQLSTATE[HY000] [1049] Unknown database 'e_stem_suriname'
+[12-Jun-2025 08:00:26 America/Paramaribo] [DEBUG] Checking if voter ID 992 has already voted
+[12-Jun-2025 08:00:26 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 992 in election 1: 0
+[12-Jun-2025 08:00:26 America/Paramaribo] [DEBUG] Voter ID 992 has not voted yet, proceeding to voting page
+[12-Jun-2025 08:00:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+)
+
+[12-Jun-2025 08:00:32 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:00:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:00:32 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:00:37 America/Paramaribo] Bypassing admin login check for development
+[12-Jun-2025 08:00:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:00:38 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:00:42 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:00:42 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:00:42 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:00:42 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:00:53 America/Paramaribo] Bypassing admin login check for development
+[12-Jun-2025 08:00:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:00:55 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:00:57 America/Paramaribo] Bypassing admin login check for development
+[12-Jun-2025 08:00:58 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:00:58 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:01:02 America/Paramaribo] Bypassing admin login check for development
+[12-Jun-2025 08:01:02 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:01:02 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:01:36 America/Paramaribo] Bypassing admin login check for development
+[12-Jun-2025 08:01:36 America/Paramaribo] Bypassing admin login check for development
+[12-Jun-2025 08:01:37 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:01:37 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:01:37 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:01:37 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:01:44 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:01:44 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:01:44 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:01:44 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:14:27 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 992 in election 1: 0
+[12-Jun-2025 08:14:48 America/Paramaribo] [DEBUG] Checking if voter ID 992 has already voted
+[12-Jun-2025 08:14:48 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 992 in election 1: 0
+[12-Jun-2025 08:14:48 America/Paramaribo] [DEBUG] Voter ID 992 has not voted yet, proceeding to voting page
+[12-Jun-2025 08:14:49 America/Paramaribo] [DEBUG] Checking if voter ID 992 has already voted
+[12-Jun-2025 08:14:49 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 992 in election 1: 0
+[12-Jun-2025 08:14:49 America/Paramaribo] [DEBUG] Voter ID 992 has not voted yet, proceeding to voting page
+[12-Jun-2025 08:18:40 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:18:40 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:18:40 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:18:40 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:18:45 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:18:45 America/Paramaribo] Development mode active - bypassing authentication
+[12-Jun-2025 08:18:45 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [voter_id] => 992
+    [voter_name] => Jane Smith
+    [voter_district] => 2
+    [voter_resort] => 5
+    [voucher_id] => VCAC673728
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[12-Jun-2025 08:18:45 America/Paramaribo] Development mode active - bypassing authentication

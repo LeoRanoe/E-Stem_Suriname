@@ -34,8 +34,19 @@ try {
         throw new Exception('Database connection failed');
     }
     
-    // Get resorts by district
-    $stmt = $pdo->prepare("SELECT id as ResortID, name as ResortName FROM resorts WHERE district_id = ? ORDER BY name");
+    // Debug query to check table structure
+    $tableInfo = $pdo->query("DESCRIBE resorts");
+    $columns = $tableInfo->fetchAll(PDO::FETCH_COLUMN);
+    error_log("Resorts table columns: " . implode(', ', $columns));
+    
+    // Get resorts by district - try with both possible column structures
+    if (in_array('ResortID', $columns) && in_array('ResortName', $columns)) {
+        // If using capital case column names
+        $stmt = $pdo->prepare("SELECT ResortID, ResortName FROM resorts WHERE district_id = ? ORDER BY ResortName");
+    } else {
+        // If using lowercase column names
+        $stmt = $pdo->prepare("SELECT id as ResortID, name as ResortName FROM resorts WHERE district_id = ? ORDER BY name");
+    }
     
     if (!$stmt) {
         throw new Exception('Failed to prepare statement');

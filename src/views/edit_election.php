@@ -33,10 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $stmt = $pdo->prepare("
             UPDATE elections 
-            SET ElectionName = ?, Description = ?, StartDate = ?, EndDate = ?
+            SET ElectionName = ?, StartDate = ?, EndDate = ?
             WHERE ElectionID = ?
         ");
-        $stmt->execute([$name, $description, $start_date, $end_date, $election_id]);
+        $stmt->execute([$name, $start_date, $end_date, $election_id]);
         
         $_SESSION['success_message'] = "Verkiezing is succesvol bijgewerkt.";
         header("Location: elections.php");
