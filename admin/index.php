@@ -251,10 +251,33 @@ ob_start();
             </div>
         </div>
     </div>
+
+    <!-- Danger Zone -->
+    <div class="mt-8 bg-red-50 border-l-4 border-red-400 p-6 rounded-r-lg">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-lg font-medium text-red-800">Gevarenzone</h3>
+                <div class="mt-2 text-sm text-red-700">
+                    <p>Deze acties zijn onomkeerbaar. Wees alstublieft zeker voordat u doorgaat.</p>
+                </div>
+                <div class="mt-4">
+                    <div class="-mx-2 -my-1.5 flex">
+                        <a href="#" onclick="confirmDeleteVoters(event, '<?= BASE_URL ?>/admin/utils/delete_voters.php')" class="btn-hover bg-red-600 text-white font-bold py-2 px-4 rounded-lg inline-flex items-center transition-all duration-300 hover:bg-red-700 hover:shadow-lg">
+                            <i class="fas fa-trash-alt mr-2"></i>
+                            Verwijder Alle Kiezers
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <?php
-// Get the buffered content
 $content = ob_get_clean();
 
 // Include the layout with the content

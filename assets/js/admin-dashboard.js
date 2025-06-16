@@ -180,3 +180,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set up periodic updates (every 30 seconds)
     setInterval(updateDashboardStats, 30000);
 });
+
+function confirmDeleteVoters(event, deleteUrl) {
+    event.preventDefault();
+    if (confirm('Weet u zeker dat u alle kiezers wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt en zal de kiezers-ID resetten.')) {
+        window.location.href = deleteUrl;
+    }
+}

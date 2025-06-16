@@ -19955,3 +19955,618 @@ Stack trace:
 )
 
 [13-Jun-2025 07:37:34 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 08:30:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 08:30:55 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 08:30:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 08:30:55 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 08:31:00 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 08:31:00 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 08:31:00 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 08:31:00 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 08:31:05 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 08:31:05 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 08:31:05 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 08:31:05 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:28:09 America/Paramaribo] Session open failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[13-Jun-2025 09:28:09 America/Paramaribo] PHP Warning:  session_start(): Failed to initialize storage module: user (path: C:\Users\lrano\OneDrive\Documents\Xamp\tmp) in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 132
+[13-Jun-2025 09:28:13 America/Paramaribo] Database connection error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[13-Jun-2025 09:28:34 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[13-Jun-2025 09:28:34 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:28:34 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:28:34 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:28:41 America/Paramaribo] Bypassing admin login check for development
+[13-Jun-2025 09:28:41 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:28:41 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:29:16 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 991 in election 1: 2
+[13-Jun-2025 09:29:16 America/Paramaribo] [VoterAuth] [info] Voter ID 991 has already voted in this election
+[13-Jun-2025 09:29:16 America/Paramaribo] QR Code verification failed: Invalid QR code: VC41549B35
+[13-Jun-2025 09:29:29 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:29:29 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:29:29 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:29:29 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:29:35 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:29:35 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:29:35 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:29:35 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:29:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:29:56 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:29:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [error_message] => Failed to import voters: Row 1: Voter with ID number 123456789 already exists, Row 2: Voter with ID number 987654321 already exists
+)
+
+[13-Jun-2025 09:29:56 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:36:21 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:36:21 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:36:21 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [error_message] => Failed to import voters: Row 1: Voter with ID number 123456789 already exists, Row 2: Voter with ID number 987654321 already exists
+)
+
+[13-Jun-2025 09:36:21 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:38:35 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:38:35 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:38:35 America/Paramaribo] Resorts table columns: id, name, district_id
+[13-Jun-2025 09:38:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:38:46 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:38:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [error_message] => Passwords do not match.
+)
+
+[13-Jun-2025 09:38:46 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:42:22 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:42:22 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:42:22 America/Paramaribo] Resorts table columns: id, name, district_id
+[13-Jun-2025 09:42:26 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:42:26 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:42:26 America/Paramaribo] Resorts table columns: id, name, district_id
+[13-Jun-2025 09:42:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[13-Jun-2025 09:42:32 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:42:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [success_message] => Voter successfully added.
+    [redirect] => admin/voters.php
+)
+
+[13-Jun-2025 09:42:32 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:42:42 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[13-Jun-2025 09:42:42 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:42:42 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[13-Jun-2025 09:42:42 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:42:51 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[13-Jun-2025 09:42:51 America/Paramaribo] Development mode active - bypassing authentication
+[13-Jun-2025 09:42:51 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[13-Jun-2025 09:42:51 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:35:32 America/Paramaribo] Bypassing admin login check for development
+[15-Jun-2025 17:35:33 America/Paramaribo] Dashboard error: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away
+[15-Jun-2025 17:35:33 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:35:33 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:35:33 America/Paramaribo] Session write failed: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away
+[15-Jun-2025 17:35:33 America/Paramaribo] PHP Warning:  session_write_close(): Failed to write session data using user defined save handler. (session.save_path: C:\Users\lrano\OneDrive\Documents\Xamp\tmp, handler: DBSessionHandler::write) in Unknown on line 0
+[15-Jun-2025 17:35:43 America/Paramaribo] Session open failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[15-Jun-2025 17:35:43 America/Paramaribo] PHP Warning:  session_start(): Failed to initialize storage module: user (path: C:\Users\lrano\OneDrive\Documents\Xamp\tmp) in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 132
+[15-Jun-2025 17:35:44 America/Paramaribo] Session open failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[15-Jun-2025 17:35:44 America/Paramaribo] PHP Warning:  session_start(): Failed to initialize storage module: user (path: C:\Users\lrano\OneDrive\Documents\Xamp\tmp) in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 132
+[15-Jun-2025 17:35:44 America/Paramaribo] Session open failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[15-Jun-2025 17:35:44 America/Paramaribo] PHP Warning:  session_start(): Failed to initialize storage module: user (path: C:\Users\lrano\OneDrive\Documents\Xamp\tmp) in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 132
+[15-Jun-2025 17:35:47 America/Paramaribo] Database connection error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[15-Jun-2025 17:35:48 America/Paramaribo] Database connection error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[15-Jun-2025 17:35:48 America/Paramaribo] Database connection error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[15-Jun-2025 17:36:03 America/Paramaribo] Bypassing admin login check for development
+[15-Jun-2025 17:36:03 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:36:03 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:36:07 America/Paramaribo] Bypassing admin login check for development
+[15-Jun-2025 17:36:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:36:07 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:36:11 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:36:11 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:36:11 America/Paramaribo] Error truncating voters table: SQLSTATE[42000]: Syntax error or access violation: 1701 Cannot truncate a table referenced in a foreign key constraint (`e-stem_suriname`.`qrcodes`, CONSTRAINT `qrcodes_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `e-stem_suriname`.`voters` (`id`))
+[15-Jun-2025 17:36:12 America/Paramaribo] Bypassing admin login check for development
+[15-Jun-2025 17:36:12 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [error_message] => An error occurred while deleting voters. Please check the logs.
+)
+
+[15-Jun-2025 17:36:12 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:36:16 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:36:16 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:36:16 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:36:16 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:36:21 America/Paramaribo] Bypassing admin login check for development
+[15-Jun-2025 17:36:21 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:36:21 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:37:50 America/Paramaribo] Bypassing admin login check for development
+[15-Jun-2025 17:37:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:37:50 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:37:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:37:54 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:37:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:37:54 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:37:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:37:56 America/Paramaribo] Development mode active - bypassing authentication
+[15-Jun-2025 17:37:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[15-Jun-2025 17:37:56 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:27:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 06:27:55 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:27:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:27:56 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:28:27 America/Paramaribo] Bypassing admin login check for development
+[16-Jun-2025 06:28:27 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:28:27 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:28:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:28:38 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:28:38 America/Paramaribo] Error truncating voters table: SQLSTATE[42000]: Syntax error or access violation: 1701 Cannot truncate a table referenced in a foreign key constraint (`e-stem_suriname`.`qrcodes`, CONSTRAINT `qrcodes_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `e-stem_suriname`.`voters` (`id`))
+[16-Jun-2025 06:28:38 America/Paramaribo] Bypassing admin login check for development
+[16-Jun-2025 06:28:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+    [error_message] => An error occurred while deleting voters. Please check the logs.
+)
+
+[16-Jun-2025 06:28:38 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:28:44 America/Paramaribo] Bypassing admin login check for development
+[16-Jun-2025 06:28:44 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:28:44 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:28:45 America/Paramaribo] Bypassing admin login check for development
+[16-Jun-2025 06:28:45 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:28:45 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:28:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:28:47 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:28:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:28:47 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:28:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:28:54 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:28:54 America/Paramaribo] Resorts table columns: id, name, district_id
+[16-Jun-2025 06:31:22 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 06:31:22 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:31:22 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:31:22 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:39:30 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:39:30 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:39:30 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:39:30 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:39:40 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 06:39:40 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:39:40 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:39:40 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:44:13 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:44:13 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:44:13 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:44:13 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:44:24 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 06:44:24 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:44:24 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:44:24 America/Paramaribo] Development mode active - bypassing authentication
+[16-Jun-2025 06:44:26 America/Paramaribo] Logout - Starting logout process
+[16-Jun-2025 06:44:26 America/Paramaribo] Logout - Session ID: b48ltqpu18dm72ifl0eeon7tsn
+[16-Jun-2025 06:44:26 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [AdminID] => 1
+    [AdminName] => Developer
+    [AdminEmail] => dev@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 06:44:26 America/Paramaribo] Logout - Clearing admin session
+[16-Jun-2025 06:44:26 America/Paramaribo] Logout - Session destroyed
+[16-Jun-2025 06:44:26 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 39
+[16-Jun-2025 06:44:26 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 40
+[16-Jun-2025 06:44:26 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 41
+[16-Jun-2025 06:44:26 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 42
+[16-Jun-2025 06:44:26 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 43
+[16-Jun-2025 06:44:26 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 44
+[16-Jun-2025 06:44:26 America/Paramaribo] PHP Warning:  session_set_save_handler(): Session save handler cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 122
+[16-Jun-2025 06:44:34 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 39
+[16-Jun-2025 06:44:34 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 40
+[16-Jun-2025 06:44:34 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 41
+[16-Jun-2025 06:44:34 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 42
+[16-Jun-2025 06:44:34 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 43
+[16-Jun-2025 06:44:34 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 44
+[16-Jun-2025 06:44:34 America/Paramaribo] PHP Warning:  session_set_save_handler(): Session save handler cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 122
+[16-Jun-2025 06:49:11 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 39
+[16-Jun-2025 06:49:11 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 40
+[16-Jun-2025 06:49:11 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 41
+[16-Jun-2025 06:49:11 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 42
+[16-Jun-2025 06:49:11 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 43
+[16-Jun-2025 06:49:11 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 44
+[16-Jun-2025 06:49:11 America/Paramaribo] PHP Warning:  session_set_save_handler(): Session save handler cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 122
+[16-Jun-2025 06:49:17 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 39
+[16-Jun-2025 06:49:17 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 40
+[16-Jun-2025 06:49:17 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 41
+[16-Jun-2025 06:49:17 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 42
+[16-Jun-2025 06:49:17 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 43
+[16-Jun-2025 06:49:17 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 44
+[16-Jun-2025 06:49:17 America/Paramaribo] PHP Warning:  session_set_save_handler(): Session save handler cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 122
