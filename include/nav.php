@@ -69,16 +69,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
                             <i class="fas fa-home mr-2"></i>
                             Home
                         </a>
+                        <!-- Results link available for all users -->
+                        <a href="<?= BASE_URL ?>/src/views/results.php"
+                           class="<?= $current_page === 'results.php' ? 'bg-suriname-green text-white' : 'text-gray-700 hover:text-suriname-green hover:bg-gray-200' ?> px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chart-bar mr-2"></i>
+                            Resultaten
+                        </a>
                         <?php if ($isVoter || isset($_SESSION['voter_id']) || isset($_SESSION['VoterID'])): ?>
                             <a href="<?= BASE_URL ?>/pages/voting/index.php"
                                class="<?= $current_page === 'index.php' && strpos($_SERVER['PHP_SELF'], '/pages/voting/') !== false ? 'bg-suriname-green text-white' : 'text-gray-700 hover:text-suriname-green hover:bg-gray-200' ?> px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center">
                                 <i class="fas fa-vote-yea mr-2"></i>
                                 Stemmen
-                            </a>
-                            <a href="<?= BASE_URL ?>/src/views/results.php"
-                               class="<?= $current_page === 'results.php' ? 'bg-suriname-green text-white' : 'text-gray-700 hover:text-suriname-green hover:bg-gray-200' ?> px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center">
-                                <i class="fas fa-chart-bar mr-2"></i>
-                                Resultaten
                             </a>
                             <a href="<?= BASE_URL ?>/voter/profile.php"
                                class="<?= $current_page === 'profile.php' ? 'bg-suriname-green text-white' : 'text-gray-700 hover:text-suriname-green hover:bg-gray-200' ?> px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center">
@@ -142,16 +143,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <i class="fas fa-home mr-3 w-5 text-center"></i>
                     Home
                 </a>
+                <!-- Results link available for all users in mobile menu -->
+                <a href="<?= BASE_URL ?>/src/views/results.php" 
+                   class="<?= $current_page === 'results.php' ? 'bg-suriname-green text-white' : 'bg-white text-gray-700 hover:bg-gray-100' ?> flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">
+                    <i class="fas fa-chart-bar mr-3 w-5 text-center"></i>
+                    Resultaten
+                </a>
                 <?php if ($isVoter || isset($_SESSION['voter_id']) || isset($_SESSION['VoterID'])): ?>
                     <a href="<?= BASE_URL ?>/pages/voting/index.php" 
                        class="<?= $current_page === 'index.php' && strpos($_SERVER['PHP_SELF'], '/pages/voting/') !== false ? 'bg-suriname-green text-white' : 'bg-white text-gray-700 hover:bg-gray-100' ?> flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">
                         <i class="fas fa-vote-yea mr-3 w-5 text-center"></i>
                         Stemmen
-                    </a>
-                    <a href="<?= BASE_URL ?>/src/views/results.php" 
-                       class="<?= $current_page === 'results.php' ? 'bg-suriname-green text-white' : 'bg-white text-gray-700 hover:bg-gray-100' ?> flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">
-                        <i class="fas fa-chart-bar mr-3 w-5 text-center"></i>
-                        Resultaten
                     </a>
                     <a href="<?= BASE_URL ?>/voter/profile.php" 
                        class="<?= $current_page === 'profile.php' ? 'bg-suriname-green text-white' : 'bg-white text-gray-700 hover:bg-gray-100' ?> flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">

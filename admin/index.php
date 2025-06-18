@@ -23,9 +23,16 @@ try {
     $stmt = $pdo->query("SELECT COUNT(*) as qr_count FROM qrcodes");
     $total_qrcodes = $stmt->fetchColumn();
 
+    // Get total active vouchers
+    $stmt = $pdo->query("SELECT COUNT(*) as voucher_count FROM vouchers WHERE status = 'active'");
+    $total_active_vouchers = $stmt->fetchColumn();
+
     // Get active elections count
     $stmt = $pdo->query("SELECT COUNT(*) as active_count FROM elections WHERE Status = 'active'");
     $active_elections = $stmt->fetchColumn();
+
+    // Determine election status text
+    $election_status_text = $active_elections > 0 ? 'Running' : 'Closed';
 
     // Get recent voter activity (last 5 logins)
     $stmt = $pdo->query("
@@ -49,6 +56,27 @@ try {
     ");
     $recent_district_votes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Chart Data: Voter Status
+    $voter_status_data = $pdo->query("SELECT status, COUNT(*) as count FROM voters GROUP BY status")->fetchAll(PDO::FETCH_KEY_PAIR);
+
+    // Chart Data: Votes per District
+    $district_votes_data = [];
+    $active_election_id_stmt = $pdo->query("SELECT ElectionID FROM elections WHERE status = 'active' LIMIT 1");
+    $active_election_id = $active_election_id_stmt->fetchColumn();
+
+    if ($active_election_id) {
+        $district_votes_stmt = $pdo->prepare("
+            SELECT d.DistrictName, COUNT(v.VoteID) as vote_count
+            FROM districten d
+            LEFT JOIN voters vt ON d.DistrictID = vt.district_id
+            LEFT JOIN votes v ON vt.id = v.UserID AND v.ElectionID = ?
+            GROUP BY d.DistrictID, d.DistrictName
+            ORDER BY d.DistrictName ASC
+        ");
+        $district_votes_stmt->execute([$active_election_id]);
+        $district_votes_data = $district_votes_stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 } catch (PDOException $e) {
     // Log error and continue with empty data
     error_log("Dashboard error: " . $e->getMessage());
@@ -56,9 +84,13 @@ try {
     $total_votes = 0;
     $turnout_percentage = 0;
     $total_qrcodes = 0;
+    $total_active_vouchers = 0;
     $active_elections = 0;
+    $election_status_text = 'Unknown';
     $recent_activity = [];
     $recent_district_votes = [];
+    $voter_status_data = [];
+    $district_votes_data = [];
 }
 
 // Page title
@@ -69,56 +101,93 @@ ob_start();
 ?>
 
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Page Title -->
+    <!-- Page Title & Welcome Message -->
     <div class="mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Admin Dashboard</h1>
-        <p class="mt-2 text-sm text-gray-600">Overzicht van verkiezingsstatistieken en recente activiteit</p>
+        <p class="mt-2 text-sm text-gray-600">Welkom, <?= htmlspecialchars($_SESSION['AdminName']) ?>! Hier is een overzicht van de verkiezing.</p>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Quick Actions</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <a href="voters.php" class="bg-white p-4 rounded-xl shadow-lg border border-gray-200 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-105">
+                <div class="p-3 rounded-full bg-suriname-green/10 text-suriname-green mb-2">
+                    <i class="fas fa-users text-2xl"></i>
+                </div>
+                <span class="font-semibold text-gray-800">Manage Voters</span>
+            </a>
+            <a href="results.php" class="bg-white p-4 rounded-xl shadow-lg border border-gray-200 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-105">
+                <div class="p-3 rounded-full bg-suriname-red/10 text-suriname-red mb-2">
+                    <i class="fas fa-chart-bar text-2xl"></i>
+                </div>
+                <span class="font-semibold text-gray-800">View Results</span>
+            </a>
+            <a href="results.php#export" class="bg-white p-4 rounded-xl shadow-lg border border-gray-200 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-xl hover:scale-105">
+                <div class="p-3 rounded-full bg-suriname-green/10 text-suriname-green mb-2">
+                    <i class="fas fa-download text-2xl"></i>
+                </div>
+                <span class="font-semibold text-gray-800">Export Reports</span>
+            </a>
+        </div>
     </div>
 
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <!-- Total Voters -->
+        <!-- Total Registered Voters -->
         <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 flex items-center space-x-4 transition-all duration-300 hover:shadow-xl hover:scale-105">
             <div class="p-3 rounded-lg bg-suriname-green/10 text-suriname-green">
                 <i class="fas fa-users text-2xl"></i>
             </div>
             <div>
-                <p class="text-sm text-gray-500">Totaal Kiezers</p>
+                <p class="text-sm text-gray-500">Total Registered Voters</p>
                 <h3 class="text-2xl font-bold text-gray-800"><?= number_format($total_voters) ?></h3>
             </div>
         </div>
 
-        <!-- Votes Cast -->
+        <!-- Active Vouchers -->
         <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 flex items-center space-x-4 transition-all duration-300 hover:shadow-xl hover:scale-105">
             <div class="p-3 rounded-lg bg-suriname-red/10 text-suriname-red">
+                <i class="fas fa-ticket-alt text-2xl"></i>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Active Vouchers</p>
+                <h3 class="text-2xl font-bold text-gray-800"><?= number_format($total_active_vouchers) ?></h3>
+            </div>
+        </div>
+        
+        <!-- Total Votes Cast -->
+        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 flex items-center space-x-4 transition-all duration-300 hover:shadow-xl hover:scale-105">
+            <div class="p-3 rounded-lg bg-suriname-green/10 text-suriname-green">
                 <i class="fas fa-vote-yea text-2xl"></i>
             </div>
             <div>
-                <p class="text-sm text-gray-500">Uitgebrachte Stemmen</p>
+                <p class="text-sm text-gray-500">Total Votes Cast</p>
                 <h3 class="text-2xl font-bold text-gray-800"><?= number_format($total_votes) ?></h3>
             </div>
         </div>
 
-        <!-- Turnout Percentage -->
+        <!-- Current Election Status -->
         <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 flex items-center space-x-4 transition-all duration-300 hover:shadow-xl hover:scale-105">
-            <div class="p-3 rounded-lg bg-suriname-green/10 text-suriname-green">
-                <i class="fas fa-chart-pie text-2xl"></i>
+            <div class="p-3 rounded-lg <?= $active_elections > 0 ? 'bg-green-500/20 text-green-600' : 'bg-red-500/20 text-red-600' ?>">
+                <i class="fas fa-check-circle text-2xl"></i>
             </div>
             <div>
-                <p class="text-sm text-gray-500">Opkomstpercentage</p>
-                <h3 class="text-2xl font-bold text-gray-800"><?= $turnout_percentage ?>%</h3>
+                <p class="text-sm text-gray-500">Current Election Status</p>
+                <h3 class="text-2xl font-bold <?= $active_elections > 0 ? 'text-green-600' : 'text-red-600' ?>"><?= $election_status_text ?></h3>
             </div>
         </div>
+    </div>
 
-        <!-- QR Codes Generated -->
-        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200 flex items-center space-x-4 transition-all duration-300 hover:shadow-xl hover:scale-105">
-            <div class="p-3 rounded-lg bg-suriname-red/10 text-suriname-red">
-                <i class="fas fa-qrcode text-2xl"></i>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500">QR Codes Gegenereerd</p>
-                <h3 class="text-2xl font-bold text-gray-800"><?= number_format($total_qrcodes) ?></h3>
-            </div>
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div class="bg-white rounded-xl shadow-lg border">
+            <div class="card-header">Kiezer Status</div>
+            <div class="p-4"><canvas id="voter-status-chart"></canvas></div>
+        </div>
+        <div class="bg-white rounded-xl shadow-lg border">
+            <div class="card-header">Stemmen per District</div>
+            <div class="p-4"><canvas id="district-votes-chart"></canvas></div>
         </div>
     </div>
 
@@ -212,76 +281,43 @@ ob_start();
             </div>
         </div>
     </div>
-
-    <!-- Charts Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Voter Status Chart -->
-        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-800">Kiezersstatus</h2>
-            </div>
-            <div class="p-6">
-                <div class="h-64">
-                    <canvas id="voter-status-chart"></canvas>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Votes Per Day Chart -->
-        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-800">Stemmen per Dag</h2>
-            </div>
-            <div class="p-6">
-                <div class="h-64">
-                    <canvas id="votes-per-day-chart"></canvas>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Votes By District Chart -->
-        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200">
-                <h2 class="text-xl font-semibold text-gray-800">Stemmen per District</h2>
-            </div>
-            <div class="p-6">
-                <div class="h-64">
-                    <canvas id="votes-by-district-chart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Danger Zone -->
-    <div class="mt-8 bg-red-50 border-l-4 border-red-400 p-6 rounded-r-lg">
-        <div class="flex">
-            <div class="flex-shrink-0">
-                <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
-            </div>
-            <div class="ml-3">
-                <h3 class="text-lg font-medium text-red-800">Gevarenzone</h3>
-                <div class="mt-2 text-sm text-red-700">
-                    <p>Deze acties zijn onomkeerbaar. Wees alstublieft zeker voordat u doorgaat.</p>
-                </div>
-                <div class="mt-4">
-                    <div class="-mx-2 -my-1.5 flex">
-                        <a href="#" onclick="confirmDeleteVoters(event, '<?= BASE_URL ?>/admin/utils/delete_voters.php')" class="btn-hover bg-red-600 text-white font-bold py-2 px-4 rounded-lg inline-flex items-center transition-all duration-300 hover:bg-red-700 hover:shadow-lg">
-                            <i class="fas fa-trash-alt mr-2"></i>
-                            Verwijder Alle Kiezers
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 <?php
 $content = ob_get_clean();
 
-// Include the layout with the content
-include_once __DIR__ . '/components/layout.php';
+// Prepare data for charts
+$voter_status_labels = json_encode(array_keys($voter_status_data));
+$voter_status_values = json_encode(array_values($voter_status_data));
+$district_votes_labels = json_encode(array_column($district_votes_data, 'DistrictName'));
+$district_votes_values = json_encode(array_column($district_votes_data, 'vote_count'));
+
+$pageScript = <<<JS
+document.addEventListener('DOMContentLoaded', function() {
+    // Helper to render chart or show message
+    function renderChart(ctx, type, labels, data, chartLabel, colors) {
+        if (!ctx) return;
+        const allZero = data.every(item => item === 0);
+        if (allZero && data.length === 0) {
+            ctx.parentElement.innerHTML = '<div class="text-center py-8 text-gray-500">Geen data beschikbaar.</div>';
+            return;
+        }
+        new Chart(ctx, {
+            type: type,
+            data: { labels: labels, datasets: [{ label: chartLabel, data: data, backgroundColor: colors, borderColor: colors, fill: type === 'line' ? true : false, tension: 0.1 }] },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+        });
+    }
+
+    // Render Charts
+    const voterStatusColors = ['#007749', '#C8102E', '#FFC72C'];
+    renderChart(document.getElementById('voter-status-chart'), 'pie', $voter_status_labels, $voter_status_values, 'Kiezer Status', voterStatusColors);
+    
+    const districtColors = ['#C8102E', '#007749', '#FFC72C', '#0033A0', '#6A2E9A', '#F15A29', '#00AEEF', '#8CC63F', '#662D91', '#EC008C'];
+    renderChart(document.getElementById('district-votes-chart'), 'pie', $district_votes_labels, $district_votes_values, 'Stemmen per District', districtColors);
+});
+JS;
+
+include __DIR__ . '/components/layout.php';
 ?>
 
-<!-- JavaScript is included in the layout.php file -->

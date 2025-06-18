@@ -66,149 +66,141 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - E-Stem Suriname</title>
+    <title>Admin Login - <?= SITE_NAME ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'suriname-green': '#007847',
+                        'suriname-green-dark': '#006238',
+                        'suriname-red': '#C8102E',
+                        'suriname-red-dark': '#a50d26',
+                        'suriname-yellow': '#FFD100',
+                        'suriname-yellow-dark': '#E6BC00',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'suriname': '0 4px 10px rgba(0, 120, 71, 0.1), 0 8px 20px rgba(0, 120, 71, 0.05)',
+                        'suriname-lg': '0 10px 25px rgba(0, 120, 71, 0.2), 0 15px 40px rgba(0, 120, 71, 0.1)',
+                    },
+                }
+            }
+        }
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        :root {
-            --green-main: #10b981;
-            --green-dark: #059669;
-            --green-light: #34d399;
-            --navy-blue: #1e3a8a;
-            --navy-blue-dark: #172554;
-            --navy-blue-light: #3b82f6;
+        .sr-flag-pattern {
+            background: linear-gradient(to bottom,
+                #007847 0%,
+                #007847 20%,
+                #FFFFFF 20%,
+                #FFFFFF 40%,
+                #C8102E 40%,
+                #C8102E 60%,
+                #FFFFFF 60%,
+                #FFFFFF 80%,
+                #007847 80%,
+                #007847 100%
+            );
         }
         
-        body {
-            font-family: 'Poppins', sans-serif;
+        .sr-bg-diagonal {
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(0, 120, 71, 0.03),
+                rgba(0, 120, 71, 0.03) 10px,
+                rgba(0, 120, 71, 0.06) 10px,
+                rgba(0, 120, 71, 0.06) 20px
+            );
         }
         
-        .login-container {
-            background: linear-gradient(135deg, var(--green-main) 0%, var(--green-dark) 100%);
-        }
-        
-        .form-container {
-            backdrop-filter: blur(10px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-        }
-        
-        .input-group {
-            position: relative;
-        }
-        
-        .input-icon {
+        .login-card::before {
+            content: '';
             position: absolute;
-            top: 50%;
-            left: 1rem;
-            transform: translateY(-50%);
-            color: var(--green-main);
-        }
-        
-        .input-field {
-            padding-left: 2.5rem !important;
-            transition: all 0.3s ease;
-        }
-        
-        .input-field:focus {
-            transform: translateY(-2px);
-        }
-        
-        .submit-btn {
-            transition: all 0.3s ease;
-        }
-        
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-        }
-        
-        .logo-container {
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #007847, #C8102E, #FFD100);
+            border-radius: 8px 8px 0 0;
         }
     </style>
 </head>
-<body class="min-h-screen bg-gray-100">
-    <div class="flex items-center justify-center min-h-screen login-container">
-        <div class="w-full max-w-md p-1 mx-4 bg-white bg-opacity-10 rounded-xl shadow-lg">
-            <div class="p-8 bg-white rounded-xl shadow-lg border border-gray-200 form-container">
-                <div class="text-center logo-container">
-                    <div class="flex justify-center mb-4">
-                        <div class="p-4 rounded-full bg-suriname-green/10">
-                            <i class="fas fa-vote-yea text-suriname-green text-4xl"></i>
+<body class="min-h-screen bg-gray-50 font-sans flex items-center justify-center">
+    <!-- Subtle pattern background -->
+    <div class="fixed inset-0 z-0 pointer-events-none sr-bg-diagonal opacity-30"></div>
+    
+    <div class="w-full max-w-md mx-4 relative z-10">
+        <div class="text-center mb-8">
+            <img src="../assets/Images/logo.png" alt="E-Stem Suriname Logo" class="h-24 mx-auto">
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-suriname-lg p-8 relative login-card">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-gray-800">Admin Login</h2>
+                <p class="mt-2 text-sm text-gray-600">Inloggen bij het E-Stem Suriname beheerderspaneel</p>
+            </div>
+
+            <?php if (!empty($error)): ?>
+                <div class="p-4 mb-6 text-sm font-medium text-suriname-red-dark bg-suriname-red bg-opacity-10 rounded-lg border-l-4 border-suriname-red flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-suriname-red" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    <?= htmlspecialchars($error) ?>
+                </div>
+            <?php endif; ?>
+
+            <form class="space-y-6" method="POST">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mailadres</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="fas fa-envelope text-suriname-green"></i>
                         </div>
+                        <input id="email" name="email" type="email" required 
+                            class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-suriname-green focus:border-suriname-green transition-all duration-200"
+                            placeholder="admin@example.com">
                     </div>
-                    <h2 class="mt-2 text-3xl font-bold text-gray-800">Admin Login</h2>
-                    <p class="mt-2 text-sm text-gray-600">Inloggen bij het E-Stem Suriname beheerderspaneel</p>
                 </div>
 
-                <?php if (isset($error)): ?>
-                    <div class="p-4 mt-6 text-sm font-medium text-red-800 bg-red-100 rounded-lg border-l-4 border-red-500 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                        </svg>
-                        <?= htmlspecialchars($error) ?>
-                    </div>
-                <?php endif; ?>
-
-                <form class="mt-8 space-y-6" method="POST">
-                    <div class="space-y-5">
-                        <div class="input-group">
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mailadres</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <i class="fas fa-envelope text-gray-400"></i>
-                                </div>
-                                <input id="email" name="email" type="email" required class="w-full px-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-suriname-green focus:border-transparent" placeholder="admin@example.com">
-                            </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Wachtwoord</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="fas fa-lock text-suriname-green"></i>
                         </div>
-
-                        <div class="input-group">
-                            <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Wachtwoord</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <i class="fas fa-lock text-gray-400"></i>
-                                </div>
-                                <input id="password" name="password" type="password" required class="w-full px-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-suriname-green focus:border-transparent" placeholder="••••••••">
-                            </div>
-                        </div>
+                        <input id="password" name="password" type="password" required 
+                            class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-suriname-green focus:border-suriname-green transition-all duration-200"
+                            placeholder="••••••••">
                     </div>
-
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input id="remember-me" name="remember-me" type="checkbox" 
-                                class="w-4 h-4 text-suriname-green border-gray-300 rounded focus:ring-suriname-green">
-                            <label for="remember-me" class="block ml-2 text-sm text-gray-700">
-                                Remember me
-                            </label>
-                        </div>
-                    </div>
-
-                    <?php if (!empty($error)): ?>
-                        <div class="p-3 text-sm text-suriname-red bg-suriname-red/10 rounded-lg">
-                            <p><?= htmlspecialchars($error) ?></p>
-                        </div>
-                    <?php endif; ?>
-
-                    <div>
-                        <button type="submit" class="w-full px-4 py-2 text-sm font-medium text-white bg-suriname-green rounded-lg hover:bg-suriname-dark-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green transition-all duration-200">
-                            Inloggen
-                        </button>
-                    </div>
-                </form>
-                
-                <div class="mt-6 text-center">
-                    <p class="text-xs text-gray-600">
-                        © <?= date('Y') ?> E-Stem Suriname. All rights reserved.
-                    </p>
                 </div>
+
+                <div class="flex items-center">
+                    <input id="remember-me" name="remember-me" type="checkbox" 
+                        class="h-4 w-4 text-suriname-green focus:ring-suriname-green border-gray-300 rounded">
+                    <label for="remember-me" class="ml-2 block text-sm text-gray-700">
+                        Remember me
+                    </label>
+                </div>
+
+                <div>
+                    <button type="submit" 
+                        class="w-full flex justify-center items-center px-4 py-2 text-sm font-medium text-white bg-suriname-green rounded-md hover:bg-suriname-green-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green transition-all duration-200 transform hover:-translate-y-1 hover:shadow-md">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        Inloggen
+                    </button>
+                </div>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-xs text-gray-600">
+                    © <?= date('Y') ?> <?= SITE_NAME ?>. All rights reserved.
+                </p>
             </div>
         </div>
     </div>

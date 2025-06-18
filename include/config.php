@@ -136,8 +136,3 @@ if (session_status() === PHP_SESSION_NONE) {
 if (!@require_once __DIR__ . '/admin_auth.php') {
     die('Failed to load admin authentication functions');
 }
-
-// Ensure development mode is set
-if (!defined('DEVELOPMENT_MODE')) {
-    define('DEVELOPMENT_MODE', true);
-}

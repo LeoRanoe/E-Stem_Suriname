@@ -58,6 +58,6 @@ session_destroy();
 
 error_log("Logout - Session destroyed");
 
-// Redirect to home page
-header("Location: " . BASE_URL . "/index.php");
+// Redirect to admin login page
+header("Location: " . BASE_URL . "/admin/login.php");
 exit();

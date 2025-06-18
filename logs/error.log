@@ -20570,3 +20570,3055 @@ Stack trace:
 [16-Jun-2025 06:49:17 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 43
 [16-Jun-2025 06:49:17 America/Paramaribo] PHP Warning:  ini_set(): Session ini settings cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 44
 [16-Jun-2025 06:49:17 America/Paramaribo] PHP Warning:  session_set_save_handler(): Session save handler cannot be changed when a session is active in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 122
+[16-Jun-2025 06:58:05 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 06:58:05 America/Paramaribo] Admin login status: Not logged in
+[16-Jun-2025 06:58:05 America/Paramaribo] Login page - Session ID: b48ltqpu18dm72ifl0eeon7tsn
+[16-Jun-2025 06:58:05 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[16-Jun-2025 06:58:05 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 06:58:05 America/Paramaribo] Admin login status: Not logged in
+[16-Jun-2025 06:58:10 America/Paramaribo] Login page - Session ID: b48ltqpu18dm72ifl0eeon7tsn
+[16-Jun-2025 06:58:10 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[16-Jun-2025 06:58:10 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 06:58:10 America/Paramaribo] Admin login status: Not logged in
+[16-Jun-2025 06:58:10 America/Paramaribo] Login page - Processing login form submission
+[16-Jun-2025 06:58:10 America/Paramaribo] Login page - Attempting to authenticate admin: admin@estem.sr
+[16-Jun-2025 06:58:10 America/Paramaribo] Login page - Authentication failed for admin: admin@estem.sr
+[16-Jun-2025 06:58:18 America/Paramaribo] Login page - Session ID: b48ltqpu18dm72ifl0eeon7tsn
+[16-Jun-2025 06:58:18 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[16-Jun-2025 06:58:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 06:58:18 America/Paramaribo] Admin login status: Not logged in
+[16-Jun-2025 06:58:18 America/Paramaribo] Login page - Processing login form submission
+[16-Jun-2025 06:58:18 America/Paramaribo] Login page - Attempting to authenticate admin: admin@estem.sr
+[16-Jun-2025 06:58:18 America/Paramaribo] Login page - Authentication failed for admin: admin@estem.sr
+[16-Jun-2025 06:58:29 America/Paramaribo] Login page - Session ID: b48ltqpu18dm72ifl0eeon7tsn
+[16-Jun-2025 06:58:29 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[16-Jun-2025 06:58:29 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 06:58:29 America/Paramaribo] Admin login status: Not logged in
+[16-Jun-2025 06:58:29 America/Paramaribo] Login page - Processing login form submission
+[16-Jun-2025 06:58:29 America/Paramaribo] Login page - Attempting to authenticate admin: admin@estem.sr
+[16-Jun-2025 06:58:29 America/Paramaribo] Login page - Authentication failed for admin: admin@estem.sr
+[16-Jun-2025 07:01:45 America/Paramaribo] Login page - Session ID: b48ltqpu18dm72ifl0eeon7tsn
+[16-Jun-2025 07:01:45 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[16-Jun-2025 07:01:45 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 07:01:45 America/Paramaribo] Admin login status: Not logged in
+[16-Jun-2025 07:01:45 America/Paramaribo] Login page - Processing login form submission
+[16-Jun-2025 07:01:45 America/Paramaribo] Login page - Attempting to authenticate admin: admin@estem.sr
+[16-Jun-2025 07:01:45 America/Paramaribo] Login page - Authentication failed for admin: admin@estem.sr
+[16-Jun-2025 07:14:51 America/Paramaribo] Login page - Session ID: b48ltqpu18dm72ifl0eeon7tsn
+[16-Jun-2025 07:14:51 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[16-Jun-2025 07:14:51 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 07:14:51 America/Paramaribo] Admin login status: Not logged in
+[16-Jun-2025 07:14:51 America/Paramaribo] Login page - Processing login form submission
+[16-Jun-2025 07:14:51 America/Paramaribo] Login page - Attempting to authenticate admin: admin@estem.sr
+[16-Jun-2025 07:14:51 America/Paramaribo] Login page - Authentication failed for admin: admin@estem.sr
+[16-Jun-2025 07:15:16 America/Paramaribo] Login page - Session ID: b48ltqpu18dm72ifl0eeon7tsn
+[16-Jun-2025 07:15:16 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[16-Jun-2025 07:15:16 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[16-Jun-2025 07:15:16 America/Paramaribo] Admin login status: Not logged in
+[16-Jun-2025 07:15:16 America/Paramaribo] Login page - Processing login form submission
+[16-Jun-2025 07:15:16 America/Paramaribo] Login page - Attempting to authenticate admin: admin@example.com
+[16-Jun-2025 07:15:16 America/Paramaribo] Login page - Authentication successful for admin: admin@example.com
+[16-Jun-2025 07:15:16 America/Paramaribo] LoginAdmin - Starting login process for admin: admin@example.com
+[16-Jun-2025 07:15:16 America/Paramaribo] LoginAdmin - Previous session ID: b48ltqpu18dm72ifl0eeon7tsn
+[16-Jun-2025 07:15:16 America/Paramaribo] LoginAdmin - Previous session data: Array
+(
+)
+
+[16-Jun-2025 07:15:16 America/Paramaribo] LoginAdmin - New session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:16 America/Paramaribo] LoginAdmin - New session ID: b48ltqpu18dm72ifl0eeon7tsn
+[16-Jun-2025 07:15:16 America/Paramaribo] Login page - Session verified, redirecting to index
+[16-Jun-2025 07:15:16 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:16 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:16 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:16 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:27 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:27 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:27 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:27 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:32 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:32 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:44 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:44 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:44 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Verkiezing is succesvol bijgewerkt.
+)
+
+[16-Jun-2025 07:15:44 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:44 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Verkiezing is succesvol bijgewerkt.
+)
+
+[16-Jun-2025 07:15:44 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:49 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:49 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:52 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:52 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:52 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:52 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:53 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:53 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:53 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[16-Jun-2025 07:15:53 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:53 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:55 America/Paramaribo] Admin login status: Logged in
+[16-Jun-2025 07:15:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[16-Jun-2025 07:15:55 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:21:51 America/Paramaribo] Session read failed: SQLSTATE[HY000]: General error: 2006 MySQL server has gone away
+[17-Jun-2025 19:21:51 America/Paramaribo] PHP Warning:  session_start(): Failed to read session data: user (path: C:\Users\lrano\OneDrive\Documents\Xamp\tmp) in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 132
+[17-Jun-2025 19:21:56 America/Paramaribo] Database connection error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[17-Jun-2025 19:22:20 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 19:22:20 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 19:22:20 America/Paramaribo] Login page - Session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:22:20 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[17-Jun-2025 19:22:20 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 19:22:20 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 19:22:24 America/Paramaribo] Login page - Session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:22:24 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[17-Jun-2025 19:22:24 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 19:22:24 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 19:22:24 America/Paramaribo] Login page - Processing login form submission
+[17-Jun-2025 19:22:24 America/Paramaribo] Login page - Attempting to authenticate admin: admin@example.com
+[17-Jun-2025 19:22:24 America/Paramaribo] Login page - Authentication successful for admin: admin@example.com
+[17-Jun-2025 19:22:24 America/Paramaribo] LoginAdmin - Starting login process for admin: admin@example.com
+[17-Jun-2025 19:22:24 America/Paramaribo] LoginAdmin - Previous session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:22:24 America/Paramaribo] LoginAdmin - Previous session data: Array
+(
+)
+
+[17-Jun-2025 19:22:24 America/Paramaribo] LoginAdmin - New session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:24 America/Paramaribo] LoginAdmin - New session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:22:24 America/Paramaribo] Login page - Session verified, redirecting to index
+[17-Jun-2025 19:22:24 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:24 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:24 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:24 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:28 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:28 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:32 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:32 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:36 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:36 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:36 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:36 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:38 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:38 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:40 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:40 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:40 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:40 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:54 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:54 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:56 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:22:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:22:56 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:23:04 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:23:04 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:23:04 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:23:04 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:23:14 America/Paramaribo] Logout - Starting logout process
+[17-Jun-2025 19:23:14 America/Paramaribo] Logout - Session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:23:14 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:23:14 America/Paramaribo] Logout - Clearing admin session
+[17-Jun-2025 19:23:14 America/Paramaribo] Logout - Session destroyed
+[17-Jun-2025 19:23:14 America/Paramaribo] Login page - Session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:23:14 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[17-Jun-2025 19:23:14 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 19:23:14 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 19:26:36 America/Paramaribo] Login page - Session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:26:36 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[17-Jun-2025 19:26:36 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 19:26:36 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 19:28:45 America/Paramaribo] Login page - Session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:28:45 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[17-Jun-2025 19:28:45 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 19:28:45 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 19:28:49 America/Paramaribo] Login page - Session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:28:49 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[17-Jun-2025 19:28:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 19:28:49 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 19:28:49 America/Paramaribo] Login page - Processing login form submission
+[17-Jun-2025 19:28:49 America/Paramaribo] Login page - Attempting to authenticate admin: admin@example.com
+[17-Jun-2025 19:28:49 America/Paramaribo] Login page - Authentication successful for admin: admin@example.com
+[17-Jun-2025 19:28:49 America/Paramaribo] LoginAdmin - Starting login process for admin: admin@example.com
+[17-Jun-2025 19:28:49 America/Paramaribo] LoginAdmin - Previous session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:28:49 America/Paramaribo] LoginAdmin - Previous session data: Array
+(
+)
+
+[17-Jun-2025 19:28:49 America/Paramaribo] LoginAdmin - New session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:28:49 America/Paramaribo] LoginAdmin - New session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:28:49 America/Paramaribo] Login page - Session verified, redirecting to index
+[17-Jun-2025 19:28:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:28:49 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:28:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:28:49 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:28:51 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:28:51 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:28:51 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:28:51 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:28:58 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:28:58 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:28:58 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:28:58 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:02 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:02 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:02 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:02 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:04 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:04 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:04 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:04 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:05 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:05 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:05 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:05 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:09 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:09 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:12 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:12 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:12 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:12 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:14 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:14 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:14 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 19:29:14 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:14 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:18 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:18 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:43 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:43 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:43 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:43 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 19:29:46 America/Paramaribo] Logout - Starting logout process
+[17-Jun-2025 19:29:46 America/Paramaribo] Logout - Session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:29:46 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 19:29:46 America/Paramaribo] Logout - Clearing admin session
+[17-Jun-2025 19:29:46 America/Paramaribo] Logout - Session destroyed
+[17-Jun-2025 19:29:46 America/Paramaribo] Login page - Session ID: pa1jcj86pcsfdh9j4dn14dqfeq
+[17-Jun-2025 19:29:46 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[17-Jun-2025 19:29:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 19:29:46 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 19:29:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 19:29:59 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 19:29:59 America/Paramaribo] Login page - Session ID: ahcufdr0gij33rl4nbtm1vn2k4
+[17-Jun-2025 19:29:59 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[17-Jun-2025 19:29:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 19:29:59 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 19:47:42 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 19:47:47 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 19:59:35 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 20:31:14 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 20:31:24 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 20:37:43 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 20:38:14 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 20:38:20 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 20:38:24 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 20:39:59 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 20:41:13 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 20:59:34 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 20:59:34 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 20:59:34 America/Paramaribo] Login page - Session ID: ahcufdr0gij33rl4nbtm1vn2k4
+[17-Jun-2025 20:59:34 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[17-Jun-2025 20:59:34 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 20:59:34 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 20:59:41 America/Paramaribo] Login page - Session ID: ahcufdr0gij33rl4nbtm1vn2k4
+[17-Jun-2025 20:59:41 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[17-Jun-2025 20:59:41 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[17-Jun-2025 20:59:41 America/Paramaribo] Admin login status: Not logged in
+[17-Jun-2025 20:59:41 America/Paramaribo] Login page - Processing login form submission
+[17-Jun-2025 20:59:41 America/Paramaribo] Login page - Attempting to authenticate admin: admin@example.com
+[17-Jun-2025 20:59:41 America/Paramaribo] Login page - Authentication successful for admin: admin@example.com
+[17-Jun-2025 20:59:41 America/Paramaribo] LoginAdmin - Starting login process for admin: admin@example.com
+[17-Jun-2025 20:59:41 America/Paramaribo] LoginAdmin - Previous session ID: ahcufdr0gij33rl4nbtm1vn2k4
+[17-Jun-2025 20:59:41 America/Paramaribo] LoginAdmin - Previous session data: Array
+(
+)
+
+[17-Jun-2025 20:59:41 America/Paramaribo] LoginAdmin - New session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 20:59:41 America/Paramaribo] LoginAdmin - New session ID: ahcufdr0gij33rl4nbtm1vn2k4
+[17-Jun-2025 20:59:41 America/Paramaribo] Login page - Session verified, redirecting to index
+[17-Jun-2025 20:59:41 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 20:59:41 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 20:59:41 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 20:59:41 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 20:59:44 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 21:09:38 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 21:09:42 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:42 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:42 America/Paramaribo] Database error in getTotalVotes: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'where clause'
+[17-Jun-2025 21:09:42 America/Paramaribo] PHP Warning:  Undefined array key "Name" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 102
+[17-Jun-2025 21:09:42 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 102
+[17-Jun-2025 21:09:42 America/Paramaribo] PHP Warning:  Undefined array key "ElectionDate" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 105
+[17-Jun-2025 21:09:42 America/Paramaribo] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 105
+[17-Jun-2025 21:09:42 America/Paramaribo] PHP Warning:  Undefined array key "EndDate" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 106
+[17-Jun-2025 21:09:42 America/Paramaribo] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 106
+[17-Jun-2025 21:09:42 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:42 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:47 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:47 America/Paramaribo] Database error in getTotalVotes: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'where clause'
+[17-Jun-2025 21:09:47 America/Paramaribo] PHP Warning:  Undefined array key "Name" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 102
+[17-Jun-2025 21:09:47 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 102
+[17-Jun-2025 21:09:47 America/Paramaribo] PHP Warning:  Undefined array key "ElectionDate" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 105
+[17-Jun-2025 21:09:47 America/Paramaribo] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 105
+[17-Jun-2025 21:09:47 America/Paramaribo] PHP Warning:  Undefined array key "EndDate" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 106
+[17-Jun-2025 21:09:47 America/Paramaribo] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 106
+[17-Jun-2025 21:09:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:47 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:51 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:51 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:51 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:51 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:53 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:53 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:53 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:53 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:55 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:55 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:56 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:09:56 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:09:57 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 21:10:01 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:10:01 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:10:01 America/Paramaribo] Database error in getTotalVotes: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'where clause'
+[17-Jun-2025 21:10:01 America/Paramaribo] PHP Warning:  Undefined array key "Name" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 102
+[17-Jun-2025 21:10:01 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 102
+[17-Jun-2025 21:10:01 America/Paramaribo] PHP Warning:  Undefined array key "ElectionDate" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 105
+[17-Jun-2025 21:10:01 America/Paramaribo] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 105
+[17-Jun-2025 21:10:01 America/Paramaribo] PHP Warning:  Undefined array key "EndDate" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 106
+[17-Jun-2025 21:10:01 America/Paramaribo] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 106
+[17-Jun-2025 21:10:01 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:10:01 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:10:24 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[17-Jun-2025 21:11:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:28 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:11:28 America/Paramaribo] Database error in getTotalVotes: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'where clause'
+[17-Jun-2025 21:11:28 America/Paramaribo] PHP Warning:  Undefined array key "Name" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 102
+[17-Jun-2025 21:11:28 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 102
+[17-Jun-2025 21:11:28 America/Paramaribo] PHP Warning:  Undefined array key "ElectionDate" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 105
+[17-Jun-2025 21:11:28 America/Paramaribo] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 105
+[17-Jun-2025 21:11:28 America/Paramaribo] PHP Warning:  Undefined array key "EndDate" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 106
+[17-Jun-2025 21:11:28 America/Paramaribo] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 106
+[17-Jun-2025 21:11:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:28 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:11:30 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:30 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:11:30 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:30 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:11:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:32 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:11:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:32 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:11:33 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:33 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:11:33 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:33 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:11:35 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:35 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:11:35 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:35 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:11:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:38 America/Paramaribo] Admin login status: Logged in
+[17-Jun-2025 21:11:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[17-Jun-2025 21:11:38 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:36:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[18-Jun-2025 06:36:55 America/Paramaribo] Admin login status: Not logged in
+[18-Jun-2025 06:36:55 America/Paramaribo] Login page - Session ID: ensq1a43c3mq22lvfuh5hubcnq
+[18-Jun-2025 06:36:55 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[18-Jun-2025 06:36:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[18-Jun-2025 06:36:55 America/Paramaribo] Admin login status: Not logged in
+[18-Jun-2025 06:37:07 America/Paramaribo] Session open failed: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[18-Jun-2025 06:37:07 America/Paramaribo] PHP Warning:  session_start(): Failed to initialize storage module: user (path: C:\Users\lrano\OneDrive\Documents\Xamp\tmp) in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\include\config.php on line 132
+[18-Jun-2025 06:37:11 America/Paramaribo] Database connection error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it
+[18-Jun-2025 06:37:22 America/Paramaribo] Login page - Session ID: ensq1a43c3mq22lvfuh5hubcnq
+[18-Jun-2025 06:37:22 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[18-Jun-2025 06:37:22 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[18-Jun-2025 06:37:22 America/Paramaribo] Admin login status: Not logged in
+[18-Jun-2025 06:37:22 America/Paramaribo] Login page - Processing login form submission
+[18-Jun-2025 06:37:22 America/Paramaribo] Login page - Attempting to authenticate admin: admin@example.com
+[18-Jun-2025 06:37:22 America/Paramaribo] Login page - Authentication successful for admin: admin@example.com
+[18-Jun-2025 06:37:22 America/Paramaribo] LoginAdmin - Starting login process for admin: admin@example.com
+[18-Jun-2025 06:37:22 America/Paramaribo] LoginAdmin - Previous session ID: ensq1a43c3mq22lvfuh5hubcnq
+[18-Jun-2025 06:37:22 America/Paramaribo] LoginAdmin - Previous session data: Array
+(
+)
+
+[18-Jun-2025 06:37:22 America/Paramaribo] LoginAdmin - New session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:37:22 America/Paramaribo] LoginAdmin - New session ID: ensq1a43c3mq22lvfuh5hubcnq
+[18-Jun-2025 06:37:22 America/Paramaribo] Login page - Session verified, redirecting to index
+[18-Jun-2025 06:37:22 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:37:22 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:37:22 America/Paramaribo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'code' in 'where clause' in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php:21
+Stack trace:
+#0 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php(21): PDO->query('SELECT COUNT(*)...')
+#1 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php(11): DashboardController->getDashboardData()
+#2 {main}
+  thrown in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php on line 21
+[18-Jun-2025 06:38:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:38:47 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:38:47 America/Paramaribo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Status' in 'where clause' in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php:21
+Stack trace:
+#0 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php(21): PDO->query('SELECT COUNT(*)...')
+#1 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php(11): DashboardController->getDashboardData()
+#2 {main}
+  thrown in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php on line 21
+[18-Jun-2025 06:38:48 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:38:48 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:38:48 America/Paramaribo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Status' in 'where clause' in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php:21
+Stack trace:
+#0 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php(21): PDO->query('SELECT COUNT(*)...')
+#1 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php(11): DashboardController->getDashboardData()
+#2 {main}
+  thrown in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php on line 21
+[18-Jun-2025 06:38:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:38:49 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:38:49 America/Paramaribo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Status' in 'where clause' in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php:21
+Stack trace:
+#0 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php(21): PDO->query('SELECT COUNT(*)...')
+#1 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php(11): DashboardController->getDashboardData()
+#2 {main}
+  thrown in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php on line 21
+[18-Jun-2025 06:38:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:38:50 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:38:50 America/Paramaribo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Status' in 'where clause' in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php:21
+Stack trace:
+#0 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php(21): PDO->query('SELECT COUNT(*)...')
+#1 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php(11): DashboardController->getDashboardData()
+#2 {main}
+  thrown in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\DashboardController.php on line 21
+[18-Jun-2025 06:39:57 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:39:57 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:39:58 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:39:58 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:40:02 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:40:02 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:40:02 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:40:02 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:40:04 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:40:04 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:40:04 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:40:04 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:40:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:40:07 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:40:07 America/Paramaribo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\ResultsController.php:110
+Stack trace:
+#0 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\ResultsController.php(110): PDO->prepare('\n            SE...')
+#1 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\ResultsController.php(61): ResultsController->getPartyResults(1, 0)
+#2 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php(11): ResultsController->getFullResultsPageData(1)
+#3 {main}
+  thrown in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\controllers\ResultsController.php on line 110
+[18-Jun-2025 06:40:10 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:40:10 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:40:10 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:40:10 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:49:20 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:49:20 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:49:20 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 06:49:20 America/Paramaribo] PHP Warning:  Undefined variable $election_status_text in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 159
+[18-Jun-2025 06:49:20 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:49:20 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:49:29 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:49:29 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:49:29 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[18-Jun-2025 06:49:29 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 411
+[18-Jun-2025 06:49:29 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 411
+[18-Jun-2025 06:49:29 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 416
+[18-Jun-2025 06:49:29 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 419
+[18-Jun-2025 06:49:29 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 436
+[18-Jun-2025 06:49:29 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 439
+[18-Jun-2025 06:49:29 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:49:29 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:09 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:09 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:09 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:09 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:12 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:12 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:12 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 06:50:12 America/Paramaribo] PHP Warning:  Undefined variable $election_status_text in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 159
+[18-Jun-2025 06:50:12 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:12 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:14 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:14 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:14 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[18-Jun-2025 06:50:14 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 411
+[18-Jun-2025 06:50:14 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 411
+[18-Jun-2025 06:50:14 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 416
+[18-Jun-2025 06:50:14 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 419
+[18-Jun-2025 06:50:14 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 436
+[18-Jun-2025 06:50:14 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 439
+[18-Jun-2025 06:50:14 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:14 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:32 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:32 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:38 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:38 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 06:50:38 America/Paramaribo] PHP Warning:  Undefined variable $election_status_text in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 159
+[18-Jun-2025 06:50:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:38 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:43 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:43 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:43 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[18-Jun-2025 06:50:43 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 411
+[18-Jun-2025 06:50:43 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 411
+[18-Jun-2025 06:50:43 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 416
+[18-Jun-2025 06:50:43 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 419
+[18-Jun-2025 06:50:43 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 436
+[18-Jun-2025 06:50:43 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 439
+[18-Jun-2025 06:50:43 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:43 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:46 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:46 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 06:50:46 America/Paramaribo] PHP Warning:  Undefined variable $election_status_text in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\index.php on line 159
+[18-Jun-2025 06:50:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:46 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:56 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:56 America/Paramaribo] Results page error: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-stem_suriname.political_parties' doesn't exist
+[18-Jun-2025 06:50:56 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 411
+[18-Jun-2025 06:50:56 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 411
+[18-Jun-2025 06:50:56 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 416
+[18-Jun-2025 06:50:56 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 419
+[18-Jun-2025 06:50:56 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 436
+[18-Jun-2025 06:50:56 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 439
+[18-Jun-2025 06:50:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:56 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:59 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:50:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:50:59 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:54:08 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:54:08 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:54:08 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 06:54:08 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:54:08 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:54:17 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:54:17 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:54:17 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:54:17 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:54:20 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:54:20 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 06:54:20 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Name' in 'field list'
+[18-Jun-2025 06:54:20 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 379
+[18-Jun-2025 06:54:20 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 421
+[18-Jun-2025 06:54:20 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 424
+[18-Jun-2025 06:54:20 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 439
+[18-Jun-2025 06:54:20 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 442
+[18-Jun-2025 06:54:20 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 06:54:20 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:00:14 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:00:14 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:00:14 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Name' in 'field list'
+[18-Jun-2025 07:00:14 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 379
+[18-Jun-2025 07:00:14 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 421
+[18-Jun-2025 07:00:14 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 424
+[18-Jun-2025 07:00:14 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 439
+[18-Jun-2025 07:00:14 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 442
+[18-Jun-2025 07:00:14 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:00:14 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:00:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:00:18 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:00:18 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Name' in 'field list'
+[18-Jun-2025 07:00:18 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 379
+[18-Jun-2025 07:00:18 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 421
+[18-Jun-2025 07:00:18 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 424
+[18-Jun-2025 07:00:18 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 439
+[18-Jun-2025 07:00:18 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 442
+[18-Jun-2025 07:00:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:00:18 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:00:20 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:00:20 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:00:20 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 07:00:20 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:00:20 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:00:23 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:00:23 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:00:23 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Name' in 'field list'
+[18-Jun-2025 07:00:23 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 379
+[18-Jun-2025 07:00:23 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 421
+[18-Jun-2025 07:00:23 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 424
+[18-Jun-2025 07:00:23 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 439
+[18-Jun-2025 07:00:23 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 442
+[18-Jun-2025 07:00:23 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:00:23 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:02:05 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:02:05 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:02:05 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Name' in 'field list'
+[18-Jun-2025 07:02:05 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 364
+[18-Jun-2025 07:02:05 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 394
+[18-Jun-2025 07:02:05 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 397
+[18-Jun-2025 07:02:05 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 412
+[18-Jun-2025 07:02:05 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 415
+[18-Jun-2025 07:02:05 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:02:05 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:02:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:02:07 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:02:07 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Name' in 'field list'
+[18-Jun-2025 07:02:07 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 364
+[18-Jun-2025 07:02:07 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 394
+[18-Jun-2025 07:02:07 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 397
+[18-Jun-2025 07:02:07 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 412
+[18-Jun-2025 07:02:07 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 415
+[18-Jun-2025 07:02:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:02:07 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:02:12 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:02:12 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:02:12 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 07:02:12 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:02:12 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:02:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:02:18 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:02:18 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Name' in 'field list'
+[18-Jun-2025 07:02:18 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 364
+[18-Jun-2025 07:02:18 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 394
+[18-Jun-2025 07:02:18 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 397
+[18-Jun-2025 07:02:18 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 412
+[18-Jun-2025 07:02:18 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 415
+[18-Jun-2025 07:02:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:02:18 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:08:08 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:08:08 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:08:08 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Name' in 'field list'
+[18-Jun-2025 07:08:08 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 365
+[18-Jun-2025 07:08:08 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 395
+[18-Jun-2025 07:08:08 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 398
+[18-Jun-2025 07:08:08 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 413
+[18-Jun-2025 07:08:08 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 416
+[18-Jun-2025 07:08:08 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:08:08 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:14:58 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:14:58 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:14:58 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.id' in 'field list'
+[18-Jun-2025 07:14:58 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 365
+[18-Jun-2025 07:14:58 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 395
+[18-Jun-2025 07:14:58 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 398
+[18-Jun-2025 07:14:58 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 413
+[18-Jun-2025 07:14:58 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 416
+[18-Jun-2025 07:14:58 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:14:58 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:16:21 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:16:21 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:16:21 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.id' in 'field list'
+[18-Jun-2025 07:16:21 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 414
+[18-Jun-2025 07:16:21 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 444
+[18-Jun-2025 07:16:21 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 447
+[18-Jun-2025 07:16:21 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 462
+[18-Jun-2025 07:16:21 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 465
+[18-Jun-2025 07:16:21 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:16:21 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:18:22 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:18:22 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:18:22 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Name' in 'field list'
+[18-Jun-2025 07:18:22 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 365
+[18-Jun-2025 07:18:22 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 395
+[18-Jun-2025 07:18:22 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 398
+[18-Jun-2025 07:18:22 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 413
+[18-Jun-2025 07:18:22 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 416
+[18-Jun-2025 07:18:22 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:18:22 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:18:24 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:18:24 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:18:24 America/Paramaribo] Results page error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'e.Name' in 'field list'
+[18-Jun-2025 07:18:24 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 365
+[18-Jun-2025 07:18:24 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 395
+[18-Jun-2025 07:18:24 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 398
+[18-Jun-2025 07:18:24 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 413
+[18-Jun-2025 07:18:24 America/Paramaribo] PHP Warning:  Array to string conversion in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 416
+[18-Jun-2025 07:18:24 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:18:24 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:23:03 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:23:03 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:23:03 America/Paramaribo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'Name' in 'field list' in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php:13
+Stack trace:
+#0 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php(13): PDO->query('\r\n    SELECT El...')
+#1 {main}
+  thrown in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 13
+[18-Jun-2025 07:24:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:24:38 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:24:38 America/Paramaribo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'title' in 'field list' in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php:13
+Stack trace:
+#0 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php(13): PDO->query('\r\n    SELECT El...')
+#1 {main}
+  thrown in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 13
+[18-Jun-2025 07:24:40 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:24:40 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:24:40 America/Paramaribo] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'title' in 'field list' in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php:13
+Stack trace:
+#0 C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php(13): PDO->query('\r\n    SELECT El...')
+#1 {main}
+  thrown in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\admin\results.php on line 13
+[18-Jun-2025 07:27:57 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:27:57 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:27:57 America/Paramaribo] Results page database error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'vt.DistrictID' in 'on clause'
+[18-Jun-2025 07:27:57 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:27:57 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:28:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:28:07 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:28:07 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 07:28:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:28:07 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:31:00 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:31:00 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:31:00 America/Paramaribo] Results page database error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'vt.DistrictID' in 'on clause'
+[18-Jun-2025 07:31:00 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:31:00 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:31:23 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:31:23 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:31:23 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 07:31:23 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:31:23 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:31:27 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:31:27 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:31:27 America/Paramaribo] Results page database error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'vt.DistrictID' in 'on clause'
+[18-Jun-2025 07:31:27 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:31:27 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:33:53 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:33:53 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 07:33:53 America/Paramaribo] Results page database error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'vt.DistrictID' in 'on clause'
+[18-Jun-2025 07:33:53 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 07:33:53 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:49:48 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:49:48 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:49:48 America/Paramaribo] Results page database error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'vt.DistrictID' in 'on clause'
+[18-Jun-2025 08:49:48 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:49:48 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:51:26 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:51:26 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:51:26 America/Paramaribo] Results page database error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'vt.DistrictID' in 'on clause'
+[18-Jun-2025 08:51:26 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:51:26 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:52:15 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:52:15 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:52:15 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:52:15 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:54:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:54:28 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:54:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:54:28 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:56:03 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:56:03 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:56:03 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:56:03 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:59:00 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:59:00 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 08:59:00 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 08:59:00 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:02:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:02:59 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:02:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:02:59 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:37 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:37 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:37 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 09:03:37 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:37 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:47 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:47 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:50 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:50 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 09:03:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:50 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:52 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:52 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:52 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:52 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:54 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:54 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 09:03:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:54 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:55 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:03:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:03:55 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:07:15 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:07:15 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:07:15 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:07:15 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:07:22 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:07:22 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:10:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:10:38 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:10:38 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:10:38 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:13:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:13:07 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:13:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:13:07 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:08 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:08 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:08 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 09:14:08 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:08 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:19 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:19 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:19 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:19 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:21 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:21 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:21 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:21 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:28 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:28 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:30 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:30 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:30 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:30 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:31 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:31 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:14:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:14:32 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:15:23 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:15:23 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:15:23 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:15:23 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:15:34 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:15:34 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:15:34 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 09:15:34 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:15:34 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:18:41 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:18:41 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:18:41 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 09:18:41 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:18:41 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:18:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:18:50 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:18:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:18:50 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:18:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:18:54 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:18:54 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 09:18:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:18:54 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:22:29 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:22:29 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:22:29 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 09:22:29 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:22:29 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:23:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:23:50 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:23:50 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 09:23:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:23:50 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:23:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:23:56 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:23:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:23:56 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:23:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:23:59 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:23:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:23:59 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:24:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:24:07 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:24:07 America/Paramaribo] Resorts table columns: id, name, district_id
+[18-Jun-2025 09:24:19 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:24:19 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:24:20 America/Paramaribo] Resorts table columns: id, name, district_id
+[18-Jun-2025 09:24:27 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[18-Jun-2025 09:24:27 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:24:27 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Voter successfully added.
+    [redirect] => admin/voters.php
+)
+
+[18-Jun-2025 09:24:27 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:24:37 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[18-Jun-2025 09:24:37 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:24:37 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[18-Jun-2025 09:24:37 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:24:40 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[18-Jun-2025 09:24:40 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:24:45 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[18-Jun-2025 09:24:45 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:24:45 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_vouchers] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 993
+                    [voter_id] => 1
+                    [voter_name] => Aryan Daggoe
+                    [voucher_id] => VC0EDF438D
+                    [password] => LS1G6F
+                )
+
+        )
+
+)
+
+[18-Jun-2025 09:24:45 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:25:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_vouchers] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 993
+                    [voter_id] => 1
+                    [voter_name] => Aryan Daggoe
+                    [voucher_id] => VC0EDF438D
+                    [password] => LS1G6F
+                )
+
+        )
+
+)
+
+[18-Jun-2025 09:25:18 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:25:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_vouchers] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 993
+                    [voter_id] => 1
+                    [voter_name] => Aryan Daggoe
+                    [voucher_id] => VC0EDF438D
+                    [password] => LS1G6F
+                )
+
+        )
+
+)
+
+[18-Jun-2025 09:25:18 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:25:20 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_vouchers] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 993
+                    [voter_id] => 1
+                    [voter_name] => Aryan Daggoe
+                    [voucher_id] => VC0EDF438D
+                    [password] => LS1G6F
+                )
+
+        )
+
+)
+
+[18-Jun-2025 09:25:20 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:25:20 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_vouchers] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 993
+                    [voter_id] => 1
+                    [voter_name] => Aryan Daggoe
+                    [voucher_id] => VC0EDF438D
+                    [password] => LS1G6F
+                )
+
+        )
+
+)
+
+[18-Jun-2025 09:25:20 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:25:27 America/Paramaribo] Logout - Starting logout process
+[18-Jun-2025 09:25:27 America/Paramaribo] Logout - Session ID: ensq1a43c3mq22lvfuh5hubcnq
+[18-Jun-2025 09:25:27 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_vouchers] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 993
+                    [voter_id] => 1
+                    [voter_name] => Aryan Daggoe
+                    [voucher_id] => VC0EDF438D
+                    [password] => LS1G6F
+                )
+
+        )
+
+)
+
+[18-Jun-2025 09:25:27 America/Paramaribo] Logout - Clearing admin session
+[18-Jun-2025 09:25:27 America/Paramaribo] Logout - Session destroyed
+[18-Jun-2025 09:25:27 America/Paramaribo] Login page - Session ID: ensq1a43c3mq22lvfuh5hubcnq
+[18-Jun-2025 09:25:27 America/Paramaribo] Login page - Current session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_vouchers] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 993
+                    [voter_id] => 1
+                    [voter_name] => Aryan Daggoe
+                    [voucher_id] => VC0EDF438D
+                    [password] => LS1G6F
+                )
+
+        )
+
+)
+
+[18-Jun-2025 09:25:27 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_vouchers] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 993
+                    [voter_id] => 1
+                    [voter_name] => Aryan Daggoe
+                    [voucher_id] => VC0EDF438D
+                    [password] => LS1G6F
+                )
+
+        )
+
+)
+
+[18-Jun-2025 09:25:27 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:25:27 America/Paramaribo] Login page - Admin already logged in, redirecting to index
+[18-Jun-2025 09:25:27 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_vouchers] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 993
+                    [voter_id] => 1
+                    [voter_name] => Aryan Daggoe
+                    [voucher_id] => VC0EDF438D
+                    [password] => LS1G6F
+                )
+
+        )
+
+)
+
+[18-Jun-2025 09:25:27 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:25:27 America/Paramaribo] Dashboard error: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'status' in 'where clause'
+[18-Jun-2025 09:25:27 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_vouchers] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 993
+                    [voter_id] => 1
+                    [voter_name] => Aryan Daggoe
+                    [voucher_id] => VC0EDF438D
+                    [password] => LS1G6F
+                )
+
+        )
+
+)
+
+[18-Jun-2025 09:25:27 America/Paramaribo] Admin login status: Logged in
+[18-Jun-2025 09:25:37 America/Paramaribo] Logout - Starting logout process
+[18-Jun-2025 09:25:37 America/Paramaribo] Logout - Session ID: ensq1a43c3mq22lvfuh5hubcnq
+[18-Jun-2025 09:25:37 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_vouchers] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 993
+                    [voter_id] => 1
+                    [voter_name] => Aryan Daggoe
+                    [voucher_id] => VC0EDF438D
+                    [password] => LS1G6F
+                )
+
+        )
+
+)
+
+[18-Jun-2025 09:25:37 America/Paramaribo] Logout - Clearing admin session
+[18-Jun-2025 09:25:37 America/Paramaribo] Logout - Session destroyed
+[18-Jun-2025 09:25:37 America/Paramaribo] Login page - Session ID: ensq1a43c3mq22lvfuh5hubcnq
+[18-Jun-2025 09:25:37 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[18-Jun-2025 09:25:37 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[18-Jun-2025 09:25:37 America/Paramaribo] Admin login status: Not logged in
+[18-Jun-2025 09:26:06 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 1 in election 1: 0
+[18-Jun-2025 09:26:06 America/Paramaribo] QR Code verification successful for voter ID: 1, name: Aryan Daggoe
+[18-Jun-2025 09:26:07 America/Paramaribo] [DEBUG] Checking if voter ID 1 has already voted
+[18-Jun-2025 09:26:07 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 1 in election 1: 0
+[18-Jun-2025 09:26:07 America/Paramaribo] [DEBUG] Voter ID 1 has not voted yet, proceeding to voting page
+[18-Jun-2025 09:26:22 America/Paramaribo] [VOTE_DEBUG] POST request received. Starting vote submission process.
+[18-Jun-2025 09:26:22 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 1 in election 1: 0
+[18-Jun-2025 09:26:22 America/Paramaribo] [VOTE_DEBUG] Starting database transaction for voter ID: 1
+[18-Jun-2025 09:26:22 America/Paramaribo] [VoterAuth] [info] Using existing transaction for QR code creation
+[18-Jun-2025 09:26:22 America/Paramaribo] [VoterAuth] [info] Successfully created QR code ID: 1 for voter: 1, election: 1
+[18-Jun-2025 09:26:22 America/Paramaribo] [VOTE_DEBUG] QR Code ID: 1 obtained for voter ID: 1
+[18-Jun-2025 09:26:22 America/Paramaribo] [VOTE_DEBUG] Inserted DNA vote. Voter: 1, Candidate: 1204, Election: 1
+[18-Jun-2025 09:26:22 America/Paramaribo] [VOTE_DEBUG] Inserted RR vote. Voter: 1, Candidate: 1254, Election: 1
+[18-Jun-2025 09:26:22 America/Paramaribo] [VOTE_DEBUG] Marked QR code as used for voter ID: 1
+[18-Jun-2025 09:26:22 America/Paramaribo] [VOTE_DEBUG] Marked voucher ID: VC0EDF438D as used for voter ID: 1
+[18-Jun-2025 09:26:22 America/Paramaribo] [VOTE_DEBUG] Transaction committed successfully for voter ID: 1
+[18-Jun-2025 09:26:22 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 1 in election 1: 2
+[18-Jun-2025 09:26:29 America/Paramaribo] [DEBUG] Checking if voter ID 1 has already voted
+[18-Jun-2025 09:26:29 America/Paramaribo] [DEBUG] Session has_voted flag is set, redirecting to thank-you page
+[18-Jun-2025 09:26:29 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 1 in election 1: 2
+[18-Jun-2025 09:26:31 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 1 in election 1: 2
+[18-Jun-2025 09:26:40 America/Paramaribo] [DEBUG] Checking if voter ID 1 has already voted
+[18-Jun-2025 09:26:40 America/Paramaribo] [DEBUG] Session has_voted flag is set, redirecting to thank-you page
+[18-Jun-2025 09:26:40 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 1 in election 1: 2
+[18-Jun-2025 09:26:59 America/Paramaribo] Logout - Starting logout process
+[18-Jun-2025 09:26:59 America/Paramaribo] Logout - Session ID: ensq1a43c3mq22lvfuh5hubcnq
+[18-Jun-2025 09:26:59 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [voter_id] => 1
+    [voter_name] => Aryan Daggoe
+    [voter_district] => 6
+    [voter_resort] => 50
+    [voucher_id] => VC0EDF438D
+    [has_voted] => 1
+    [message] => U heeft al gestemd in deze verkiezing.
+)
+
+[18-Jun-2025 09:26:59 America/Paramaribo] Logout - Clearing voter session
+[18-Jun-2025 09:26:59 America/Paramaribo] Logout - Session destroyed
+[18-Jun-2025 09:26:59 America/Paramaribo] Login page - Session ID: ensq1a43c3mq22lvfuh5hubcnq
+[18-Jun-2025 09:26:59 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[18-Jun-2025 09:26:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[18-Jun-2025 09:26:59 America/Paramaribo] Admin login status: Not logged in
