@@ -28,8 +28,8 @@ if ($voter) {
     // Set session variables
     $_SESSION['voter_id'] = $voter['id'];
     $_SESSION['voter_name'] = $voter['first_name'] . ' ' . $voter['last_name'];
-    $_SESSION['voter_district'] = $voter['district_id'];
-    $_SESSION['voter_resort'] = $voter['resort_id'];
+    $_SESSION['district_id'] = $voter['district_id'];
+    $_SESSION['resort_id'] = $voter['resort_id'];
     $_SESSION['voucher_id'] = $qr_data;
     
     // Debug log

@@ -28,6 +28,7 @@ try {
             e.StartDate,
             e.EndDate,
             e.Status,
+            e.ElectionType,
             e.CreatedAt,
             e.UpdatedAt,
             COUNT(DISTINCT c.CandidateID) as candidate_count,
@@ -154,6 +155,7 @@ try {
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verkiezing</th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Periode</th>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kandidaten</th>
                                 <?php if ($status_type !== 'upcoming'): ?>
@@ -166,7 +168,7 @@ try {
                         <tbody class="bg-white divide-y divide-gray-200">
                             <?php if (empty($elections)): ?>
                                 <tr>
-                                    <td colspan="<?= ($status_type !== 'upcoming') ? '6' : '5' ?>" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                    <td colspan="<?= ($status_type !== 'upcoming') ? '7' : '6' ?>" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                         Geen <?= strtolower(htmlspecialchars($title)) ?> gevonden.
                                     </td>
                                 </tr>
@@ -176,6 +178,11 @@ try {
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm font-medium text-gray-900"><?= htmlspecialchars($election['ElectionName']) ?></div>
                                             <div class="text-xs text-gray-500">ID: <?= htmlspecialchars($election['ElectionID']) ?></div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?= $election['ElectionType'] === 'RR' ? 'bg-orange-100 text-orange-800' : 'bg-indigo-100 text-indigo-800' ?>">
+                                                <?= htmlspecialchars($election['ElectionType']) ?>
+                                            </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             <?= date('d M Y', strtotime($election['StartDate'])) ?> - <?= date('d M Y', strtotime($election['EndDate'])) ?>
@@ -247,40 +254,37 @@ try {
 
         <!-- Modal panel -->
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form action="<?= BASE_URL ?>/src/controllers/ElectionController.php" method="POST">
-                <input type="hidden" name="action" value="create">
+            <form id="electionForm" action="<?= BASE_URL ?>/src/controllers/ElectionController.php" method="POST">
+                <input type="hidden" name="action" id="election_action" value="create">
+                <input type="hidden" name="election_id" id="election_id">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-suriname-green/10 sm:mx-0 sm:h-10 sm:w-10">
-                            <i class="fas fa-plus text-suriname-green text-xl"></i>
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modal-title">Nieuwe Verkiezing Toevoegen</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Naam verkiezing</label>
+                            <input type="text" name="name" id="name" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
                         </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                Nieuwe Verkiezing Aanmaken
-                            </h3>
-                            <div class="mt-4 space-y-4">
-                                <div>
-                                    <label for="name" class="block text-sm font-medium text-gray-700">Naam Verkiezing</label>
-                                    <input type="text" name="name" id="name" required
-                                           class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
-                                </div>
-                                <div>
-                                    <label for="description" class="block text-sm font-medium text-gray-700">Beschrijving</label>
-                                    <textarea name="description" id="description" rows="3" required
-                                              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm"></textarea>
-                                </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div>
-                                        <label for="start_date" class="block text-sm font-medium text-gray-700">Start Datum</label>
-                                        <input type="date" name="start_date" id="start_date" required
-                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
-                                    </div>
-                                    <div>
-                                        <label for="end_date" class="block text-sm font-medium text-gray-700">Eind Datum</label>
-                                        <input type="date" name="end_date" id="end_date" required
-                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
-                                    </div>
-                                </div>
+                        <div>
+                            <label for="election_type" class="block text-sm font-medium text-gray-700">Type verkiezing</label>
+                            <select id="election_type" name="election_type" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
+                                <option value="DNA">DNA (De Nationale Assemblée)</option>
+                                <option value="RR">RR (Resortsraden)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="description" class="block text-sm font-medium text-gray-700">Omschrijving</label>
+                            <textarea name="description" id="description" rows="3" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm"></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="start_date" class="block text-sm font-medium text-gray-700">Start Datum</label>
+                                <input type="date" name="start_date" id="start_date" required
+                                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="end_date" class="block text-sm font-medium text-gray-700">Eind Datum</label>
+                                <input type="date" name="end_date" id="end_date" required
+                                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
                             </div>
                         </div>
                     </div>

@@ -11,8 +11,11 @@ error_log("Logout - Starting logout process");
 error_log("Logout - Session ID: " . session_id());
 error_log("Logout - Session data before logout: " . print_r($_SESSION, true));
 
+$is_voter = isset($_SESSION['VoterID']) || isset($_SESSION['voter_id']);
+$is_admin = isset($_SESSION['AdminID']);
+
 // Clear admin session
-if (isset($_SESSION['AdminID'])) {
+if ($is_admin) {
     error_log("Logout - Clearing admin session");
     unset($_SESSION['AdminID']);
     unset($_SESSION['AdminName']);
@@ -21,7 +24,7 @@ if (isset($_SESSION['AdminID'])) {
 }
 
 // Clear voter session
-if (isset($_SESSION['VoterID']) || isset($_SESSION['voter_id'])) {
+if ($is_voter) {
     error_log("Logout - Clearing voter session");
     
     // Update voter session in database if exists
@@ -59,5 +62,11 @@ session_destroy();
 error_log("Logout - Session destroyed");
 
 // Redirect to admin login page
-header("Location: " . BASE_URL . "/admin/login.php");
+if ($is_voter && !$is_admin) {
+    // If only a voter was logged in, redirect to voter login
+    header("Location: " . BASE_URL . "/index.php");
+} else {
+    // Otherwise, redirect to admin login
+    header("Location: " . BASE_URL . "/admin/login.php");
+}
 exit();

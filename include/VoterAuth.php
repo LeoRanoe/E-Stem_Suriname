@@ -179,7 +179,7 @@ class VoterAuth {
     public function validateSession($sessionId) {
         try {
             $stmt = $this->db->prepare("
-                SELECT vs.*, v.first_name, v.last_name
+                SELECT vs.*, v.first_name, v.last_name, v.district_id, v.resort_id
                 FROM voter_sessions vs
                 JOIN voters v ON v.id = vs.voter_id
                 WHERE vs.session_id = ? 

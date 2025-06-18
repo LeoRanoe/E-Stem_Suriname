@@ -372,7 +372,7 @@ ob_start();
                                         <option value="DNA">DNA</option>
                                     </select>
                                 </div>
-                                <div>
+                                <div id="form_district_container">
                                     <label for="form_district_id" class="mb-2.5 block text-gray-700">District</label>
                                     <select name="district_id" id="form_district_id" required class="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-suriname-green active:border-suriname-green">
                                         <option value="">Selecteer een district</option>
@@ -428,6 +428,7 @@ document.addEventListener('DOMContentLoaded', function() {
         partyId: document.getElementById('form_party_id'),
         electionId: document.getElementById('form_election_id'),
         candidateType: document.getElementById('form_candidate_type'),
+        districtContainer: document.getElementById('form_district_container'),
         districtId: document.getElementById('form_district_id'),
         resortContainer: document.getElementById('form_resort_container'),
         resortId: document.getElementById('form_resort_id'),
@@ -453,6 +454,7 @@ document.addEventListener('DOMContentLoaded', function() {
         modalUI.action.value = 'create';
         modalUI.candidateId.value = '';
         modalUI.electionId.disabled = false;
+        handleCandidateTypeChange();
         openModal();
     }
 
@@ -476,7 +478,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     modalUI.candidateType.value = data.CandidateType;
                     modalUI.districtId.value = data.DistrictID;
                     
-                    toggleResortContainer(data.CandidateType);
+                    handleCandidateTypeChange();
                     if (data.CandidateType === 'RR' && data.DistrictID) {
                         loadResorts(modalUI.districtId, modalUI.resortId, data.ResortID);
                     }
@@ -502,17 +504,27 @@ document.addEventListener('DOMContentLoaded', function() {
     closeModalButtons.forEach(btn => btn.addEventListener('click', closeModal));
     window.addEventListener('click', e => e.target === modal && closeModal());
 
-    function toggleResortContainer(type) {
-        if (type === 'RR') {
-            modalUI.resortContainer.style.display = 'block';
-            modalUI.resortId.required = true;
-        } else {
+    function handleCandidateTypeChange() {
+        const type = modalUI.candidateType.value;
+        if (type === 'DNA') {
+            modalUI.districtContainer.style.display = 'none';
+            modalUI.districtId.required = false;
+            modalUI.districtId.value = '';
+
             modalUI.resortContainer.style.display = 'none';
             modalUI.resortId.required = false;
+            modalUI.resortId.value = '';
+        } else { // 'RR'
+            modalUI.districtContainer.style.display = 'block';
+            modalUI.districtId.required = true;
+
+            modalUI.resortContainer.style.display = 'block';
+            modalUI.resortId.required = true;
         }
     }
 
-    modalUI.candidateType.addEventListener('change', e => toggleResortContainer(e.target.value));
+    modalUI.candidateType.addEventListener('change', handleCandidateTypeChange);
+    
     modalUI.districtId.addEventListener('change', e => {
         if (modalUI.candidateType.value === 'RR') {
             loadResorts(e.target, modalUI.resortId);
