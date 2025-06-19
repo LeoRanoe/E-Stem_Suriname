@@ -1,421 +1,200 @@
 <?php
-session_start();
+// Enable full error reporting to diagnose issues
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once __DIR__ . '/../../include/config.php';
 require_once __DIR__ . '/../../include/db_connect.php';
 
-// Optimized function to fetch election results with simplified query and LIMIT
-function fetchElectionResults($pdo, $election_type, $limit = 50) { // Increased limit for better client-side search
-    $sql = "
-        SELECT c.CandidateID, c.Name, p.PartyName, d.DistrictName, r.name as ResortName,
-               COUNT(v.VoteID) AS vote_count
-        FROM candidates c
-        JOIN parties p ON c.PartyID = p.PartyID
-        JOIN districten d ON c.DistrictID = d.DistrictID
-        LEFT JOIN resorts r ON c.ResortID = r.id
-        LEFT JOIN votes v ON c.CandidateID = v.CandidateID
-        WHERE c.CandidateType = ?
-        GROUP BY c.CandidateID
-        ORDER BY vote_count DESC
-        LIMIT ?
-    ";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$election_type, $limit]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+// --- 1. GET ACTIVE ELECTION ---
+$stmt = $pdo->query("SELECT ElectionID, ElectionName, ElectionDate, EndDate FROM elections WHERE LOWER(TRIM(Status)) = 'active' ORDER BY StartDate DESC LIMIT 1");
+$active_election = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$pageTitle = "Verkiezingsresultaten";
+include __DIR__ . '/../../include/header.php';
+
+if (!$active_election) {
+    echo '<main class="container mx-auto p-4 md:p-8"><div class="text-center bg-white rounded-xl shadow-lg p-8"><h2 class="text-2xl font-bold text-gray-800 mb-4">Geen Actieve Verkiezing</h2><p class="text-gray-600">Er is momenteel geen actieve verkiezing geconfigureerd.</p></div></main>';
+    include __DIR__ . '/../../include/footer.php';
+    exit;
 }
 
-// Handle simple filtering if requested
-$district_filter = isset($_GET['district']) ? trim($_GET['district']) : '';
-$search_term = isset($_GET['search']) ? trim($_GET['search']) : ''; // Kept for server-side if needed
+// --- 2. FETCH ALL DATA ---
+$election_id = $active_election['ElectionID'];
+$electionName = $active_election['ElectionName'];
+$electionDate = date('d F Y', strtotime($active_election['ElectionDate']));
+$fatal_error = null;
 
-// Fetch only summary data - no heavy queries
 try {
-    // Get active election info
-    $stmt = $pdo->query("SELECT ElectionName, ElectionDate FROM elections WHERE Status = 'active' LIMIT 1");
-    $election = $stmt->fetch(PDO::FETCH_ASSOC);
-    $electionName = $election ? $election['ElectionName'] : 'Huidige Verkiezing';
-    $electionDate = $election ? date('d F Y', strtotime($election['ElectionDate'])) : date('d F Y');
-    
-    // Get total votes count
-    $stmt = $pdo->query("SELECT COUNT(*) FROM votes");
-    $totalVotes = $stmt->fetchColumn();
-    
-    // Get registered voters count for participation percentage
-    $stmt = $pdo->query("SELECT COUNT(*) FROM voters WHERE status = 'active'");
-    $totalVoters = $stmt->fetchColumn();
-    $participation = $totalVoters > 0 ? round(($totalVotes / $totalVoters) * 100, 1) : 0;
-    
-    // Get top parties with vote counts for chart
-    $stmt_party = $pdo->query("
-        SELECT p.PartyName, COUNT(v.VoteID) as vote_count 
-        FROM parties p 
-        JOIN candidates c ON p.PartyID = c.PartyID 
-        LEFT JOIN votes v ON c.CandidateID = v.CandidateID 
-        GROUP BY p.PartyID 
-        ORDER BY vote_count DESC
-    ");
-    $partyResults = $stmt_party->fetchAll(PDO::FETCH_ASSOC);
+    // Overall Stats
+    $stmt_total_votes = $pdo->prepare("SELECT COUNT(VoteID) FROM votes WHERE ElectionID = ?");
+    $stmt_total_votes->execute([$election_id]);
+    $total_votes = $stmt_total_votes->fetchColumn();
 
-    // Get results by district for chart
-    $stmt_district = $pdo->query("
-        SELECT d.DistrictName, COUNT(v.VoteID) as vote_count
-        FROM votes v
-        JOIN candidates c ON v.CandidateID = c.CandidateID
-        JOIN districten d ON c.DistrictID = d.DistrictID
-        GROUP BY d.DistrictID, d.DistrictName
-        ORDER BY vote_count DESC
-    ");
-    $districtResults = $stmt_district->fetchAll(PDO::FETCH_ASSOC);
+    $stmt_voters = $pdo->query("SELECT COUNT(id) FROM voters WHERE status = 'active'");
+    $total_voters = $stmt_voters->fetchColumn();
     
-    // Get list of districts for filter
-    $stmt = $pdo->query("SELECT DISTINCT DistrictID, DistrictName FROM districten ORDER BY DistrictName");
-    $districts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $actual_voters = ceil($total_votes / 2);
+    $turnout_percentage = $total_voters > 0 ? min(100, round(($actual_voters / $total_voters) * 100, 1)) : 0;
+
+    // Party Results
+    $stmt_party = $pdo->prepare("SELECT p.PartyName, COUNT(v.VoteID) as vote_count FROM parties p LEFT JOIN candidates c ON p.PartyID = c.PartyID LEFT JOIN votes v ON c.CandidateID = v.CandidateID AND v.ElectionID = ? GROUP BY p.PartyID, p.PartyName ORDER BY vote_count DESC");
+    $stmt_party->execute([$election_id]);
+    $party_results = $stmt_party->fetchAll(PDO::FETCH_ASSOC);
+    $leading_party = (!empty($party_results) && $party_results[0]['vote_count'] > 0) ? $party_results[0]['PartyName'] : 'N/A';
     
-    // Fetch limited results for both election types
-    $dna_results = fetchElectionResults($pdo, 'DNA');
-    $resorts_results = fetchElectionResults($pdo, 'RR');
+    // District Results (for chart)
+    $stmt_district = $pdo->prepare("SELECT d.DistrictName, COUNT(v.VoteID) as vote_count FROM districten d LEFT JOIN voters vt ON d.DistrictID = vt.district_id LEFT JOIN votes v ON vt.id = v.UserID AND v.ElectionID = ? GROUP BY d.DistrictID, d.DistrictName ORDER BY d.DistrictName ASC");
+    $stmt_district->execute([$election_id]);
+    $district_results = $stmt_district->fetchAll(PDO::FETCH_ASSOC);
+
+    // DNA candidates
+    $stmt_dna = $pdo->prepare("SELECT c.Name, p.PartyName, d.DistrictName, COUNT(v.VoteID) AS vote_count FROM candidates c JOIN parties p ON c.PartyID = p.PartyID JOIN districten d ON c.DistrictID = d.DistrictID LEFT JOIN votes v ON c.CandidateID = v.CandidateID WHERE c.CandidateType = 'DNA' AND c.ElectionID = ? GROUP BY c.CandidateID ORDER BY vote_count DESC LIMIT 50");
+    $stmt_dna->execute([$election_id]);
+    $dna_results = $stmt_dna->fetchAll(PDO::FETCH_ASSOC);
+
+    // RR candidates
+    $stmt_rr = $pdo->prepare("SELECT c.Name, p.PartyName, d.DistrictName, r.name as ResortName, COUNT(v.VoteID) AS vote_count FROM candidates c JOIN parties p ON c.PartyID = p.PartyID JOIN districten d ON c.DistrictID = d.DistrictID LEFT JOIN resorts r ON c.ResortID = r.id LEFT JOIN votes v ON c.CandidateID = v.CandidateID WHERE c.CandidateType = 'RR' AND c.ElectionID = ? GROUP BY c.CandidateID ORDER BY vote_count DESC LIMIT 50");
+    $stmt_rr->execute([$election_id]);
+    $resorts_results = $stmt_rr->fetchAll(PDO::FETCH_ASSOC);
     
+    $districts = $pdo->query("SELECT DISTINCT DistrictID, DistrictName FROM districten ORDER BY DistrictName")->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
-    error_log("Database error in results.php: " . $e->getMessage());
-    // Initialize all variables to empty arrays or 0 to prevent errors
-    $dna_results = $resorts_results = $partyResults = $districtResults = $districts = [];
-    $totalVotes = $totalVoters = $participation = 0;
-    $electionName = 'Huidige Verkiezing';
-    $electionDate = date('d F Y');
+    error_log("Public results page error: " . $e->getMessage());
+    $fatal_error = "Kon de resultaten niet laden. Probeer het later opnieuw.";
 }
-
-// Prepare data for charts
-$party_chart_labels = json_encode(array_column($partyResults, 'PartyName'));
-$party_chart_data = json_encode(array_column($partyResults, 'vote_count'));
-$district_chart_labels = json_encode(array_column($districtResults, 'DistrictName'));
-$district_chart_data = json_encode(array_column($districtResults, 'vote_count'));
 
 ?>
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Verkiezingsresultaten - E-Stem Suriname</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        body { 
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8fafc; 
-        }
-        
-        .progress-bar {
-            background: linear-gradient(90deg, #007749 0%, #00995D 100%);
-        }
-        
-        .winner-badge {
-            background-color: #007749;
-            color: white;
-            font-size: 0.75rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 9999px;
-            display: inline-flex;
-            align-items: center;
-            margin-left: 0.5rem;
-        }
+<main class="container mx-auto p-4 md:p-8">
+<?php if ($fatal_error): ?>
+    <div class="text-center bg-red-100 text-red-700 rounded-xl shadow-lg p-8">
+        <h2 class="text-2xl font-bold">Fout</h2>
+        <p><?= $fatal_error ?></p>
+    </div>
+<?php else: ?>
+<style>
+    .stat-card h3, .stat-card p { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    table td { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tab-button { padding: 0.75rem 1rem; font-weight: 500; cursor: pointer; border-bottom: 3px solid transparent; color: #6b7280; }
+    .tab-button.active { border-bottom-color: #007749; color: #111827; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .progress-bar { background: linear-gradient(90deg, #007749 0%, #00995D 100%); }
+</style>
 
-        /* Tab Styles */
-        .tab-button {
-            padding: 0.75rem 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            color: #6b7280; /* gray-500 */
-        }
-        .tab-button.active {
-            border-bottom-color: #007749; /* suriname-green */
-            color: #111827; /* gray-900 */
-        }
-        .tab-panel {
-            display: none;
-        }
-        .tab-panel.active {
-            display: block;
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'suriname': {
-                            'green': '#007749',
-                            'dark-green': '#006241',
-                        },
-                    },
-                },
-            },
-        }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Live search functionality
-            const searchInput = document.getElementById('candidate-search');
-            if (searchInput) {
-                searchInput.addEventListener('input', function() {
-                    const term = this.value.toLowerCase().trim();
-                    document.querySelectorAll('.candidate-row').forEach(row => {
-                        const name = row.dataset.name.toLowerCase();
-                        const party = row.dataset.party.toLowerCase();
-                        row.style.display = (name.includes(term) || party.includes(term)) ? '' : 'none';
-                    });
-                });
-            }
-            
-            // District filter submission
-            const districtFilter = document.getElementById('district-filter');
-            if(districtFilter) {
-                districtFilter.addEventListener('change', function() {
-                    this.form.submit();
-                });
-            }
+<div id="results-page">
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between mb-6 gap-4">
+        <div>
+            <h1 class="text-3xl font-bold">Resultaten: <?= htmlspecialchars($electionName) ?></h1>
+            <p class="text-sm text-gray-500">Laatst bijgewerkt: <?= date('d-m-Y H:i:s') ?></p>
+        </div>
+    </div>
 
-            // Tab functionality
-            const tabs = document.querySelectorAll('.tab-button');
-            const panels = document.querySelectorAll('.tab-panel');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    tabs.forEach(t => t.classList.remove('active'));
-                    panels.forEach(p => p.classList.remove('active'));
-                    
-                    tab.classList.add('active');
-                    const targetPanel = document.querySelector(tab.dataset.target);
-                    if(targetPanel) {
-                        targetPanel.classList.add('active');
-                    }
+    <!-- Top Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 text-gray-800">
+        <div class="stat-card bg-white p-4 rounded-lg shadow-sm border"><p>Totaal Stemmen</p><h3 class="text-xl font-bold"><?= number_format($total_votes) ?></h3></div>
+        <div class="stat-card bg-white p-4 rounded-lg shadow-sm border"><p>Opkomst</p><h3 class="text-xl font-bold"><?= $turnout_percentage ?>%</h3></div>
+        <div class="stat-card bg-white p-4 rounded-lg shadow-sm border"><p>Leidende Partij</p><h3 class="text-xl font-bold truncate" title="<?= htmlspecialchars($leading_party) ?>"><?= htmlspecialchars($leading_party) ?></h3></div>
+        <div class="stat-card bg-white p-4 rounded-lg shadow-sm border"><p>Deelnemende Partijen</p><h3 class="text-xl font-bold"><?= count($party_results) ?></h3></div>
+    </div>
+    
+    <!-- Tabs -->
+    <div class="border-b border-gray-200 mb-6">
+        <nav class="flex -mb-px">
+            <button class="tab-button active" data-target="#overview-panel"><i class="fas fa-tachometer-alt mr-2"></i>Overzicht</button>
+            <button class="tab-button" data-target="#candidates-panel"><i class="fas fa-users mr-2"></i>Kandidaten</button>
+            <button class="tab-button" data-target="#charts-panel"><i class="fas fa-chart-pie mr-2"></i>Grafieken</button>
+        </nav>
+    </div>
 
-                    // Render chart only when its tab is shown for the first time
-                    if (tab.dataset.target === '#charts-panel' && !tab.dataset.chartRendered) {
-                        renderCharts();
-                        tab.dataset.chartRendered = true;
-                    }
-                });
-            });
+    <!-- Tab Panels -->
+    <div id="overview-panel" class="tab-panel active">
+        <div class="bg-gray-50 p-4 rounded-lg">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Resultaten per Partij</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <?php foreach($party_results as $index => $party): ?>
+                <div class="bg-white p-4 rounded-lg shadow-sm border">
+                    <div class="font-semibold text-gray-800 mb-2"><?= htmlspecialchars($party['PartyName']) ?></div>
+                    <div class="h-2 bg-gray-200 rounded-full mb-2"><div class="h-full progress-bar" style="width: <?= ($total_votes > 0) ? ($party['vote_count'] / $total_votes) * 100 : 0 ?>%;"></div></div>
+                    <div class="flex justify-between text-sm"><span><?= number_format($party['vote_count']) ?> stemmen</span><span><?= round(($party['vote_count'] / max($total_votes, 1)) * 100, 1) ?>%</span></div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
 
-            // Chart rendering function
-            function renderCharts() {
-                // Party Results Chart
-                const partyCtx = document.getElementById('party-chart').getContext('2d');
-                new Chart(partyCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: <?= $party_chart_labels ?>,
-                        datasets: [{
-                            label: 'Stemmen per Partij',
-                            data: <?= $party_chart_data ?>,
-                            backgroundColor: '#007749',
-                            borderRadius: 4,
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-                });
+    <div id="candidates-panel" class="tab-panel">
+        <div class="space-y-6">
+            <div>
+                <h2 class="text-xl font-semibold text-gray-800 mb-3"><i class="fas fa-landmark mr-2"></i>Resultaten DNA</h2>
+                <div class="overflow-x-auto border rounded-lg"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kandidaat</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Partij</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">District</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Stemmen</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><?php foreach ($dna_results as $c): ?><tr><td class="px-4 py-2"><?= htmlspecialchars($c['Name']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['PartyName']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['DistrictName']) ?></td><td class="px-4 py-2 font-medium"><?= $c['vote_count'] ?></td></tr><?php endforeach; ?></tbody></table></div>
+            </div>
+            <div>
+                <h2 class="text-xl font-semibold text-gray-800 mb-3"><i class="fas fa-building mr-2"></i>Resultaten Resortsraden</h2>
+                <div class="overflow-x-auto border rounded-lg"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kandidaat</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Partij</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">District</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Resort</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Stemmen</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><?php foreach ($resorts_results as $c): ?><tr><td class="px-4 py-2"><?= htmlspecialchars($c['Name']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['PartyName']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['DistrictName']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['ResortName'] ?? 'Onbekend') ?></td><td class="px-4 py-2 font-medium"><?= $c['vote_count'] ?></td></tr><?php endforeach; ?></tbody></table></div>
+            </div>
+        </div>
+    </div>
 
-                // District Results Chart
-                const districtCtx = document.getElementById('district-chart').getContext('2d');
-                new Chart(districtCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: <?= $district_chart_labels ?>,
-                        datasets: [{
-                            label: 'Stemmen per District',
-                            data: <?= $district_chart_data ?>,
-                            backgroundColor: ['#007749', '#C8102E', '#FFC72C', '#0033A0', '#6A2E9A', '#F15A29'],
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false }
-                });
+    <div id="charts-panel" class="tab-panel">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white p-4 rounded-lg shadow-sm border"><h3 class="font-semibold text-lg mb-2">Stemmen per Partij</h3><div style="height: 400px;"><canvas id="party-chart"></canvas></div></div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border"><h3 class="font-semibold text-lg mb-2">Stemmen per District</h3><div style="height: 400px;"><canvas id="district-chart"></canvas></div></div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+</main>
+
+<?php
+$party_labels = json_encode(array_column($party_results, 'PartyName'));
+$party_data = json_encode(array_column($party_results, 'vote_count'));
+$district_labels = json_encode(array_column($district_results, 'DistrictName'));
+$district_data = json_encode(array_column($district_results, 'vote_count'));
+
+$pageScript = <<<JS
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.tab-button');
+    const panels = document.querySelectorAll('.tab-panel');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            panels.forEach(p => p.classList.remove('active'));
+            tab.classList.add('active');
+            const targetPanel = document.querySelector(tab.dataset.target);
+            if (targetPanel) targetPanel.classList.add('active');
+            if (tab.dataset.target === '#charts-panel' && !tab.dataset.chartRendered) {
+                renderCharts();
+                tab.dataset.chartRendered = true;
             }
         });
-    </script>
-</head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
-    <?php include '../../include/nav.php'; ?>
+    });
 
-    <main class="flex-grow container mx-auto px-4 py-6 max-w-7xl">
-        <div class="bg-white p-6 rounded-xl shadow-md mb-6">
-            <div class="flex justify-between items-start mb-4 flex-wrap gap-4">
-                <div>
-                    <h1 class="text-3xl font-bold text-suriname-green mb-1"><?= htmlspecialchars($electionName) ?></h1>
-                    <p class="text-gray-600"><i class="fas fa-calendar-alt mr-2"></i><?= $electionDate ?></p>
-                </div>
-                
-                <div class="flex flex-wrap gap-2 items-center">
-                    <form method="get" id="district-form" class="flex items-center gap-2">
-                        <select name="district" id="district-filter" class="form-input border border-gray-300 rounded-md p-2 text-sm">
-                            <option value="">Alle Districten</option>
-                            <?php foreach($districts as $district): ?>
-                                <option value="<?= htmlspecialchars($district['DistrictName']) ?>" <?= $district_filter == $district['DistrictName'] ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($district['DistrictName']) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </form>
-                    <div class="relative">
-                        <input type="text" placeholder="Zoek kandidaat of partij..." 
-                               class="form-input border border-gray-300 rounded-md p-2 pl-8 text-sm" id="candidate-search">
-                        <i class="fas fa-search absolute left-2.5 top-2.5 text-gray-400"></i>
-                    </div>
-                </div>
-            </div>
+    function renderCharts() {
+        const partyCtx = document.getElementById('party-chart')?.getContext('2d');
+        if (partyCtx) new Chart(partyCtx, { type: 'bar', data: { labels: $party_labels, datasets: [{ label: 'Stemmen', data: $party_data, backgroundColor: '#007749' }] }, options: { responsive: true, maintainAspectRatio: false } });
+        
+        const districtCtx = document.getElementById('district-chart')?.getContext('2d');
+        if (districtCtx) new Chart(districtCtx, { type: 'doughnut', data: { labels: $district_labels, datasets: [{ label: 'Stemmen', data: $district_data, backgroundColor: ['#007749', '#C8102E', '#FFC72C', '#0033A0'] }] }, options: { responsive: true, maintainAspectRatio: false } });
+    }
+    
+    // Initially render charts if the tab is active
+    if (document.querySelector('.tab-button[data-target="#charts-panel"]')?.classList.contains('active')) {
+        renderCharts();
+        document.querySelector('.tab-button[data-target="#charts-panel"]').dataset.chartRendered = true;
+    } else if(document.querySelector('.tab-button.active[data-target="#overview-panel"]')) {
+        // If overview is active by default, still check if chart tab needs rendering on first click
+    }
+});
+JS;
 
-            <!-- Tabs -->
-            <div class="border-b border-gray-200 mb-6">
-                <nav class="flex -mb-px">
-                    <button class="tab-button active" data-target="#overview-panel"><i class="fas fa-tachometer-alt mr-2"></i>Overzicht</button>
-                    <button class="tab-button" data-target="#results-panel"><i class="fas fa-users mr-2"></i>Kandidaten</button>
-                    <button class="tab-button" data-target="#charts-panel"><i class="fas fa-chart-pie mr-2"></i>Grafieken</button>
-                </nav>
-            </div>
+// Add Chart.js and the page-specific script
+echo '<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>';
+if (!empty($pageScript)) {
+    echo '<script>' . $pageScript . '</script>';
+}
 
-            <!-- Tab Panels -->
-            <div id="overview-panel" class="tab-panel active">
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Verkiezingsoverzicht</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                            <div class="text-gray-500 mb-1 text-sm">Totaal Stemmen</div>
-                            <div class="text-2xl font-bold text-suriname-green"><?= number_format($totalVotes) ?></div>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                            <div class="text-gray-500 mb-1 text-sm">Opkomst</div>
-                            <div class="text-2xl font-bold text-suriname-green"><?= $participation ?>%</div>
-                            <div class="text-xs text-gray-500"><?= number_format($totalVotes) ?> van <?= number_format($totalVoters) ?> kiezers</div>
-                        </div>
-                        <?php if(!empty($partyResults) && isset($partyResults[0])): ?>
-                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                            <div class="text-gray-500 mb-1 text-sm">Leidende Partij</div>
-                            <div class="text-xl font-bold text-suriname-green flex items-center">
-                                <?= htmlspecialchars($partyResults[0]['PartyName']) ?>
-                            </div>
-                            <div class="text-sm text-gray-500"><?= number_format($partyResults[0]['vote_count']) ?> stemmen</div>
-                        </div>
-                        <?php endif; ?>
-                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                            <div class="text-gray-500 mb-1 text-sm">Deelnemende Partijen</div>
-                            <div class="text-2xl font-bold text-suriname-green"><?= count($partyResults) ?></div>
-                        </div>
-                    </div>
-                    
-                    <h3 class="text-lg font-semibold text-gray-800 mt-6 mb-3">Resultaten per Partij</h3>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                        <?php foreach($partyResults as $index => $party): ?>
-                        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-                            <div class="font-semibold text-gray-800 mb-2 flex items-center">
-                                <?= htmlspecialchars($party['PartyName']) ?>
-                                <?php if($index === 0 && $party['vote_count'] > 0): ?>
-                                    <span class="winner-badge"><i class="fas fa-trophy mr-1"></i> Leidend</span>
-                                <?php endif; ?>
-                            </div>
-                            <div class="h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
-                                <div class="h-full progress-bar" style="width: <?= ($totalVotes > 0) ? ($party['vote_count'] / $totalVotes) * 100 : 0 ?>%;"></div>
-                            </div>
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="font-medium"><?= number_format($party['vote_count']) ?> stemmen</span>
-                                <?php if($totalVotes > 0): ?>
-                                    <span class="text-gray-500"><?= round(($party['vote_count'] / $totalVotes) * 100, 1) ?>%</span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-            </div>
-
-            <div id="results-panel" class="tab-panel">
-                <!-- DNA Results Section -->
-                <div class="mb-6">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-3"><i class="fas fa-landmark mr-2 text-suriname-green"></i>Resultaten De Nationale Assemblée</h2>
-                    <div class="overflow-x-auto border rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kandidaat</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partij</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">District</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stemmen</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <?php $filtered_dna_results_exist = false; ?>
-                                <?php foreach ($dna_results as $index => $candidate): 
-                                    if (!empty($district_filter) && $candidate['DistrictName'] != $district_filter) continue;
-                                    $filtered_dna_results_exist = true;
-                                ?>
-                                <tr class="hover:bg-gray-50 candidate-row" data-name="<?= htmlspecialchars($candidate['Name']) ?>" data-party="<?= htmlspecialchars($candidate['PartyName']) ?>">
-                                    <td class="px-4 py-3 whitespace-nowrap"><div class="text-sm font-medium text-gray-900"><?= htmlspecialchars($candidate['Name']) ?></div></td>
-                                    <td class="px-4 py-3 whitespace-nowrap"><div class="text-sm text-suriname-green"><?= htmlspecialchars($candidate['PartyName']) ?></div></td>
-                                    <td class="px-4 py-3 whitespace-nowrap"><div class="text-sm text-gray-500"><?= htmlspecialchars($candidate['DistrictName']) ?></div></td>
-                                    <td class="px-4 py-3 whitespace-nowrap"><div class="text-sm font-medium"><?= $candidate['vote_count'] ?></div></td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php if(!$filtered_dna_results_exist): ?>
-                                <tr><td colspan="4" class="px-4 py-4 text-center text-gray-500">Geen resultaten gevonden voor deze selectie.</td></tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Resorts Results Section -->
-                <div>
-                    <h2 class="text-xl font-semibold text-gray-800 mb-3"><i class="fas fa-building mr-2 text-suriname-green"></i>Resultaten Resortsraden</h2>
-                    <div class="overflow-x-auto border rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kandidaat</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Partij</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">District</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Resort</th>
-                                    <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stemmen</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                <?php $filtered_rr_results_exist = false; ?>
-                                <?php foreach ($resorts_results as $index => $candidate): 
-                                    if (!empty($district_filter) && $candidate['DistrictName'] != $district_filter) continue;
-                                    $filtered_rr_results_exist = true;
-                                ?>
-                                <tr class="hover:bg-gray-50 candidate-row" data-name="<?= htmlspecialchars($candidate['Name']) ?>" data-party="<?= htmlspecialchars($candidate['PartyName']) ?>">
-                                    <td class="px-4 py-3 whitespace-nowrap"><div class="text-sm font-medium text-gray-900"><?= htmlspecialchars($candidate['Name']) ?></div></td>
-                                    <td class="px-4 py-3 whitespace-nowrap"><div class="text-sm text-suriname-green"><?= htmlspecialchars($candidate['PartyName']) ?></div></td>
-                                    <td class="px-4 py-3 whitespace-nowrap"><div class="text-sm text-gray-500"><?= htmlspecialchars($candidate['DistrictName']) ?></div></td>
-                                    <td class="px-4 py-3 whitespace-nowrap"><div class="text-sm text-gray-500"><?= htmlspecialchars($candidate['ResortName'] ?? 'Onbekend') ?></div></td>
-                                    <td class="px-4 py-3 whitespace-nowrap"><div class="text-sm font-medium"><?= $candidate['vote_count'] ?></div></td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php if(!$filtered_rr_results_exist): ?>
-                                <tr><td colspan="5" class="px-4 py-4 text-center text-gray-500">Geen resultaten gevonden voor deze selectie.</td></tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="charts-panel" class="tab-panel">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="bg-white p-4 rounded-lg shadow-sm border">
-                        <h3 class="font-semibold text-lg mb-2">Stemmen per Partij</h3>
-                        <div style="height: 400px;"><canvas id="party-chart"></canvas></div>
-                    </div>
-                    <div class="bg-white p-4 rounded-lg shadow-sm border">
-                        <h3 class="font-semibold text-lg mb-2">Stemmen per District</h3>
-                        <div style="height: 400px;"><canvas id="district-chart"></canvas></div>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    </main>
-
-    <?php include '../../include/footer.php'; ?>
-</body>
-</html>
+include __DIR__ . '/../../include/footer.php';
+?>

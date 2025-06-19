@@ -221,6 +221,132 @@ try {
         .countdown-timer { background: linear-gradient(135deg, #007749 0%, #006241 100%); color: white; border-radius: 8px; padding: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
         .time-unit { background: rgba(255, 255, 255, 0.2); padding: 8px; border-radius: 4px; font-weight: bold; min-width: 50px; text-align: center; }
         .party-logo { width: 36px; height: 36px; object-fit: contain; }
+        
+        /* Step indicator styles */
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 1;
+        }
+        .step {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #6b7280;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .step.active {
+            background: #007749;
+            border-color: #007749;
+            color: white;
+        }
+        .step.completed {
+            background: #ecfdf5;
+            border-color: #007749;
+            color: #007749;
+        }
+        .step-label {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        .step.active .step-label {
+            color: #007749;
+            font-weight: 600;
+        }
+        .step.completed .step-label {
+            color: #007749;
+        }
+        
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        /* Enhance candidate cards */
+        .candidate-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .candidate-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 40px 40px 0;
+            border-color: transparent transparent transparent transparent;
+            transition: all 0.3s ease;
+        }
+        .candidate-card.selected::before {
+            border-color: transparent #007749 transparent transparent;
+        }
+        .candidate-check {
+            transition: all 0.3s ease;
+        }
+        .candidate-card.selected .candidate-check {
+            border-color: #007749;
+            background: #007749;
+        }
+        .candidate-card.selected .candidate-check i {
+            color: white;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-gray-50 flex flex-col">
@@ -270,6 +396,22 @@ try {
                     Let op: u kunt slechts één keer stemmen in deze verkiezing.
                 </p>
             </div>
+            
+            <!-- Step Indicator -->
+            <div class="step-indicator mt-6">
+                <div class="step active" id="step1">
+                    <span>1</span>
+                    <span class="step-label">DNA Keuze</span>
+                </div>
+                <div class="step" id="step2">
+                    <span>2</span>
+                    <span class="step-label">RR Keuze</span>
+                </div>
+                <div class="step" id="step3">
+                    <span>3</span>
+                    <span class="step-label">Bevestigen</span>
+                </div>
+            </div>
         </div>
         
         <!-- User-friendly guide -->
@@ -317,24 +459,6 @@ try {
                                     </select>
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
                                         <i class="fas fa-flag text-suriname-green"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="w-full md:w-auto">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">District</label>
-                                <div class="relative">
-                                    <select id="dna-district-filter" class="w-full md:w-48 border border-gray-300 rounded-md p-2 pl-8 appearance-none">
-                                        <option value="">Alle Districten</option>
-                                        <?php foreach ($districts as $district): ?>
-                                            <option value="<?= htmlspecialchars($district['DistrictID']) ?>" 
-                                                    <?= ($voterDistrictId == $district['DistrictID']) ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($district['DistrictName']) ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
-                                        <i class="fas fa-map-marker-alt text-suriname-green"></i>
                                     </div>
                                 </div>
                             </div>
@@ -426,14 +550,15 @@ try {
                             <div class="w-full md:w-auto">
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Resort</label>
                                 <div class="relative">
-                                    <select id="rr-resort-filter" class="w-full md:w-48 border border-gray-300 rounded-md p-2 pl-8 appearance-none">
-                                        <option value="">Alle Resorts</option>
+                                    <select id="rr-resort-filter" class="w-full md:w-48 border border-gray-300 rounded-md p-2 pl-8 appearance-none" disabled>
                                         <?php foreach ($resorts as $resort): ?>
+                                            <?php if ($voterResortId == $resort['id']): ?>
                                             <option value="<?= htmlspecialchars($resort['id']) ?>"
                                                     data-district-id="<?= htmlspecialchars($resort['district_id']) ?>"
-                                                    <?= ($voterResortId == $resort['id']) ? 'selected' : '' ?>>
+                                                    selected>
                                                 <?= htmlspecialchars($resort['name']) ?>
                                             </option>
+                                            <?php endif; ?>
                                         <?php endforeach; ?>
                                     </select>
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
@@ -445,7 +570,7 @@ try {
                             <div class="w-full md:w-auto flex items-end">
                                 <button onclick="resetFilters('rr')" type="button" 
                                         class="inline-flex items-center text-suriname-green hover:text-suriname-dark-green focus:outline-none">
-                                    <i class="fas fa-sync-alt mr-1"></i> Filters herstellen
+                                    <i class="fas fa-sync-alt mr-1"></i> Partij filter herstellen
                                 </button>
                             </div>
                         </div>
@@ -503,13 +628,65 @@ try {
                         <h3 class="font-bold text-lg text-gray-800">Bevestig uw stem</h3>
                         <p class="text-gray-600">Controleer uw selecties en breng uw stem uit.</p>
                     </div>
-                    <button id="submit-vote" type="submit" class="submit-button w-full md:w-auto" disabled>
+                    <button id="submit-vote" type="button" class="submit-button w-full md:w-auto" disabled onclick="showConfirmationModal()">
                         <i class="fas fa-check-to-slot mr-2"></i>Stem uitbrengen
                     </button>
                 </div>
             </div>
         </form>
         <!-- VOTING FORM END -->
+        
+        <!-- Confirmation Modal -->
+        <div class="modal-overlay" id="confirmation-modal">
+            <div class="modal-content">
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-suriname-green bg-opacity-10 text-suriname-green mb-4">
+                        <i class="fas fa-vote-yea text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">Bevestig uw stem</h3>
+                    <p class="text-gray-600 mt-2">U staat op het punt om uw stem uit te brengen. Deze actie kan niet ongedaan worden gemaakt.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                    <h4 class="font-semibold text-gray-700 mb-2">Uw selecties:</h4>
+                    
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500">De Nationale Assemblée (DNA):</p>
+                        <div id="dna-confirmation" class="flex items-center mt-2 p-3 bg-white rounded-lg border border-gray-200">
+                            <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                                <img id="dna-candidate-photo" src="" alt="Candidate" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <p id="dna-candidate-name" class="font-medium text-gray-800">-</p>
+                                <p id="dna-candidate-party" class="text-sm text-gray-500">-</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <p class="text-sm text-gray-500">Ressortsraad (RR):</p>
+                        <div id="rr-confirmation" class="flex items-center mt-2 p-3 bg-white rounded-lg border border-gray-200">
+                            <div class="w-10 h-10 rounded-full overflow-hidden mr-3">
+                                <img id="rr-candidate-photo" src="" alt="Candidate" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <p id="rr-candidate-name" class="font-medium text-gray-800">-</p>
+                                <p id="rr-candidate-party" class="text-sm text-gray-500">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row gap-3 justify-end">
+                    <button type="button" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50" onclick="hideConfirmationModal()">
+                        Annuleren
+                    </button>
+                    <button type="button" class="px-6 py-2 bg-suriname-green text-white rounded-lg font-medium hover:bg-suriname-dark-green" onclick="submitVote()">
+                        Bevestigen en Stemmen
+                    </button>
+                </div>
+            </div>
+        </div>
 
     </main>
 
@@ -519,7 +696,14 @@ try {
             // Set default filters on load
             filterCandidates('dna');
             filterCandidates('rr');
+            
+            // Update steps based on selections
+            updateSteps();
         });
+        
+        // Selected candidates data
+        let selectedDNA = null;
+        let selectedRR = null;
 
         function selectCandidate(element, type) {
             console.log(`Candidate selected. Type: ${type}, ID: ${element.dataset.candidateId}`);
@@ -539,8 +723,49 @@ try {
             // Update the hidden input value
             hiddenInput.value = element.dataset.candidateId;
             console.log(`Hidden input for ${type} updated with value: ${hiddenInput.value}`);
+            
+            // Store selected candidate data
+            if (type === 'dna') {
+                selectedDNA = {
+                    id: element.dataset.candidateId,
+                    name: element.querySelector('h3').textContent,
+                    party: element.querySelector('.text-sm.font-medium').textContent,
+                    photo: element.querySelector('.candidate-photo').src
+                };
+            } else {
+                selectedRR = {
+                    id: element.dataset.candidateId,
+                    name: element.querySelector('h3').textContent,
+                    party: element.querySelector('.text-sm.font-medium').textContent,
+                    photo: element.querySelector('.candidate-photo').src
+                };
+            }
 
             checkSelections();
+            updateSteps();
+        }
+        
+        function updateSteps() {
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+            
+            // Reset all steps
+            step1.className = 'step';
+            step2.className = 'step';
+            step3.className = 'step';
+            
+            if (selectedDNA) {
+                step1.className = 'step completed';
+                step2.className = 'step active';
+                
+                if (selectedRR) {
+                    step2.className = 'step completed';
+                    step3.className = 'step active';
+                }
+            } else {
+                step1.className = 'step active';
+            }
         }
 
         function checkSelections() {
@@ -565,12 +790,12 @@ try {
 
             if (type === 'dna') {
                 partyFilter = document.getElementById('dna-party-filter').value;
-                locationFilter = document.getElementById('dna-district-filter').value;
+                locationFilter = ''; // No district filter for DNA
                 candidates = document.querySelectorAll('#dna-candidates .dna-card');
                 locationType = 'district';
             } else { // rr
                 partyFilter = document.getElementById('rr-party-filter').value;
-                locationFilter = document.getElementById('rr-resort-filter').value;
+                locationFilter = '<?= $voterResortId ?>'; // Always use voter's resort
                 candidates = document.querySelectorAll('#rr-candidates .rr-card');
                 locationType = 'resort';
             }
@@ -595,36 +820,47 @@ try {
         function resetFilters(type) {
             if (type === 'dna') {
                 document.getElementById('dna-party-filter').value = '';
-                document.getElementById('dna-district-filter').value = '<?= $voterDistrictId ?>'; // Reset to voter's district
+                // No district filter to reset
             } else { // rr
                 document.getElementById('rr-party-filter').value = '';
-                document.getElementById('rr-resort-filter').value = '<?= $voterResortId ?>'; // Reset to voter's resort
+                // Resort filter is locked, no need to reset
             }
             filterCandidates(type);
             console.log(`Filters for ${type} have been reset.`);
         }
+        
+        function showConfirmationModal() {
+            // Update modal with selected candidates
+            if (selectedDNA) {
+                document.getElementById('dna-candidate-name').textContent = selectedDNA.name;
+                document.getElementById('dna-candidate-party').textContent = selectedDNA.party;
+                document.getElementById('dna-candidate-photo').src = selectedDNA.photo;
+            }
+            
+            if (selectedRR) {
+                document.getElementById('rr-candidate-name').textContent = selectedRR.name;
+                document.getElementById('rr-candidate-party').textContent = selectedRR.party;
+                document.getElementById('rr-candidate-photo').src = selectedRR.photo;
+            }
+            
+            // Show modal
+            document.getElementById('confirmation-modal').classList.add('active');
+        }
+        
+        function hideConfirmationModal() {
+            document.getElementById('confirmation-modal').classList.remove('active');
+        }
+        
+        function submitVote() {
+            // Submit the form
+            document.getElementById('vote-form').submit();
+        }
 
         // Add event listeners to filters
         document.getElementById('dna-party-filter').addEventListener('change', () => filterCandidates('dna'));
-        document.getElementById('dna-district-filter').addEventListener('change', () => filterCandidates('dna'));
+        // No district filter event listener needed
         document.getElementById('rr-party-filter').addEventListener('change', () => filterCandidates('rr'));
-        document.getElementById('rr-resort-filter').addEventListener('change', () => filterCandidates('rr'));
-
-        // Form submission validation
-        document.getElementById('vote-form').addEventListener('submit', function(event) {
-            console.log("Submit button clicked. Validating form before submission.");
-            const dnaSelected = document.getElementById('selected-dna-candidate').value;
-            const rrSelected = document.getElementById('selected-rr-candidate').value;
-
-            if (!dnaSelected || !rrSelected) {
-                console.error("Form submission blocked. One or more candidates not selected.");
-                event.preventDefault(); // Stop form submission
-                alert('Selecteer alstublieft een kandidaat voor zowel DNA als RR voordat u uw stem uitbrengt.');
-            } else {
-                console.log("Form is valid. Submitting vote...");
-            }
-        });
-
+        // Resort filter is locked, no need for event listener
     </script>
 </body>
 </html>
