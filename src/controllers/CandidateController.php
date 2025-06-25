@@ -37,10 +37,24 @@ class CandidateController {
                     break;
             }
         } catch (Exception $e) {
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+                header('Content-Type: application/json');
+                http_response_code(400);
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+                exit;
+            }
             $_SESSION['error_message'] = $e->getMessage();
         }
-        // Redirect back to the view after action
-        header("Location: " . BASE_URL . "/src/views/candidates.php"); 
+        // For AJAX requests, return JSON
+        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => $_SESSION['success_message']]);
+            unset($_SESSION['success_message']);
+            exit;
+        }
+
+        // Redirect back to the view for non-AJAX requests
+        header("Location: " . BASE_URL . "/src/views/candidates.php");
         exit;
     }
 
@@ -121,17 +135,18 @@ class CandidateController {
         $name = ($_POST['firstName'] ?? '') . ' ' . ($_POST['lastName'] ?? ''); // Combine names
         $party_id = intval($_POST['party_id'] ?? 0);
         $election_id = intval($_POST['election_id'] ?? 0);
-        $district_id = intval($_POST['district_id'] ?? 0);
         $candidate_type = $_POST['candidate_type'] ?? 'RR';
+        
+        $district_id = ($candidate_type === 'RR') ? intval($_POST['district_id'] ?? 0) : null;
         $resort_id = ($candidate_type === 'RR') ? intval($_POST['resort_id'] ?? 0) : null;
 
-        if (empty(trim($name)) || empty($election_id) || empty($party_id) || empty($district_id)) {
-            throw new Exception('Vul alle verplichte velden in (Naam, Partij, Verkiezing, District).');
+        if (empty(trim($name)) || empty($election_id) || empty($party_id)) {
+            throw new Exception('Vul alle verplichte velden in (Naam, Partij, Verkiezing).');
         }
 
-        // For RR candidates, resort is required
-        if ($candidate_type === 'RR' && empty($resort_id)) {
-            throw new Exception('Voor RR kandidaten is een resort verplicht.');
+        // For RR candidates, resort and district are required
+        if ($candidate_type === 'RR' && (empty($district_id) || empty($resort_id))) {
+            throw new Exception('Voor RR kandidaten zijn een district en resort verplicht.');
         }
 
         $image_path = $this->handleImageUpload();
@@ -147,17 +162,18 @@ class CandidateController {
         $candidate_id = intval($_POST['candidate_id']);
         $name = ($_POST['firstName'] ?? '') . ' ' . ($_POST['lastName'] ?? '');
         $party_id = intval($_POST['party_id'] ?? 0);
-        $district_id = intval($_POST['district_id'] ?? 0);
         $candidate_type = $_POST['candidate_type'] ?? 'RR';
+
+        $district_id = ($candidate_type === 'RR') ? intval($_POST['district_id'] ?? 0) : null;
         $resort_id = ($candidate_type === 'RR') ? intval($_POST['resort_id'] ?? 0) : null;
 
-        if (empty(trim($name)) || empty($party_id) || empty($district_id)) {
-            throw new Exception('Vul alle verplichte velden in (Naam, Partij, District).');
+        if (empty(trim($name)) || empty($party_id)) {
+            throw new Exception('Vul alle verplichte velden in (Naam, Partij).');
         }
 
-        // For RR candidates, resort is required
-        if ($candidate_type === 'RR' && empty($resort_id)) {
-            throw new Exception('Voor RR kandidaten is een resort verplicht.');
+        // For RR candidates, resort and district are required
+        if ($candidate_type === 'RR' && (empty($district_id) || empty($resort_id))) {
+            throw new Exception('Voor RR kandidaten zijn een district en resort verplicht.');
         }
 
         $image_path = $this->handleImageUploadForEdit($candidate_id);
@@ -200,11 +216,19 @@ class CandidateController {
         try {
             $where = [];
             $params = [];
-            
+
             // Build WHERE clauses based on filters
+            if (!empty($filters['election_id'])) {
+                $where[] = "c.ElectionID = ?";
+                $params[] = $filters['election_id'];
+            }
             if (!empty($filters['district_id'])) {
                 $where[] = "c.DistrictID = ?";
                 $params[] = $filters['district_id'];
+            }
+            if (!empty($filters['resort_id'])) {
+                $where[] = "c.ResortID = ?";
+                $params[] = $filters['resort_id'];
             }
             if (!empty($filters['party_id'])) {
                 $where[] = "c.PartyID = ?";
@@ -214,48 +238,49 @@ class CandidateController {
                 $where[] = "c.CandidateType = ?";
                 $params[] = $filters['candidate_type'];
             }
-            
+
             $whereClause = $where ? "WHERE " . implode(" AND ", $where) : "";
+
+            $countSql = "SELECT COUNT(DISTINCT c.CandidateID) 
+                         FROM candidates c 
+                         $whereClause";
             
-            $stmt = $this->pdo->prepare("
-                SELECT c.*, p.PartyName, e.ElectionName, d.DistrictName, r.name as ResortName,
-                       COUNT(v.VoteID) as vote_count
-                FROM candidates c
-                LEFT JOIN parties p ON c.PartyID = p.PartyID
-                LEFT JOIN elections e ON c.ElectionID = e.ElectionID
-                LEFT JOIN districten d ON c.DistrictID = d.DistrictID
-                LEFT JOIN resorts r ON c.ResortID = r.id
-                LEFT JOIN votes v ON c.CandidateID = v.CandidateID
-                $whereClause
-                GROUP BY c.CandidateID, c.Name, c.PartyID, c.ElectionID, c.DistrictID, c.CandidateType, c.Photo, c.CreatedAt, p.PartyName, e.ElectionName, d.DistrictName
-                ORDER BY c.CreatedAt DESC
-                LIMIT ? OFFSET ?
-            ");
+            $countStmt = $this->pdo->prepare($countSql);
+            $countStmt->execute($params);
+            $total = $countStmt->fetchColumn();
+
+            $dataSql = "SELECT c.*, p.PartyName, e.ElectionName, d.DistrictName, r.name as ResortName
+                        FROM candidates c
+                        LEFT JOIN parties p ON c.PartyID = p.PartyID
+                        LEFT JOIN elections e ON c.ElectionID = e.ElectionID
+                        LEFT JOIN districten d ON c.DistrictID = d.DistrictID
+                        LEFT JOIN resorts r ON c.ResortID = r.id
+                        $whereClause
+                        GROUP BY c.CandidateID
+                        ORDER BY c.CreatedAt DESC
+                        LIMIT ? OFFSET ?";
+
+            $all_params = array_merge($params, [$per_page, $offset]);
             
-            // Add pagination parameters
-            $params[] = $per_page;
-            $params[] = $offset;
-            $stmt->execute($params);
-            
+            $stmt = $this->pdo->prepare($dataSql);
+            $stmt->execute($all_params);
+
             $candidates = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            if (empty($candidates)) {
-                if ($page > 1) {
-                    // No candidates on this page but there might be on previous pages
-                    $_SESSION['info_message'] = "Geen kandidaten gevonden op pagina $page.";
-                } else {
-                    // No candidates at all in the system
-                    $_SESSION['info_message'] = "Er zijn nog geen kandidaten geregistreerd.";
-                }
-            }
+            return [
+                'data' => $candidates,
+                'total' => $total,
+                'page' => $page,
+                'per_page' => $per_page
+            ];
             
-            return $candidates;
         } catch (PDOException $e) {
             error_log("Database error fetching candidates: " . $e->getMessage());
-            $_SESSION['error_message'] = "Er is een fout opgetreden bij het ophalen van de kandidaten: " . $e->getMessage();
             return [
                 'error' => true,
-                'message' => 'Database error occurred'
+                'message' => 'Database error occurred: ' . $e->getMessage(),
+                'data' => [],
+                'total' => 0
             ];
         }
     }
@@ -264,10 +289,14 @@ class CandidateController {
         try {
             $where = [];
             $params = [];
-            
+
             if (!empty($filters['district_id'])) {
                 $where[] = "DistrictID = ?";
                 $params[] = $filters['district_id'];
+            }
+            if (!empty($filters['resort_id'])) {
+                $where[] = "ResortID = ?";
+                $params[] = $filters['resort_id'];
             }
             if (!empty($filters['party_id'])) {
                 $where[] = "PartyID = ?";
@@ -277,10 +306,10 @@ class CandidateController {
                 $where[] = "CandidateType = ?";
                 $params[] = $filters['candidate_type'];
             }
-            
+
             $whereClause = $where ? "WHERE " . implode(" AND ", $where) : "";
             $sql = "SELECT COUNT(*) FROM candidates $whereClause";
-            
+
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute($params);
             return $stmt->fetchColumn();

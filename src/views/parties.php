@@ -58,8 +58,8 @@ ob_start();
 
     <!-- Add New Party Button -->
     <div class="mb-6 flex justify-end">
-        <button onclick="document.getElementById('newPartyModal').classList.remove('hidden')"
-                class="bg-suriname-green hover:bg-suriname-dark-green text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center">
+        <button data-action="create"
+                class="open-party-modal-btn bg-suriname-green hover:bg-suriname-dark-green text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 flex items-center">
             <i class="fas fa-plus mr-2"></i>Nieuwe Partij Toevoegen
         </button>
     </div>
@@ -123,15 +123,16 @@ ob_start();
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                                    <a href="<?= BASE_URL ?>/src/views/edit_party.php?id=<?php echo $party['PartyID']; ?>"
-                                       class="text-blue-600 hover:text-blue-800 transition-colors duration-150" title="Bewerk Partij">
+                                    <button data-action="edit" data-id="<?= $party['PartyID'] ?>" class="open-party-modal-btn text-blue-600 hover:text-blue-800 transition-colors duration-150" title="Bewerk Partij">
                                         <i class="fas fa-edit fa-fw"></i>
-                                    </a>
-                                    <a href="?delete=<?php echo $party['PartyID']; ?>"
-                                       onclick="return confirm('Weet u zeker dat u deze partij wilt verwijderen?')"
-                                       class="text-red-600 hover:text-red-800 transition-colors duration-150" title="Verwijder Partij">
-                                        <i class="fas fa-trash fa-fw"></i>
-                                    </a>
+                                    </button>
+                                    <form action="<?= BASE_URL ?>/src/controllers/PartyController.php" method="POST" class="inline-block" onsubmit="return confirm('Weet u zeker dat u deze partij wilt verwijderen? Dit kan niet ongedaan worden gemaakt.');">
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="party_id" value="<?= $party['PartyID'] ?>">
+                                        <button type="submit" class="text-red-600 hover:text-red-800 transition-colors duration-150" title="Verwijder Partij">
+                                            <i class="fas fa-trash fa-fw"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -141,59 +142,45 @@ ob_start();
         </div>
     </div>
 
-    <!-- New Party Modal -->
-    <div id="newPartyModal" class="hidden fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title-party" role="dialog" aria-modal="true">
+    <!-- Universal Party Modal -->
+    <div id="partyModal" class="hidden fixed z-50 inset-0 overflow-y-auto" aria-labelledby="modal-title-party" role="dialog" aria-modal="true">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-700 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-            <!-- This element is to trick the browser into centering the modal contents. -->
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <form action="<?= BASE_URL ?>/src/controllers/PartyController.php" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="action" value="create">
+                <form id="partyForm" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="action" id="form_action">
+                    <input type="hidden" name="party_id" id="form_party_id">
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                             <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-suriname-green/10 sm:mx-0 sm:h-10 sm:w-10">
-                                <i class="fas fa-plus text-suriname-green text-xl"></i>
+                                <i id="modal_icon" class="fas fa-plus text-suriname-green text-xl"></i>
                             </div>
                             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title-party">
-                                    Nieuwe Partij Toevoegen
-                                </h3>
+                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal_title">Nieuwe Partij</h3>
                                 <div class="mt-4 space-y-4">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700" for="party_name">
-                                            Naam Partij
-                                        </label>
-                                        <input type="text" name="party_name" id="party_name" required
-                                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
-                                   </div>
-                                   <div>
-                                       <label class="block text-sm font-medium text-gray-700" for="description_new">
-                                           Beschrijving
-                                       </label>
-                                       <textarea name="description" id="description_new" rows="3"
-                                                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm"></textarea>
-                                   </div>
-                                   <div>
-                                       <label class="block text-sm font-medium text-gray-700" for="logo_new">
-                                           Logo
-                                       </label>
-                                       <input type="file" name="logo" id="logo_new" accept="image/*"
-                                              class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
-                                       <p class="text-xs text-gray-500 mt-1">Maximaal 5MB. Toegestane formaten: JPG, PNG, GIF</p>
-                                   </div>
-                               </div>
+                                        <label class="block text-sm font-medium text-gray-700" for="form_party_name">Naam Partij</label>
+                                        <input type="text" name="party_name" id="form_party_name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700" for="form_description">Beschrijving</label>
+                                        <textarea name="description" id="form_description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700" for="form_logo">Logo</label>
+                                        <input type="file" name="logo" id="form_logo" accept="image/*" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-suriname-green focus:border-suriname-green sm:text-sm">
+                                        <p class="text-xs text-gray-500 mt-1">Laat leeg om huidig logo te behouden. Max 5MB.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button type="submit"
-                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-suriname-green text-base font-medium text-white hover:bg-suriname-dark-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-150">
+                        <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-suriname-green text-base font-medium text-white hover:bg-suriname-dark-green focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-suriname-green sm:ml-3 sm:w-auto sm:text-sm">
                             Opslaan
                         </button>
-                        <button type="button"
-                                onclick="document.getElementById('newPartyModal').classList.add('hidden')"
-                                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-150">
+                        <button type="button" class="close-party-modal-btn mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                             Annuleren
                         </button>
                     </div>
@@ -202,6 +189,113 @@ ob_start();
         </div>
     </div>
 </div> <!-- End container -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const BASE_URL = '<?= addslashes(BASE_URL) ?>';
+    const modal = document.getElementById('partyModal');
+    const form = document.getElementById('partyForm');
+    const openModalButtons = document.querySelectorAll('.open-party-modal-btn');
+    const closeModalButtons = document.querySelectorAll('.close-party-modal-btn');
+
+    const modalUI = {
+        title: document.getElementById('modal_title'),
+        icon: document.getElementById('modal_icon'),
+        action: document.getElementById('form_action'),
+        partyId: document.getElementById('form_party_id'),
+        partyName: document.getElementById('form_party_name'),
+        description: document.getElementById('form_description'),
+        logo: document.getElementById('form_logo')
+    };
+
+    function openModal() {
+        modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+        modal.classList.add('hidden');
+        form.reset();
+    }
+
+    function setupModalForCreate() {
+        form.reset();
+        modalUI.title.textContent = 'Nieuwe Partij Toevoegen';
+        modalUI.icon.className = 'fas fa-plus text-suriname-green text-xl';
+        modalUI.action.value = 'create';
+        modalUI.partyId.value = '';
+        openModal();
+    }
+
+    function setupModalForEdit(partyId) {
+        form.reset();
+        modalUI.title.textContent = 'Partij Bewerken';
+        modalUI.icon.className = 'fas fa-edit text-suriname-green text-xl';
+        modalUI.action.value = 'edit';
+        modalUI.partyId.value = partyId;
+
+        fetch(`${BASE_URL}/src/api/get_party_details.php?id=${partyId}`)
+            .then(response => response.json())
+            .then(res => {
+                if (res.success) {
+                    const data = res.data;
+                    modalUI.partyName.value = data.PartyName;
+                    modalUI.description.value = data.Description;
+                    openModal();
+                } else {
+                    alert('Fout: Kon partij details niet laden.');
+                }
+            });
+    }
+
+    openModalButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const action = this.dataset.action;
+            if (action === 'create') {
+                setupModalForCreate();
+            } else if (action === 'edit') {
+                const partyId = this.dataset.id;
+                setupModalForEdit(partyId);
+            }
+        });
+    });
+
+    closeModalButtons.forEach(btn => btn.addEventListener('click', closeModal));
+    window.addEventListener('click', e => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+
+        fetch('<?= BASE_URL ?>/src/controllers/PartyController.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(text => {
+            try {
+                const data = JSON.parse(text);
+                if (data.success) {
+                    closeModal();
+                    location.reload(); // Reload to see changes
+                } else {
+                    alert('Fout: ' + data.message);
+                }
+            } catch (error) {
+                // Not a JSON response, probably a redirect or raw error. Reload.
+                console.error('An error occurred:', text);
+                location.reload();
+            }
+        }).catch(error => {
+            console.error('Submission error:', error);
+            alert('Er is een onverwachte fout opgetreden.');
+        });
+    });
+});
+</script>
 
 <?php
 // Get the buffered content

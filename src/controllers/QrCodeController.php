@@ -38,6 +38,10 @@ class QrCodeController {
                 case 'delete':
                     $this->deleteVoucher();
                     break;
+                    
+                case 'delete_bulk':
+                    $this->deleteBulkVouchers();
+                    break;
             }
         } catch (Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
@@ -119,6 +123,52 @@ class QrCodeController {
         } else {
             throw new Exception('Failed to delete voucher. Please try again.');
         }
+    }
+    
+    /**
+     * Delete multiple vouchers at once
+     */
+    private function deleteBulkVouchers() {
+        header('Content-Type: application/json');
+        
+        $voucher_ids = $_POST['voucher_ids'] ?? [];
+        $result = [
+            'success' => false,
+            'message' => '',
+            'deleted_count' => 0
+        ];
+        
+        if (empty($voucher_ids)) {
+            $result['message'] = 'No vouchers selected for deletion.';
+            echo json_encode($result);
+            exit;
+        }
+        
+        try {
+            $this->pdo->beginTransaction();
+            
+            $placeholders = implode(',', array_fill(0, count($voucher_ids), '?'));
+            $stmt = $this->pdo->prepare("DELETE FROM vouchers WHERE id IN ($placeholders)");
+            $stmt->execute($voucher_ids);
+            
+            $deletedCount = $stmt->rowCount();
+            $this->pdo->commit();
+            
+            $result['success'] = true;
+            $result['deleted_count'] = $deletedCount;
+            $result['message'] = "Successfully deleted $deletedCount vouchers.";
+            
+        } catch (Exception $e) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            
+            error_log("Error in deleteBulkVouchers: " . $e->getMessage());
+            $result['message'] = "Error deleting vouchers: " . $e->getMessage();
+        }
+        
+        echo json_encode($result);
+        exit;
     }
     
     /**

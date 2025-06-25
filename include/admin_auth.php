@@ -1,7 +1,7 @@
 <?php
 // Development mode - bypass authentication
 if (!defined('DEVELOPMENT_MODE')) {
-    define('DEVELOPMENT_MODE', true);
+    define('DEVELOPMENT_MODE', false);
 }
 
 function isAdminLoggedIn() {
@@ -65,19 +65,16 @@ function logoutAdmin() {
     unset($_SESSION['AdminName']);
     unset($_SESSION['AdminEmail']);
     unset($_SESSION['AdminStatus']);
-    session_destroy();
+    // session_destroy() is too aggressive if voters and admins can co-exist.
+    // Let's just unset the admin parts. The main logout.php will destroy the session fully.
 }
 
 // Require admin login
 function requireAdminLogin() {
-    // Temporary bypass for development
-    $_SESSION['AdminID'] = 1;
-    $_SESSION['AdminName'] = 'Developer';
-    $_SESSION['AdminEmail'] = 'dev@example.com';
-    $_SESSION['AdminStatus'] = 'active';
-    
-    error_log("Bypassing admin login check for development");
-    return true;
+    if (!isAdminLoggedIn()) {
+        header('Location: ' . BASE_URL . '/admin/login.php?redirect=' . urlencode($_SERVER['REQUEST_URI']));
+        exit();
+    }
 }
 
 // Alias for backward compatibility

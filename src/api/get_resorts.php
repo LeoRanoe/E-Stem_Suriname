@@ -1,36 +1,85 @@
 <?php
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Set JSON header
+header('Content-Type: application/json');
+
 require_once '../../include/config.php';
 require_once '../../include/db_connect.php';
 require_once '../../include/admin_auth.php';
 
-// Check if admin is logged in
-if (!isAdminLoggedIn()) {
-    header('Content-Type: application/json');
-    echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-    exit();
-}
-
-// Get district ID from request
-$district_id = isset($_GET['district_id']) ? intval($_GET['district_id']) : 0;
-
-if ($district_id <= 0) {
-    header('Content-Type: application/json');
-    echo json_encode(['success' => false, 'message' => 'Invalid district ID']);
-    exit();
-}
+// Log the request
+file_put_contents('resorts_api.log', '[' . date('Y-m-d H:i:s') . '] Request: ' . print_r($_GET, true) . "\n", FILE_APPEND);
 
 try {
+    // Check if admin is logged in
+    if (!isAdminLoggedIn()) {
+        throw new Exception('Unauthorized access');
+    }
+
+    // Get district ID from request
+    $district_id = isset($_GET['district_id']) ? intval($_GET['district_id']) : 0;
+
+    if ($district_id <= 0) {
+        throw new Exception('Invalid district ID: ' . $district_id);
+    }
+
+    // Get database connection
     global $pdo;
     
-    // Get resorts by district directly from the database
-    $stmt = $pdo->prepare("SELECT id as ResortID, name as ResortName FROM resorts WHERE district_id = ? ORDER BY name");
-    $stmt->execute([$district_id]);
+    // Check if connection is valid
+    if (!$pdo) {
+        throw new Exception('Database connection failed');
+    }
+    
+    // Debug query to check table structure
+    $tableInfo = $pdo->query("DESCRIBE resorts");
+    $columns = $tableInfo->fetchAll(PDO::FETCH_COLUMN);
+    error_log("Resorts table columns: " . implode(', ', $columns));
+    
+    // Get resorts by district - try with both possible column structures
+    if (in_array('ResortID', $columns) && in_array('ResortName', $columns)) {
+        // If using capital case column names
+        $stmt = $pdo->prepare("SELECT ResortID, ResortName FROM resorts WHERE district_id = ? ORDER BY ResortName");
+    } else {
+        // If using lowercase column names
+        $stmt = $pdo->prepare("SELECT id as ResortID, name as ResortName FROM resorts WHERE district_id = ? ORDER BY name");
+    }
+    
+    if (!$stmt) {
+        throw new Exception('Failed to prepare statement');
+    }
+    
+    $result = $stmt->execute([$district_id]);
+    
+    if ($result === false) {
+        $error = $stmt->errorInfo();
+        throw new Exception('Database query failed: ' . ($error[2] ?? 'Unknown error'));
+    }
+    
     $resorts = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    header('Content-Type: application/json');
-    echo json_encode(['success' => true, 'resorts' => $resorts]);
-} catch (PDOException $e) {
-    header('Content-Type: application/json');
-    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
-    exit();
+    // Log the response
+    file_put_contents('resorts_api.log', '[' . date('Y-m-d H:i:s') . '] Response: ' . json_encode($resorts) . "\n", FILE_APPEND);
+    
+    echo json_encode([
+        'success' => true, 
+        'resorts' => $resorts,
+        'count' => count($resorts)
+    ]);
+    
+} catch (Exception $e) {
+    // Log the error
+    $errorMessage = 'Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine();
+    file_put_contents('resorts_api.log', '[' . date('Y-m-d H:i:s') . '] ' . $errorMessage . "\n", FILE_APPEND);
+    
+    // Send error response
+    http_response_code(500);
+    echo json_encode([
+        'success' => false, 
+        'message' => $e->getMessage(),
+        'error' => $errorMessage
+    ]);
 }

@@ -25,7 +25,7 @@ if (isset($_SESSION['AdminID'])) {
     }
 }
 // Check for voter session (support both session variable formats)
-else if (isset($_SESSION['voter_id']) || isset($_SESSION['VoterID'])) {
+if (isset($_SESSION['voter_id']) || isset($_SESSION['VoterID'])) {
     $voterId = $_SESSION['voter_id'] ?? $_SESSION['VoterID'];
     try {
         $stmt = $pdo->prepare("
@@ -35,7 +35,10 @@ else if (isset($_SESSION['voter_id']) || isset($_SESSION['VoterID'])) {
         $stmt->execute(['voterID' => $voterId]);
         $voter = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($voter) {
-            $userName = $voter['first_name'] . ' ' . $voter['last_name'];
+            // If not already set by admin, set username
+            if (empty($userName)) {
+                $userName = $voter['first_name'] . ' ' . $voter['last_name'];
+            }
             $isVoter = true;
         }
     } catch (PDOException $e) {
@@ -45,6 +48,7 @@ else if (isset($_SESSION['voter_id']) || isset($_SESSION['VoterID'])) {
 
 // Get current page name
 $current_page = basename($_SERVER['PHP_SELF']);
+$isAdminPage = strpos($_SERVER['REQUEST_URI'], '/admin/') !== false;
 ?>
 
 <nav class="bg-white shadow-suriname sticky top-0 z-50 border-b-2 border-suriname-green">
@@ -69,16 +73,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
                             <i class="fas fa-home mr-2"></i>
                             Home
                         </a>
-                        <?php if ($isVoter || isset($_SESSION['voter_id']) || isset($_SESSION['VoterID'])): ?>
+                        <!-- Results link available for all users -->
+                        <a href="<?= BASE_URL ?>/src/views/results.php"
+                           class="<?= $current_page === 'results.php' ? 'bg-suriname-green text-white' : 'text-gray-700 hover:text-suriname-green hover:bg-gray-200' ?> px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chart-bar mr-2"></i>
+                            Resultaten
+                        </a>
+                        <?php if ($isVoter): ?>
                             <a href="<?= BASE_URL ?>/pages/voting/index.php"
                                class="<?= $current_page === 'index.php' && strpos($_SERVER['PHP_SELF'], '/pages/voting/') !== false ? 'bg-suriname-green text-white' : 'text-gray-700 hover:text-suriname-green hover:bg-gray-200' ?> px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center">
                                 <i class="fas fa-vote-yea mr-2"></i>
                                 Stemmen
-                            </a>
-                            <a href="<?= BASE_URL ?>/src/views/results.php"
-                               class="<?= $current_page === 'results.php' ? 'bg-suriname-green text-white' : 'text-gray-700 hover:text-suriname-green hover:bg-gray-200' ?> px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center">
-                                <i class="fas fa-chart-bar mr-2"></i>
-                                Resultaten
                             </a>
                             <a href="<?= BASE_URL ?>/voter/profile.php"
                                class="<?= $current_page === 'profile.php' ? 'bg-suriname-green text-white' : 'text-gray-700 hover:text-suriname-green hover:bg-gray-200' ?> px-4 py-2 rounded-full text-sm font-medium transition-colors duration-200 flex items-center">
@@ -92,8 +97,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
             <!-- Right side -->
             <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                <?php if ($isAdmin || $isVoter || isset($_SESSION['voter_id']) || isset($_SESSION['VoterID'])): ?>
-                    <?php if ($isAdmin): ?>
+                <?php if (($isAdmin && $isAdminPage) || $isVoter): ?>
+                    <?php if ($isAdmin && $isAdminPage): ?>
                         <a href="<?= BASE_URL ?>/admin/index.php"
                            class="sr-button sr-button-primary mr-3">
                             <i class="fas fa-cog mr-2"></i>
@@ -142,32 +147,27 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <i class="fas fa-home mr-3 w-5 text-center"></i>
                     Home
                 </a>
-                <?php if ($isVoter || isset($_SESSION['voter_id']) || isset($_SESSION['VoterID'])): ?>
+                <!-- Results link available for all users in mobile menu -->
+                <a href="<?= BASE_URL ?>/src/views/results.php" 
+                   class="<?= $current_page === 'results.php' ? 'bg-suriname-green text-white' : 'bg-white text-gray-700 hover:bg-gray-100' ?> flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">
+                    <i class="fas fa-chart-bar mr-3 w-5 text-center"></i>
+                    Resultaten
+                </a>
+                <?php if ($isVoter): ?>
                     <a href="<?= BASE_URL ?>/pages/voting/index.php" 
                        class="<?= $current_page === 'index.php' && strpos($_SERVER['PHP_SELF'], '/pages/voting/') !== false ? 'bg-suriname-green text-white' : 'bg-white text-gray-700 hover:bg-gray-100' ?> flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">
                         <i class="fas fa-vote-yea mr-3 w-5 text-center"></i>
                         Stemmen
-                    </a>
-                    <a href="<?= BASE_URL ?>/src/views/results.php" 
-                       class="<?= $current_page === 'results.php' ? 'bg-suriname-green text-white' : 'bg-white text-gray-700 hover:bg-gray-100' ?> flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">
-                        <i class="fas fa-chart-bar mr-3 w-5 text-center"></i>
-                        Resultaten
                     </a>
                     <a href="<?= BASE_URL ?>/voter/profile.php" 
                        class="<?= $current_page === 'profile.php' ? 'bg-suriname-green text-white' : 'bg-white text-gray-700 hover:bg-gray-100' ?> flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">
                         <i class="fas fa-user mr-3 w-5 text-center"></i>
                         Mijn Profiel
                     </a>
-                <?php else: ?>
-                    <a href="<?= BASE_URL ?>/voter/index.php" 
-                       class="bg-white text-gray-700 hover:bg-gray-100 flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">
-                        <i class="fas fa-sign-in-alt mr-3 w-5 text-center"></i>
-                        Inloggen
-                    </a>
                 <?php endif; ?>
                 
-                <?php if ($isAdmin || $isVoter): ?>
-                    <?php if ($isAdmin): ?>
+                <?php if (($isAdmin && $isAdminPage) || $isVoter): ?>
+                    <?php if ($isAdmin && $isAdminPage): ?>
                         <a href="<?= BASE_URL ?>/admin/index.php"
                            class="bg-suriname-green text-white flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">
                             <i class="fas fa-cog mr-3 w-5 text-center"></i>
@@ -178,6 +178,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
                        class="bg-suriname-red text-white flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">
                         <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
                         Uitloggen
+                    </a>
+                <?php else: ?>
+                    <a href="<?= BASE_URL ?>/voter/index.php" 
+                       class="bg-white text-gray-700 hover:bg-gray-100 flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 shadow-sm">
+                        <i class="fas fa-sign-in-alt mr-3 w-5 text-center"></i>
+                        Inloggen
                     </a>
                 <?php endif; ?>
             </div>

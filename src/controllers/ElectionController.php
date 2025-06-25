@@ -54,6 +54,7 @@ class ElectionController {
         $start_date = $_POST['start_date'] ?? '';
         $end_date = $_POST['end_date'] ?? '';
         $description = $_POST['description'] ?? '';
+        $election_type = $_POST['election_type'] ?? 'DNA';
 
         if (empty($name) || empty($start_date) || empty($end_date)) {
             throw new Exception('Please fill all required fields.');
@@ -68,10 +69,10 @@ class ElectionController {
         }
 
         $stmt = $this->pdo->prepare("
-            INSERT INTO elections (ElectionName, Description, StartDate, EndDate, Status, CreatedAt)
-            VALUES (?, ?, ?, ?, 'active', NOW())
+            INSERT INTO elections (ElectionName, Description, StartDate, EndDate, Status, CreatedAt, ElectionType)
+            VALUES (?, ?, ?, ?, 'active', NOW(), ?)
         ");
-        $stmt->execute([$name, $description, $start_date, $end_date]);
+        $stmt->execute([$name, $description, $start_date, $end_date, $election_type]);
     }
 
     private function updateElection() {
@@ -81,56 +82,24 @@ class ElectionController {
         $end_date = $_POST['end_date'] ?? '';
         $description = $_POST['description'] ?? '';
         $status = $_POST['status'] ?? 'active';
+        $election_type = $_POST['election_type'] ?? 'DNA';
 
         if (empty($name) || empty($start_date) || empty($end_date)) {
             throw new Exception('Please fill all required fields.');
         }
-            try {
-                $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM elections WHERE Status = 'upcoming'");
-                $stmt->execute();
-                return $stmt->fetchColumn();
-            } catch (PDOException $e) {
-                error_log("Error getting upcoming elections count: " . $e->getMessage());
-                return 0;
-            }
+
+        if (strtotime($start_date) >= strtotime($end_date)) {
+            throw new Exception('End date must be after start date.');
         }
-    
-        public function getActiveElections() {
-            try {
-                $stmt = $this->pdo->prepare("
-                    SELECT ElectionID, ElectionName
-                    FROM elections
-                    WHERE StartDate <= NOW() AND EndDate >= NOW()
-                ");
-                $stmt->execute();
-                return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            } catch (PDOException $e) {
-                error_log("Error getting active elections: " . $e->getMessage());
-                return [];
-            }
-        }
-    
-        public function getCompletedElectionsCount() {
-            try {
-                $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM elections WHERE Status = 'completed'");
-                $stmt->execute();
-                return $stmt->fetchColumn();
-            } catch (PDOException $e) {
-                error_log("Error getting completed elections count: " . $e->getMessage());
-                return 0;
-            }
-        }
-    
-        public function getTotalVotesCount() {
-            try {
-                $stmt = $this->pdo->query("SELECT COUNT(*) FROM votes");
-                return $stmt->fetchColumn();
-            } catch (PDOException $e) {
-                error_log("Error getting total votes count: " . $e->getMessage());
-                return 0;
-            }
-        }
-    
+
+        $stmt = $this->pdo->prepare("
+            UPDATE elections
+            SET ElectionName = ?, Description = ?, StartDate = ?, EndDate = ?, Status = ?, ElectionType = ?
+            WHERE ElectionID = ?
+        ");
+        $stmt->execute([$name, $description, $start_date, $end_date, $status, $election_type, $election_id]);
+    }
+
     private function deleteElection() {
          $election_id = intval($_POST['election_id']);
          // Add checks here if needed (e.g., prevent deletion if votes exist)
@@ -200,6 +169,42 @@ class ElectionController {
         return $data;
     }
 
+    public function getActiveElections() {
+        try {
+            $stmt = $this->pdo->prepare("
+                SELECT ElectionID, ElectionName
+                FROM elections
+                WHERE StartDate <= NOW() AND EndDate >= NOW()
+            ");
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error getting active elections: " . $e->getMessage());
+            return [];
+        }
+    }
+
+    public function getCompletedElectionsCount() {
+        try {
+            $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM elections WHERE Status = 'completed'");
+            $stmt->execute();
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Error getting completed elections count: " . $e->getMessage());
+            return 0;
+        }
+    }
+
+    public function getTotalVotesCount() {
+        try {
+            $stmt = $this->pdo->query("SELECT COUNT(*) FROM votes");
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            error_log("Error getting total votes count: " . $e->getMessage());
+            return 0;
+        }
+    }
+
     public function getActiveElectionsCount() {
         try {
             $stmt = $this->pdo->prepare("SELECT COUNT(*) FROM elections WHERE Status = 'active'");
@@ -219,6 +224,23 @@ class ElectionController {
         } catch (PDOException $e) {
             error_log("Error getting upcoming elections count: " . $e->getMessage());
             return 0;
+        }
+    }
+
+    public function getActiveVotingElection() {
+        try {
+            $stmt = $this->pdo->prepare("
+                SELECT ElectionID, ElectionName, ElectionType
+                FROM elections
+                WHERE StartDate <= NOW() AND EndDate >= NOW() AND Status = 'active'
+                ORDER BY CASE WHEN ElectionType = 'RR' THEN 0 ELSE 1 END, ElectionID DESC
+                LIMIT 1
+            ");
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Error getting active voting election: " . $e->getMessage());
+            return null;
         }
     }
 
