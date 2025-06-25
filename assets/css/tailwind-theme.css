@@ -8,8 +8,8 @@
 /* Custom TailwindCSS Theme */
 @layer base {
   :root {
-    --color-suriname-green: 0, 120, 71;
-    --color-suriname-green-dark: 0, 98, 65;
+    --color-suriname-green: 0, 155, 58;
+    --color-suriname-green-dark: 0, 130, 48;
     --color-suriname-red: 200, 16, 46;
     --color-suriname-red-dark: 165, 13, 38;
     --color-suriname-yellow: 255, 209, 0;
@@ -103,8 +103,7 @@
 }
 
 .sr-hero-bg {
-  background: linear-gradient(135deg, rgba(0, 120, 71, 0.95), rgba(0, 98, 65, 0.95)), 
-              url('/E-Stem_Suriname/assets/images/suriname-pattern.png');
+  background: url('/assets/Images/brug.jpg');
   background-size: cover;
   background-position: center;
 }
