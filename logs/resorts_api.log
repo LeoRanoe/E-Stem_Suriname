@@ -1,0 +1,84 @@
+[2025-06-18 09:24:07] Request: Array
+(
+    [district_id] => 3
+)
+
+[2025-06-18 09:24:07] Response: [{"ResortID":27,"ResortName":"Corantijnpolder"},{"ResortID":26,"ResortName":"Groot Henar"},{"ResortID":23,"ResortName":"Nieuw Nickerie"},{"ResortID":24,"ResortName":"Oostelijke Polders"},{"ResortID":25,"ResortName":"Wageningen"}]
+[2025-06-18 09:24:19] Request: Array
+(
+    [district_id] => 6
+)
+
+[2025-06-18 09:24:20] Response: [{"ResortID":50,"ResortName":"Alkmaar"},{"ResortID":53,"ResortName":"Bakkie"},{"ResortID":54,"ResortName":"Margrita"},{"ResortID":52,"ResortName":"Meerzorg"},{"ResortID":49,"ResortName":"Nieuw Amsterdam"},{"ResortID":51,"ResortName":"Tamanredjo"}]
+[2025-06-18 09:30:43] Request: Array
+(
+    [district_id] => 5
+)
+
+[2025-06-18 09:30:43] Response: [{"ResortID":43,"ResortName":"Alkmaar"},{"ResortID":44,"ResortName":"Bakkie"},{"ResortID":41,"ResortName":"Calcutta"},{"ResortID":37,"ResortName":"Groningen"},{"ResortID":38,"ResortName":"Jarikaba"},{"ResortID":39,"ResortName":"Kampong Baroe"},{"ResortID":48,"ResortName":"Margrita"},{"ResortID":46,"ResortName":"Meerzorg"},{"ResortID":47,"ResortName":"Nieuw Amsterdam"},{"ResortID":45,"ResortName":"Tamanredjo"},{"ResortID":40,"ResortName":"Tijgerkreek"},{"ResortID":42,"ResortName":"Wayamboweg"}]
+[2025-06-18 09:31:05] Request: Array
+(
+    [district_id] => 6
+)
+
+[2025-06-18 09:31:05] Response: [{"ResortID":50,"ResortName":"Alkmaar"},{"ResortID":53,"ResortName":"Bakkie"},{"ResortID":54,"ResortName":"Margrita"},{"ResortID":52,"ResortName":"Meerzorg"},{"ResortID":49,"ResortName":"Nieuw Amsterdam"},{"ResortID":51,"ResortName":"Tamanredjo"}]
+[2025-06-18 10:00:30] Request: Array
+(
+    [district_id] => 9
+)
+
+[2025-06-18 10:00:31] Response: [{"ResortID":84,"ResortName":"Boven Coppename"},{"ResortID":86,"ResortName":"Boven Saramacca"},{"ResortID":85,"ResortName":"Boven Suriname"},{"ResortID":77,"ResortName":"Brokopondo Centrum"},{"ResortID":78,"ResortName":"Brownsweg"},{"ResortID":87,"ResortName":"Coeroeni"},{"ResortID":88,"ResortName":"Kabalebo"},{"ResortID":79,"ResortName":"Klaaskreek"},{"ResortID":80,"ResortName":"Kwakoegron"},{"ResortID":81,"ResortName":"Marchallkreek"},{"ResortID":82,"ResortName":"Sarakreek"},{"ResortID":91,"ResortName":"Sipaliwini Savanna"},{"ResortID":89,"ResortName":"Tapanahony"},{"ResortID":83,"ResortName":"Tapoeripa"},{"ResortID":90,"ResortName":"Zuidwest"}]
+[2025-06-18 10:00:31] Request: Array
+(
+    [district_id] => 9
+)
+
+[2025-06-18 10:00:31] Response: [{"ResortID":84,"ResortName":"Boven Coppename"},{"ResortID":86,"ResortName":"Boven Saramacca"},{"ResortID":85,"ResortName":"Boven Suriname"},{"ResortID":77,"ResortName":"Brokopondo Centrum"},{"ResortID":78,"ResortName":"Brownsweg"},{"ResortID":87,"ResortName":"Coeroeni"},{"ResortID":88,"ResortName":"Kabalebo"},{"ResortID":79,"ResortName":"Klaaskreek"},{"ResortID":80,"ResortName":"Kwakoegron"},{"ResortID":81,"ResortName":"Marchallkreek"},{"ResortID":82,"ResortName":"Sarakreek"},{"ResortID":91,"ResortName":"Sipaliwini Savanna"},{"ResortID":89,"ResortName":"Tapanahony"},{"ResortID":83,"ResortName":"Tapoeripa"},{"ResortID":90,"ResortName":"Zuidwest"}]
+[2025-06-18 10:00:46] Request: Array
+(
+    [district_id] => 9
+)
+
+[2025-06-18 10:00:46] Response: [{"ResortID":84,"ResortName":"Boven Coppename"},{"ResortID":86,"ResortName":"Boven Saramacca"},{"ResortID":85,"ResortName":"Boven Suriname"},{"ResortID":77,"ResortName":"Brokopondo Centrum"},{"ResortID":78,"ResortName":"Brownsweg"},{"ResortID":87,"ResortName":"Coeroeni"},{"ResortID":88,"ResortName":"Kabalebo"},{"ResortID":79,"ResortName":"Klaaskreek"},{"ResortID":80,"ResortName":"Kwakoegron"},{"ResortID":81,"ResortName":"Marchallkreek"},{"ResortID":82,"ResortName":"Sarakreek"},{"ResortID":91,"ResortName":"Sipaliwini Savanna"},{"ResortID":89,"ResortName":"Tapanahony"},{"ResortID":83,"ResortName":"Tapoeripa"},{"ResortID":90,"ResortName":"Zuidwest"}]
+[2025-06-18 10:00:47] Request: Array
+(
+    [district_id] => 9
+)
+
+[2025-06-18 10:00:47] Response: [{"ResortID":84,"ResortName":"Boven Coppename"},{"ResortID":86,"ResortName":"Boven Saramacca"},{"ResortID":85,"ResortName":"Boven Suriname"},{"ResortID":77,"ResortName":"Brokopondo Centrum"},{"ResortID":78,"ResortName":"Brownsweg"},{"ResortID":87,"ResortName":"Coeroeni"},{"ResortID":88,"ResortName":"Kabalebo"},{"ResortID":79,"ResortName":"Klaaskreek"},{"ResortID":80,"ResortName":"Kwakoegron"},{"ResortID":81,"ResortName":"Marchallkreek"},{"ResortID":82,"ResortName":"Sarakreek"},{"ResortID":91,"ResortName":"Sipaliwini Savanna"},{"ResortID":89,"ResortName":"Tapanahony"},{"ResortID":83,"ResortName":"Tapoeripa"},{"ResortID":90,"ResortName":"Zuidwest"}]
+[2025-06-18 10:01:29] Request: Array
+(
+    [district_id] => 9
+)
+
+[2025-06-18 10:01:30] Response: [{"ResortID":84,"ResortName":"Boven Coppename"},{"ResortID":86,"ResortName":"Boven Saramacca"},{"ResortID":85,"ResortName":"Boven Suriname"},{"ResortID":77,"ResortName":"Brokopondo Centrum"},{"ResortID":78,"ResortName":"Brownsweg"},{"ResortID":87,"ResortName":"Coeroeni"},{"ResortID":88,"ResortName":"Kabalebo"},{"ResortID":79,"ResortName":"Klaaskreek"},{"ResortID":80,"ResortName":"Kwakoegron"},{"ResortID":81,"ResortName":"Marchallkreek"},{"ResortID":82,"ResortName":"Sarakreek"},{"ResortID":91,"ResortName":"Sipaliwini Savanna"},{"ResortID":89,"ResortName":"Tapanahony"},{"ResortID":83,"ResortName":"Tapoeripa"},{"ResortID":90,"ResortName":"Zuidwest"}]
+[2025-06-18 10:01:35] Request: Array
+(
+    [district_id] => 6
+)
+
+[2025-06-18 10:01:35] Response: [{"ResortID":50,"ResortName":"Alkmaar"},{"ResortID":53,"ResortName":"Bakkie"},{"ResortID":54,"ResortName":"Margrita"},{"ResortID":52,"ResortName":"Meerzorg"},{"ResortID":49,"ResortName":"Nieuw Amsterdam"},{"ResortID":51,"ResortName":"Tamanredjo"}]
+[2025-07-02 08:51:59] Request: Array
+(
+    [district_id] => 6
+)
+
+[2025-07-02 08:51:59] Response: [{"ResortID":50,"ResortName":"Alkmaar"},{"ResortID":53,"ResortName":"Bakkie"},{"ResortID":54,"ResortName":"Margrita"},{"ResortID":52,"ResortName":"Meerzorg"},{"ResortID":49,"ResortName":"Nieuw Amsterdam"},{"ResortID":51,"ResortName":"Tamanredjo"}]
+[2025-07-02 08:52:03] Request: Array
+(
+    [district_id] => 6
+)
+
+[2025-07-02 08:52:03] Response: [{"ResortID":50,"ResortName":"Alkmaar"},{"ResortID":53,"ResortName":"Bakkie"},{"ResortID":54,"ResortName":"Margrita"},{"ResortID":52,"ResortName":"Meerzorg"},{"ResortID":49,"ResortName":"Nieuw Amsterdam"},{"ResortID":51,"ResortName":"Tamanredjo"}]
+[2025-07-02 09:31:28] Request: Array
+(
+    [district_id] => 4
+)
+
+[2025-07-02 09:31:28] Response: [{"ResortID":31,"ResortName":"Calcutta"},{"ResortID":32,"ResortName":"Groningen"},{"ResortID":35,"ResortName":"Jarikaba"},{"ResortID":29,"ResortName":"Johanna Maria"},{"ResortID":33,"ResortName":"Kampong Baroe"},{"ResortID":34,"ResortName":"Tijgerkreek"},{"ResortID":28,"ResortName":"Totness"},{"ResortID":36,"ResortName":"Wayamboweg"},{"ResortID":30,"ResortName":"Welgelegen"}]
+[2025-07-02 09:31:31] Request: Array
+(
+    [district_id] => 6
+)
+
+[2025-07-02 09:31:31] Response: [{"ResortID":50,"ResortName":"Alkmaar"},{"ResortID":53,"ResortName":"Bakkie"},{"ResortID":54,"ResortName":"Margrita"},{"ResortID":52,"ResortName":"Meerzorg"},{"ResortID":49,"ResortName":"Nieuw Amsterdam"},{"ResortID":51,"ResortName":"Tamanredjo"}]
