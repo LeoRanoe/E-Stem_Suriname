@@ -135,72 +135,88 @@ if (isset($fatal_error)): ?>
 </style>
 
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8" id="dashboard-page">
-    <!-- Header -->
-    <div class="flex flex-wrap items-center justify-between mb-6 gap-4">
-        <div>
-            <h1 class="text-3xl font-bold">Verkiezingsdashboard: <?= htmlspecialchars($electionName) ?></h1>
-            <p class="text-sm text-gray-500">Laatst bijgewerkt: <?= date('d-m-Y H:i:s') ?></p>
+    <!-- Dashboard Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2 flex items-center"><i class="fas fa-gauge-high mr-3 text-suriname-green"></i>Admin Dashboard</h1>
+        <p class="text-gray-700">Welkom bij het beheer van de verkiezingen. Overzicht van statistieken en snelle acties.</p>
+    </div>
+
+    <!-- Snelle Acties -->
+    <div class="mb-10">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center"><i class="fas fa-bolt mr-2 text-suriname-green"></i>Snelle acties</h2>
+        <div class="flex flex-wrap gap-4">
+            <a href="elections.php" class="flex items-center bg-white shadow rounded-xl px-6 py-4 text-gray-900 font-semibold hover:bg-gray-100 transition btn-hover"><i class="fas fa-calendar-check mr-2 text-suriname-green"></i>Nieuwe Verkiezing</a>
+            <a href="voters.php" class="flex items-center bg-white shadow rounded-xl px-6 py-4 text-gray-900 font-semibold hover:bg-gray-100 transition btn-hover"><i class="fas fa-users mr-2 text-suriname-green"></i>Kiezers beheren</a>
+            <a href="candidates.php" class="flex items-center bg-white shadow rounded-xl px-6 py-4 text-gray-900 font-semibold hover:bg-gray-100 transition btn-hover"><i class="fas fa-user-tie mr-2 text-suriname-green"></i>Kandidaten beheren</a>
+            <a href="results.php" class="flex items-center bg-white shadow rounded-xl px-6 py-4 text-gray-900 font-semibold hover:bg-gray-100 transition btn-hover"><i class="fas fa-chart-bar mr-2 text-suriname-green"></i>Resultaten</a>
         </div>
     </div>
 
-    <!-- Top Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8 text-gray-800">
-        <div class="stat-card bg-white p-4 rounded-lg shadow-sm border"><p>Totaal Stemmen</p><h3 class="text-xl font-bold"><?= number_format($total_votes) ?></h3></div>
-        <div class="stat-card bg-white p-4 rounded-lg shadow-sm border"><p>Opkomst</p><h3 class="text-xl font-bold"><?= $turnout_percentage ?>%</h3></div>
-        <div class="stat-card bg-white p-4 rounded-lg shadow-sm border"><p>Leidende Partij</p><h3 class="text-xl font-bold truncate" title="<?= htmlspecialchars($leading_party) ?>"><?= htmlspecialchars($leading_party) ?></h3></div>
-        <div class="stat-card bg-white p-4 rounded-lg shadow-sm border"><p>Deelnemende Partijen</p><h3 class="text-xl font-bold"><?= count($party_results) ?></h3></div>
+    <!-- Statistieken -->
+    <div class="mb-10">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center"><i class="fas fa-chart-pie mr-2 text-suriname-green"></i>Statistieken</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-8 text-gray-900">
+            <div class="stat-card bg-white p-6 rounded-xl shadow hover:bg-gray-100 transition border flex flex-col items-center"><i class="fas fa-users fa-2x mb-2 text-suriname-green"></i><p>Kiezers</p><h3 class="text-2xl font-bold"><?= number_format($total_voters) ?></h3></div>
+            <div class="stat-card bg-white p-6 rounded-xl shadow hover:bg-gray-100 transition border flex flex-col items-center"><i class="fas fa-user-tie fa-2x mb-2 text-suriname-green"></i><p>Kandidaten</p><h3 class="text-2xl font-bold"><?= count($dna_results) + count($resorts_results) ?></h3></div>
+            <div class="stat-card bg-white p-6 rounded-xl shadow hover:bg-gray-100 transition border flex flex-col items-center"><i class="fas fa-vote-yea fa-2x mb-2 text-suriname-green"></i><p>Stemmen</p><h3 class="text-2xl font-bold"><?= number_format($total_votes) ?></h3></div>
+            <div class="stat-card bg-white p-6 rounded-xl shadow hover:bg-gray-100 transition border flex flex-col items-center"><i class="fas fa-trophy fa-2x mb-2 text-suriname-green"></i><p>Leidende Partij</p><h3 class="text-2xl font-bold truncate" title="<?= htmlspecialchars($leading_party) ?>"><?= htmlspecialchars($leading_party) ?></h3></div>
+        </div>
     </div>
 
-    <!-- Tabs -->
-    <div class="border-b border-gray-200 mb-6">
-        <nav class="flex -mb-px">
-            <button class="tab-button active" data-target="#overview-panel"><i class="fas fa-tachometer-alt mr-2"></i>Overzicht</button>
-            <button class="tab-button" data-target="#candidates-panel"><i class="fas fa-users mr-2"></i>Kandidaten</button>
-            <button class="tab-button" data-target="#charts-panel"><i class="fas fa-chart-pie mr-2"></i>Grafieken</button>
-            <button class="tab-button" data-target="#activity-panel"><i class="fas fa-history mr-2"></i>Activiteit</button>
-        </nav>
-    </div>
+    <!-- Overige secties (zoals tabbladen) -->
+    <div class="mb-10">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center"><i class="fas fa-list-ul mr-2 text-suriname-green"></i>Overzicht</h2>
+        <!-- Tabs -->
+        <div class="border-b border-gray-200 mb-6">
+            <nav class="flex -mb-px">
+                <button class="tab-button active" data-target="#overview-panel"><i class="fas fa-tachometer-alt mr-2"></i>Overzicht</button>
+                <button class="tab-button" data-target="#candidates-panel"><i class="fas fa-users mr-2"></i>Kandidaten</button>
+                <button class="tab-button" data-target="#charts-panel"><i class="fas fa-chart-pie mr-2"></i>Grafieken</button>
+                <button class="tab-button" data-target="#activity-panel"><i class="fas fa-history mr-2"></i>Activiteit</button>
+            </nav>
+        </div>
 
-    <!-- Tab Panels -->
-    <div id="overview-panel" class="tab-panel active">
-        <div class="bg-gray-50 p-4 rounded-lg">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Resultaten per Partij</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <?php foreach($party_results as $index => $party): ?>
-                <div class="bg-white p-4 rounded-lg shadow-sm border">
-                    <div class="font-semibold text-gray-800 mb-2"><?= htmlspecialchars($party['PartyName']) ?></div>
-                    <div class="h-2 bg-gray-200 rounded-full mb-2"><div class="h-full progress-bar" style="width: <?= ($total_votes > 0) ? ($party['vote_count'] / $total_votes) * 100 : 0 ?>%;"></div></div>
-                    <div class="flex justify-between text-sm"><span><?= number_format($party['vote_count']) ?> stemmen</span><span><?= round(($party['vote_count'] / max($total_votes, 1)) * 100, 1) ?>%</span></div>
+        <!-- Tab Panels -->
+        <div id="overview-panel" class="tab-panel active">
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Resultaten per Partij</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <?php foreach($party_results as $index => $party): ?>
+                    <div class="bg-white p-4 rounded-lg shadow-sm border">
+                        <div class="font-semibold text-gray-800 mb-2"><?= htmlspecialchars($party['PartyName']) ?></div>
+                        <div class="h-2 bg-gray-200 rounded-full mb-2"><div class="h-full progress-bar" style="width: <?= ($total_votes > 0) ? ($party['vote_count'] / $total_votes) * 100 : 0 ?>%;"></div></div>
+                        <div class="flex justify-between text-sm"><span><?= number_format($party['vote_count']) ?> stemmen</span><span><?= round(($party['vote_count'] / max($total_votes, 1)) * 100, 1) ?>%</span></div>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
             </div>
         </div>
-    </div>
 
-    <div id="candidates-panel" class="tab-panel">
-        <div class="space-y-6">
-            <div>
-                <h2 class="text-xl font-semibold text-gray-800 mb-3"><i class="fas fa-landmark mr-2"></i>Resultaten DNA</h2>
-                <div class="overflow-x-auto border rounded-lg"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kandidaat</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Partij</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">District</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Stemmen</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><?php foreach ($dna_results as $c): ?><tr><td class="px-4 py-2"><?= htmlspecialchars($c['Name']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['PartyName']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['DistrictName']) ?></td><td class="px-4 py-2 font-medium"><?= $c['vote_count'] ?></td></tr><?php endforeach; ?></tbody></table></div>
-            </div>
-            <div>
-                <h2 class="text-xl font-semibold text-gray-800 mb-3"><i class="fas fa-building mr-2"></i>Resultaten Resortsraden</h2>
-                <div class="overflow-x-auto border rounded-lg"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kandidaat</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Partij</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">District</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Resort</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Stemmen</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><?php foreach ($resorts_results as $c): ?><tr><td class="px-4 py-2"><?= htmlspecialchars($c['Name']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['PartyName']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['DistrictName']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['ResortName'] ?? 'Onbekend') ?></td><td class="px-4 py-2 font-medium"><?= $c['vote_count'] ?></td></tr><?php endforeach; ?></tbody></table></div>
+        <div id="candidates-panel" class="tab-panel">
+            <div class="space-y-6">
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-3"><i class="fas fa-landmark mr-2"></i>Resultaten DNA</h2>
+                    <div class="overflow-x-auto border rounded-lg"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kandidaat</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Partij</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">District</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Stemmen</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><?php foreach ($dna_results as $c): ?><tr><td class="px-4 py-2"><?= htmlspecialchars($c['Name']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['PartyName']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['DistrictName']) ?></td><td class="px-4 py-2 font-medium"><?= $c['vote_count'] ?></td></tr><?php endforeach; ?></tbody></table></div>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800 mb-3"><i class="fas fa-building mr-2"></i>Resultaten Resortsraden</h2>
+                    <div class="overflow-x-auto border rounded-lg"><table class="min-w-full divide-y divide-gray-200"><thead class="bg-gray-50"><tr><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Kandidaat</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Partij</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">District</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Resort</th><th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Stemmen</th></tr></thead><tbody class="bg-white divide-y divide-gray-200"><?php foreach ($resorts_results as $c): ?><tr><td class="px-4 py-2"><?= htmlspecialchars($c['Name']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['PartyName']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['DistrictName']) ?></td><td class="px-4 py-2"><?= htmlspecialchars($c['ResortName'] ?? 'Onbekend') ?></td><td class="px-4 py-2 font-medium"><?= $c['vote_count'] ?></td></tr><?php endforeach; ?></tbody></table></div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="charts-panel" class="tab-panel">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div class="bg-white p-4 rounded-lg shadow-sm border"><h3 class="font-semibold text-lg mb-2">Stemmen per Partij</h3><div style="height: 400px;"><canvas id="party-chart"></canvas></div></div>
-            <div class="bg-white p-4 rounded-lg shadow-sm border"><h3 class="font-semibold text-lg mb-2">Stemmen per District</h3><div style="height: 400px;"><canvas id="district-chart"></canvas></div></div>
+        <div id="charts-panel" class="tab-panel">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-4 rounded-lg shadow-sm border"><h3 class="font-semibold text-lg mb-2">Stemmen per Partij</h3><div style="height: 400px;"><canvas id="party-chart"></canvas></div></div>
+                <div class="bg-white p-4 rounded-lg shadow-sm border"><h3 class="font-semibold text-lg mb-2">Stemmen per District</h3><div style="height: 400px;"><canvas id="district-chart"></canvas></div></div>
+            </div>
         </div>
-    </div>
 
-    <div id="activity-panel" class="tab-panel">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <div class="bg-white rounded-xl shadow-lg border"><div class="p-4 font-semibold border-b">Recente Activiteit</div><div class="p-4"><?php if(empty($recent_votes)): ?><p class="text-center text-gray-500">Geen recente stemmen.</p><?php else: ?><ul class="divide-y divide-gray-200"><?php foreach($recent_votes as $v): ?><li><?= date('H:i', strtotime($v['ts'])) ?>: Stem op <strong><?= htmlspecialchars($v['candidate']) ?></strong></li><?php endforeach; ?></ul><?php endif; ?></div></div>
-            <div class="bg-white rounded-xl shadow-lg border"><div class="p-4 font-semibold border-b">Anomalie Detectie</div><div class="p-4"><?php if(empty($anomalies)): ?><p class="text-center text-gray-500">Geen afwijkingen.</p><?php else: ?><ul class="divide-y divide-gray-200"><?php foreach($anomalies as $a): ?><li class="text-red-600">Kiezer <?= htmlspecialchars($a['first_name']) ?> heeft <?= $a['vote_count'] ?> stemmen.</li><?php endforeach; ?></ul><?php endif; ?></div></div>
+        <div id="activity-panel" class="tab-panel">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white rounded-xl shadow-lg border"><div class="p-4 font-semibold border-b">Recente Activiteit</div><div class="p-4"><?php if(empty($recent_votes)): ?><p class="text-center text-gray-500">Geen recente stemmen.</p><?php else: ?><ul class="divide-y divide-gray-200"><?php foreach($recent_votes as $v): ?><li><?= date('H:i', strtotime($v['ts'])) ?>: Stem op <strong><?= htmlspecialchars($v['candidate']) ?></strong></li><?php endforeach; ?></ul><?php endif; ?></div></div>
+                <div class="bg-white rounded-xl shadow-lg border"><div class="p-4 font-semibold border-b">Anomalie Detectie</div><div class="p-4"><?php if(empty($anomalies)): ?><p class="text-center text-gray-500">Geen afwijkingen.</p><?php else: ?><ul class="divide-y divide-gray-200"><?php foreach($anomalies as $a): ?><li class="text-red-600">Kiezer <?= htmlspecialchars($a['first_name']) ?> heeft <?= $a['vote_count'] ?> stemmen.</li><?php endforeach; ?></ul><?php endif; ?></div></div>
+            </div>
         </div>
     </div>
 </div>

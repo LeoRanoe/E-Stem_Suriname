@@ -314,3 +314,1230 @@
 [18-Jun-2025 11:57:51 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\E-Stem_Suriname\index.php on line 168
 [18-Jun-2025 11:59:10 America/Paramaribo] PHP Warning:  Undefined array key "Description" in C:\xampp\htdocs\E-Stem_Suriname\index.php on line 168
 [18-Jun-2025 11:59:10 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\E-Stem_Suriname\index.php on line 168
+[25-Jun-2025 10:04:19 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[25-Jun-2025 10:04:19 America/Paramaribo] Admin login status: Not logged in
+[25-Jun-2025 10:04:19 America/Paramaribo] Login page - Session ID: eb378o9q6fvotiudirtoss4lrs
+[25-Jun-2025 10:04:19 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[25-Jun-2025 10:04:19 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[25-Jun-2025 10:04:19 America/Paramaribo] Admin login status: Not logged in
+[25-Jun-2025 10:05:54 America/Paramaribo] Login page - Session ID: eb378o9q6fvotiudirtoss4lrs
+[25-Jun-2025 10:05:54 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[25-Jun-2025 10:05:54 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[25-Jun-2025 10:05:54 America/Paramaribo] Admin login status: Not logged in
+[25-Jun-2025 10:05:54 America/Paramaribo] Login page - Processing login form submission
+[25-Jun-2025 10:05:54 America/Paramaribo] Login page - Attempting to authenticate admin: admin@example.com
+[25-Jun-2025 10:05:54 America/Paramaribo] Login page - Authentication successful for admin: admin@example.com
+[25-Jun-2025 10:05:54 America/Paramaribo] LoginAdmin - Starting login process for admin: admin@example.com
+[25-Jun-2025 10:05:54 America/Paramaribo] LoginAdmin - Previous session ID: eb378o9q6fvotiudirtoss4lrs
+[25-Jun-2025 10:05:54 America/Paramaribo] LoginAdmin - Previous session data: Array
+(
+)
+
+[25-Jun-2025 10:05:54 America/Paramaribo] LoginAdmin - New session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:05:54 America/Paramaribo] LoginAdmin - New session ID: eb378o9q6fvotiudirtoss4lrs
+[25-Jun-2025 10:05:54 America/Paramaribo] Login page - Session verified, redirecting to index
+[25-Jun-2025 10:05:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:05:55 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 10:05:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:05:55 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 10:05:57 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:05:57 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 10:05:57 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:05:57 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 10:05:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:05:59 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 10:05:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:05:59 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 10:06:00 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:06:00 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 10:06:00 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:06:00 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 10:06:01 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:06:01 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 10:06:01 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:06:01 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 10:06:03 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:06:03 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 10:06:03 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[25-Jun-2025 10:06:03 America/Paramaribo] Admin login status: Logged in
+[25-Jun-2025 11:34:16 America/Paramaribo] Database error in getTotalVotes: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'election_id' in 'where clause'
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Warning:  Undefined array key "party_name" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Warning:  Undefined array key "party_name" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Warning:  Undefined array key "party_name" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Warning:  Undefined array key "party_name" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Warning:  Undefined array key "party_name" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Warning:  Undefined array key "party_name" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Warning:  Undefined array key "party_name" in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[25-Jun-2025 11:34:16 America/Paramaribo] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\Users\lrano\OneDrive\Documents\Xamp\htdocs\E-Stem_Suriname\E-Stem_Suriname\src\views\results.php on line 161
+[02-Jul-2025 08:46:23 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[02-Jul-2025 08:46:23 America/Paramaribo] Admin login status: Not logged in
+[02-Jul-2025 08:46:24 America/Paramaribo] Login page - Session ID: pm67s80ado6oa4vjmd3na7ls23
+[02-Jul-2025 08:46:24 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[02-Jul-2025 08:46:24 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[02-Jul-2025 08:46:24 America/Paramaribo] Admin login status: Not logged in
+[02-Jul-2025 08:47:07 America/Paramaribo] Login page - Session ID: pm67s80ado6oa4vjmd3na7ls23
+[02-Jul-2025 08:47:07 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[02-Jul-2025 08:47:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[02-Jul-2025 08:47:07 America/Paramaribo] Admin login status: Not logged in
+[02-Jul-2025 08:47:07 America/Paramaribo] Login page - Processing login form submission
+[02-Jul-2025 08:47:07 America/Paramaribo] Login page - Attempting to authenticate admin: admin@example.com
+[02-Jul-2025 08:47:07 America/Paramaribo] Login page - Authentication successful for admin: admin@example.com
+[02-Jul-2025 08:47:07 America/Paramaribo] LoginAdmin - Starting login process for admin: admin@example.com
+[02-Jul-2025 08:47:07 America/Paramaribo] LoginAdmin - Previous session ID: pm67s80ado6oa4vjmd3na7ls23
+[02-Jul-2025 08:47:07 America/Paramaribo] LoginAdmin - Previous session data: Array
+(
+)
+
+[02-Jul-2025 08:47:07 America/Paramaribo] LoginAdmin - New session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:47:07 America/Paramaribo] LoginAdmin - New session ID: pm67s80ado6oa4vjmd3na7ls23
+[02-Jul-2025 08:47:07 America/Paramaribo] Login page - Session verified, redirecting to index
+[02-Jul-2025 08:47:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:47:07 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:47:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:47:07 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:47:17 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:47:17 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:47:17 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:47:17 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:47:23 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:47:23 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:47:23 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:47:23 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:29 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:29 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:29 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Verkiezing is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:48:29 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:29 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Verkiezing is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:48:29 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:36 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:36 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:36 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:36 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:39 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:39 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:39 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:39 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:47 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:47 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:50 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:50 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:50 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:52 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:52 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:52 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:52 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:53 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:53 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:48:53 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:48:53 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:09 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:49:09 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:27 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Partij is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:49:27 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Partij is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:49:28 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:49:28 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:49:28 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:34 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:49:34 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:39 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:49:39 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:39 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:49:39 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:49:46 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Partij is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:49:59 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Partij is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:49:59 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:49:59 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:49:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:49:59 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:50:05 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:50:05 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:50:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Partij is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:50:49 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:50:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Partij is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:50:49 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:50:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:50:49 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:50:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:50:49 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:50:53 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:50:53 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:06 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Partij is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:51:06 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Partij is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:51:07 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:51:07 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:07 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:51:07 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:10 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:51:10 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Partij is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:51:32 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Partij is succesvol bijgewerkt.
+)
+
+[02-Jul-2025 08:51:32 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:51:32 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:32 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:51:32 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:41 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:51:41 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:41 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:51:41 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:51:49 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:49 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:51:49 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:59 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:51:59 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:51:59 America/Paramaribo] Resorts table columns: id, name, district_id
+[02-Jul-2025 08:52:03 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:52:03 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:52:03 America/Paramaribo] Resorts table columns: id, name, district_id
+[02-Jul-2025 08:52:17 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 08:52:17 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:52:17 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Voter successfully added.
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 08:52:17 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:52:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 08:52:46 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:52:46 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 08:52:46 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:52:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 08:52:47 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:52:47 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 08:52:47 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:52:51 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 08:52:51 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:53:01 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 08:53:01 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:53:01 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_voucher] => Array
+        (
+            [id] => 998
+            [voter_id] => 6
+            [voter_name] => Christine Blackburn
+            [voucher_id] => VCB9591C8B
+            [password] => WDVFYP
+        )
+
+)
+
+[02-Jul-2025 08:53:01 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:53:02 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_voucher] => Array
+        (
+            [id] => 998
+            [voter_id] => 6
+            [voter_name] => Christine Blackburn
+            [voucher_id] => VCB9591C8B
+            [password] => WDVFYP
+        )
+
+)
+
+[02-Jul-2025 08:53:02 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 08:53:44 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 6 in election 1: 0
+[02-Jul-2025 08:53:44 America/Paramaribo] QR Code verification successful for voter ID: 6, name: Christine Blackburn
+[02-Jul-2025 08:53:46 America/Paramaribo] [DEBUG] Checking if voter ID 6 has already voted
+[02-Jul-2025 08:53:46 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 6 in election 1: 0
+[02-Jul-2025 08:53:46 America/Paramaribo] [DEBUG] Voter ID 6 has not voted yet, proceeding to voting page
+[02-Jul-2025 08:54:17 America/Paramaribo] [VOTE_DEBUG] POST request received. Starting vote submission process.
+[02-Jul-2025 08:54:17 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 6 in election 1: 0
+[02-Jul-2025 08:54:17 America/Paramaribo] [VOTE_DEBUG] Starting database transaction for voter ID: 6
+[02-Jul-2025 08:54:17 America/Paramaribo] [VoterAuth] [info] Using existing transaction for QR code creation
+[02-Jul-2025 08:54:17 America/Paramaribo] [VoterAuth] [info] Successfully created QR code ID: 5 for voter: 6, election: 1
+[02-Jul-2025 08:54:17 America/Paramaribo] [VOTE_DEBUG] QR Code ID: 5 obtained for voter ID: 6
+[02-Jul-2025 08:54:17 America/Paramaribo] [VOTE_DEBUG] Inserted DNA vote. Voter: 6, Candidate: 311, Election: 1
+[02-Jul-2025 08:54:17 America/Paramaribo] [VOTE_DEBUG] Inserted RR vote. Voter: 6, Candidate: 1312, Election: 1
+[02-Jul-2025 08:54:17 America/Paramaribo] [VOTE_DEBUG] Marked QR code as used for voter ID: 6
+[02-Jul-2025 08:54:17 America/Paramaribo] [VOTE_DEBUG] Marked voucher ID: VCB9591C8B as used for voter ID: 6
+[02-Jul-2025 08:54:17 America/Paramaribo] [VOTE_DEBUG] Transaction committed successfully for voter ID: 6
+[02-Jul-2025 08:54:17 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 6 in election 1: 2
+[02-Jul-2025 08:54:31 America/Paramaribo] [DEBUG] Checking if voter ID 6 has already voted
+[02-Jul-2025 08:54:31 America/Paramaribo] [DEBUG] Session has_voted flag is set, redirecting to thank-you page
+[02-Jul-2025 08:54:31 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 6 in election 1: 2
+[02-Jul-2025 08:54:40 America/Paramaribo] Logout - Starting logout process
+[02-Jul-2025 08:54:40 America/Paramaribo] Logout - Session ID: pm67s80ado6oa4vjmd3na7ls23
+[02-Jul-2025 08:54:40 America/Paramaribo] Logout - Session data before logout: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_voucher] => Array
+        (
+            [id] => 998
+            [voter_id] => 6
+            [voter_name] => Christine Blackburn
+            [voucher_id] => VCB9591C8B
+            [password] => WDVFYP
+        )
+
+    [voter_id] => 6
+    [voter_name] => Christine Blackburn
+    [district_id] => 6
+    [resort_id] => 53
+    [voucher_id] => VCB9591C8B
+    [has_voted] => 1
+    [message] => U heeft al gestemd in deze verkiezing.
+)
+
+[02-Jul-2025 08:54:40 America/Paramaribo] Logout - Clearing admin session
+[02-Jul-2025 08:54:40 America/Paramaribo] Logout - Clearing voter session
+[02-Jul-2025 08:54:40 America/Paramaribo] Logout - Session destroyed
+[02-Jul-2025 08:54:40 America/Paramaribo] Login page - Session ID: pm67s80ado6oa4vjmd3na7ls23
+[02-Jul-2025 08:54:40 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[02-Jul-2025 08:54:40 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[02-Jul-2025 08:54:40 America/Paramaribo] Admin login status: Not logged in
+[02-Jul-2025 08:54:57 America/Paramaribo] Logout - Starting logout process
+[02-Jul-2025 08:54:57 America/Paramaribo] Logout - Session ID: pm67s80ado6oa4vjmd3na7ls23
+[02-Jul-2025 08:54:57 America/Paramaribo] Logout - Session data before logout: Array
+(
+)
+
+[02-Jul-2025 08:54:57 America/Paramaribo] Logout - Session destroyed
+[02-Jul-2025 08:54:57 America/Paramaribo] Login page - Session ID: pm67s80ado6oa4vjmd3na7ls23
+[02-Jul-2025 08:54:57 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[02-Jul-2025 08:54:57 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[02-Jul-2025 08:54:57 America/Paramaribo] Admin login status: Not logged in
+[02-Jul-2025 09:29:42 America/Paramaribo] Login page - Session ID: pm67s80ado6oa4vjmd3na7ls23
+[02-Jul-2025 09:29:42 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[02-Jul-2025 09:29:42 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[02-Jul-2025 09:29:42 America/Paramaribo] Admin login status: Not logged in
+[02-Jul-2025 09:29:42 America/Paramaribo] Login page - Processing login form submission
+[02-Jul-2025 09:29:42 America/Paramaribo] Login page - Attempting to authenticate admin: admin@example.com
+[02-Jul-2025 09:29:42 America/Paramaribo] Login page - Authentication successful for admin: admin@example.com
+[02-Jul-2025 09:29:42 America/Paramaribo] LoginAdmin - Starting login process for admin: admin@example.com
+[02-Jul-2025 09:29:42 America/Paramaribo] LoginAdmin - Previous session ID: pm67s80ado6oa4vjmd3na7ls23
+[02-Jul-2025 09:29:42 America/Paramaribo] LoginAdmin - Previous session data: Array
+(
+)
+
+[02-Jul-2025 09:29:42 America/Paramaribo] LoginAdmin - New session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:29:42 America/Paramaribo] LoginAdmin - New session ID: pm67s80ado6oa4vjmd3na7ls23
+[02-Jul-2025 09:29:42 America/Paramaribo] Login page - Session verified, redirecting to index
+[02-Jul-2025 09:29:42 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:29:42 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:29:43 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:29:43 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:30:24 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:30:24 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:30:24 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:30:24 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:30:45 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:30:45 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:30:45 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:30:45 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:30:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:30:56 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:30:56 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:30:56 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:31:09 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:31:09 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:31:09 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:31:09 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:31:28 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:31:28 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:31:28 America/Paramaribo] Resorts table columns: id, name, district_id
+[02-Jul-2025 09:31:31 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:31:31 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:31:31 America/Paramaribo] Resorts table columns: id, name, district_id
+[02-Jul-2025 09:31:44 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+)
+
+[02-Jul-2025 09:31:44 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:31:45 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [success_message] => Voter successfully added.
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 09:31:45 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:31:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 09:31:55 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:31:55 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 09:31:55 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:32:05 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 09:32:05 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:32:17 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/voters.php
+)
+
+[02-Jul-2025 09:32:17 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:32:18 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_voucher] => Array
+        (
+            [id] => 999
+            [voter_id] => 7
+            [voter_name] => Axel Hyde
+            [voucher_id] => VCED3E2C16
+            [password] => KJRW9Y
+        )
+
+)
+
+[02-Jul-2025 09:32:18 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:33:54 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 7 in election 1: 0
+[02-Jul-2025 09:33:54 America/Paramaribo] QR Code verification successful for voter ID: 7, name: Axel Hyde
+[02-Jul-2025 09:33:55 America/Paramaribo] [DEBUG] Checking if voter ID 7 has already voted
+[02-Jul-2025 09:33:55 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 7 in election 1: 0
+[02-Jul-2025 09:33:55 America/Paramaribo] [DEBUG] Voter ID 7 has not voted yet, proceeding to voting page
+[02-Jul-2025 09:34:40 America/Paramaribo] [VOTE_DEBUG] POST request received. Starting vote submission process.
+[02-Jul-2025 09:34:40 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 7 in election 1: 0
+[02-Jul-2025 09:34:40 America/Paramaribo] [VOTE_DEBUG] Starting database transaction for voter ID: 7
+[02-Jul-2025 09:34:40 America/Paramaribo] [VoterAuth] [info] Using existing transaction for QR code creation
+[02-Jul-2025 09:34:40 America/Paramaribo] [VoterAuth] [info] Successfully created QR code ID: 6 for voter: 7, election: 1
+[02-Jul-2025 09:34:40 America/Paramaribo] [VOTE_DEBUG] QR Code ID: 6 obtained for voter ID: 7
+[02-Jul-2025 09:34:40 America/Paramaribo] [VOTE_DEBUG] Inserted DNA vote. Voter: 7, Candidate: 545, Election: 1
+[02-Jul-2025 09:34:40 America/Paramaribo] [VOTE_DEBUG] Inserted RR vote. Voter: 7, Candidate: 1296, Election: 1
+[02-Jul-2025 09:34:40 America/Paramaribo] [VOTE_DEBUG] Marked QR code as used for voter ID: 7
+[02-Jul-2025 09:34:40 America/Paramaribo] [VOTE_DEBUG] Marked voucher ID: VCED3E2C16 as used for voter ID: 7
+[02-Jul-2025 09:34:40 America/Paramaribo] [VOTE_DEBUG] Transaction committed successfully for voter ID: 7
+[02-Jul-2025 09:34:40 America/Paramaribo] [VoterAuth] [info] Vote count for voter ID 7 in election 1: 2
+[02-Jul-2025 09:48:21 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_voucher] => Array
+        (
+            [id] => 999
+            [voter_id] => 7
+            [voter_name] => Axel Hyde
+            [voucher_id] => VCED3E2C16
+            [password] => KJRW9Y
+        )
+
+    [voter_id] => 7
+    [voter_name] => Axel Hyde
+    [district_id] => 6
+    [resort_id] => 52
+    [voucher_id] => VCED3E2C16
+    [has_voted] => 1
+    [message] => Uw stem is succesvol uitgebracht! Bedankt voor uw deelname.
+)
+
+[02-Jul-2025 09:48:21 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 09:48:21 America/Paramaribo] Checking admin login status. Session data: Array
+(
+    [AdminID] => 1
+    [AdminName] => Super Admin
+    [AdminEmail] => admin@example.com
+    [AdminStatus] => active
+    [redirect] => admin/qrcodes.php
+    [generated_voucher] => Array
+        (
+            [id] => 999
+            [voter_id] => 7
+            [voter_name] => Axel Hyde
+            [voucher_id] => VCED3E2C16
+            [password] => KJRW9Y
+        )
+
+    [voter_id] => 7
+    [voter_name] => Axel Hyde
+    [district_id] => 6
+    [resort_id] => 52
+    [voucher_id] => VCED3E2C16
+    [has_voted] => 1
+    [message] => Uw stem is succesvol uitgebracht! Bedankt voor uw deelname.
+)
+
+[02-Jul-2025 09:48:21 America/Paramaribo] Admin login status: Logged in
+[02-Jul-2025 10:02:52 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[02-Jul-2025 10:02:52 America/Paramaribo] Admin login status: Not logged in
+[02-Jul-2025 10:02:52 America/Paramaribo] Login page - Session ID: t3cqhtnqdd2cqj4927s3e053e3
+[02-Jul-2025 10:02:52 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[02-Jul-2025 10:02:52 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[02-Jul-2025 10:02:52 America/Paramaribo] Admin login status: Not logged in
+[02-Jul-2025 10:22:44 America/Paramaribo] Login page - Session ID: dkaggd7uta6hjl6bl4ntd25qlr
+[02-Jul-2025 10:22:44 America/Paramaribo] Login page - Current session data: Array
+(
+)
+
+[02-Jul-2025 10:22:44 America/Paramaribo] Checking admin login status. Session data: Array
+(
+)
+
+[02-Jul-2025 10:22:44 America/Paramaribo] Admin login status: Not logged in

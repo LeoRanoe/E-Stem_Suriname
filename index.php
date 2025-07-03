@@ -49,7 +49,7 @@ try {
                     <a href="voter/index.php"
                        class="sr-button group animate-fade-in px-6 py-3 rounded-lg shadow-lg bg-white text-suriname-green hover:bg-suriname-green hover:text-white transition duration-300 text-lg">
                         <i class="fas fa-sign-in-alt transform group-hover:scale-110 transition-transform duration-300 mr-2"></i>
-                        <span style="text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">Scan QR code om te stemmen</span>
+                        <span>Scan QR code om te stemmen</span>
                     </a>
                 <?php else: ?>
                     <a href="pages/voting/index.php"
@@ -130,5 +130,29 @@ try {
         </div>
     </section>
 
+    <!-- FAQ Section -->
+    <section class="relative py-20 bg-white border-t border-gray-200">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <h2 class="text-3xl font-bold text-suriname-green mb-8 text-center">Veelgestelde Vragen (FAQ)</h2>
+            <div class="space-y-6 text-left">
+                <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2 text-suriname-green">Hoe werkt het stemmen?</h3>
+                    <p class="text-gray-700">Scan de QR-code die je hebt ontvangen, kies je favoriete kandidaten en bevestig je stem. Je kunt slechts één keer stemmen per verkiezing.</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2 text-suriname-green">Is mijn stem anoniem?</h3>
+                    <p class="text-gray-700">Ja, je stem wordt anoniem verwerkt. Niemand kan zien op wie je hebt gestemd.</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2 text-suriname-green">Wat als ik een probleem heb tijdens het stemmen?</h3>
+                    <p class="text-gray-700">Neem contact op met de organisatie of vraag hulp bij het stembureau. Je kunt ook de instructies op deze website volgen.</p>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2 text-suriname-green">Kan ik mijn stem later wijzigen?</h3>
+                    <p class="text-gray-700">Nee, zodra je hebt gestemd, kan je stem niet meer worden aangepast. Controleer dus goed je keuzes voordat je bevestigt.</p>
+                </div>
+            </div>
+        </div>
+    </section>
     <?php include 'include/footer.php'; ?>
 </body>

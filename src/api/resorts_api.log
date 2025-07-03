@@ -58,3 +58,27 @@
 )
 
 [2025-06-18 10:01:35] Response: [{"ResortID":50,"ResortName":"Alkmaar"},{"ResortID":53,"ResortName":"Bakkie"},{"ResortID":54,"ResortName":"Margrita"},{"ResortID":52,"ResortName":"Meerzorg"},{"ResortID":49,"ResortName":"Nieuw Amsterdam"},{"ResortID":51,"ResortName":"Tamanredjo"}]
+[2025-07-02 08:51:59] Request: Array
+(
+    [district_id] => 6
+)
+
+[2025-07-02 08:51:59] Response: [{"ResortID":50,"ResortName":"Alkmaar"},{"ResortID":53,"ResortName":"Bakkie"},{"ResortID":54,"ResortName":"Margrita"},{"ResortID":52,"ResortName":"Meerzorg"},{"ResortID":49,"ResortName":"Nieuw Amsterdam"},{"ResortID":51,"ResortName":"Tamanredjo"}]
+[2025-07-02 08:52:03] Request: Array
+(
+    [district_id] => 6
+)
+
+[2025-07-02 08:52:03] Response: [{"ResortID":50,"ResortName":"Alkmaar"},{"ResortID":53,"ResortName":"Bakkie"},{"ResortID":54,"ResortName":"Margrita"},{"ResortID":52,"ResortName":"Meerzorg"},{"ResortID":49,"ResortName":"Nieuw Amsterdam"},{"ResortID":51,"ResortName":"Tamanredjo"}]
+[2025-07-02 09:31:28] Request: Array
+(
+    [district_id] => 4
+)
+
+[2025-07-02 09:31:28] Response: [{"ResortID":31,"ResortName":"Calcutta"},{"ResortID":32,"ResortName":"Groningen"},{"ResortID":35,"ResortName":"Jarikaba"},{"ResortID":29,"ResortName":"Johanna Maria"},{"ResortID":33,"ResortName":"Kampong Baroe"},{"ResortID":34,"ResortName":"Tijgerkreek"},{"ResortID":28,"ResortName":"Totness"},{"ResortID":36,"ResortName":"Wayamboweg"},{"ResortID":30,"ResortName":"Welgelegen"}]
+[2025-07-02 09:31:31] Request: Array
+(
+    [district_id] => 6
+)
+
+[2025-07-02 09:31:31] Response: [{"ResortID":50,"ResortName":"Alkmaar"},{"ResortID":53,"ResortName":"Bakkie"},{"ResortID":54,"ResortName":"Margrita"},{"ResortID":52,"ResortName":"Meerzorg"},{"ResortID":49,"ResortName":"Nieuw Amsterdam"},{"ResortID":51,"ResortName":"Tamanredjo"}]
